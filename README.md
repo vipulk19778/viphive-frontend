@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VIPHive
+
+VIPHive is a Next.js storefront with authentication, product browsing, cart and checkout flows, order history, payments, and an admin area.
+
+See [CHANGELOG.md](CHANGELOG.md) for release history. Every push and pull request targeting `main` or `master` runs the checks in [.github/workflows/ci.yml](.github/workflows/ci.yml).
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a local environment file from [.env.example](.env.example), then update the API and Razorpay values:
+
+```bash
+cp .env.example .env.local
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable                      | Description                            |
+| ----------------------------- | -------------------------------------- |
+| `NEXT_PUBLIC_APP_NAME`        | Application name shown by the frontend |
+| `NEXT_PUBLIC_API_URL`         | Backend API base URL                   |
+| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay public key used by checkout   |
 
-## Learn More
+Use the environment-specific files as references for local development and production. Do not commit private credentials.
 
-To learn more about Next.js, take a look at the following resources:
+## Available Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev       # Start the development server
+npm run build     # Create a production build
+npm run start     # Serve the production build
+npm run lint      # Run ESLint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Logging
 
-## Deploy on Vercel
+Application logs are routed through `src/lib/logger.ts`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Local development logs are enabled.
+- Vercel Preview deployment logs are enabled.
+- Vercel Production deployment logs are disabled.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The logger uses Vercel's `VERCEL_ENV` value so Preview deployments remain distinguishable from Production even when `NODE_ENV` is `production`.
+
+## Deploying on Vercel
+
+The repository includes [vercel.json](vercel.json) with the Next.js framework, install command, and build command configured.
+
+In Vercel:
+
+1. Set the Root Directory to the folder containing `package.json`.
+2. Add the production values for `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_RAZORPAY_KEY_ID` under Project Settings > Environment Variables.
+3. Assign API variables to the appropriate Production, Preview, and Development environments.
+4. Deploy the latest commit.
+
+The production build must complete before `npm run start` can be used locally.
+
+## Project Structure
+
+- `src/app` contains route segments and pages.
+- `src/features` contains feature-specific components, hooks, schemas, and utilities.
+- `src/services/api` contains backend API clients.
+- `src/store` contains Redux store configuration and slices.
+- `src/components` contains shared UI and layout components.
