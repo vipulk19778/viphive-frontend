@@ -4,6 +4,7 @@ import "./../styles/globals.css";
 
 import { ThemeManager } from "@/components/layout/theme-toggle";
 import { StoreProvider } from "@/store/provider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "VIPHive",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <ThemeManager>
           <StoreProvider>{children}</StoreProvider>
         </ThemeManager>
+        <Analytics />
       </body>
     </html>
   );
