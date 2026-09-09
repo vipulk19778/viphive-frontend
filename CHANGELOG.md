@@ -2,6 +2,17 @@
 
 All notable changes to VIPHive are documented here.
 
+## [0.1.1] - 2026-09-10
+
+### Added
+
+- Six-box OTP verification with automatic submission, resend cooldown, paste support, and API error feedback.
+- GitHub Actions CI checks for staging, main, and master branches.
+
+### Fixed
+
+- Removed the duplicate misspelled OTP route and prevented duplicate OTP API requests.
+
 ## [Unreleased]
 
 ### Added
