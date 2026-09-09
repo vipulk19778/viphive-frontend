@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import Link from "next/link";
 
+import { logger } from "@/lib/logger";
+
 type ErrorPageProps = {
   error: Error & { digest?: string };
   reset: () => void;
@@ -10,7 +12,7 @@ type ErrorPageProps = {
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {
-    console.error(error);
+    logger.error(error);
   }, [error]);
 
   return (

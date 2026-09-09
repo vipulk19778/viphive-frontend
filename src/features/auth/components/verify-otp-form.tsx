@@ -14,6 +14,7 @@ import {
   useSendOtpMutation,
   useVerifyOtpMutation,
 } from "@/services/api/auth.api";
+import { logger } from "@/lib/logger";
 
 import { useAppDispatch } from "@/store/hooks";
 import { setCredentials } from "@/store/slices/auth.slice";
@@ -52,7 +53,7 @@ export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
 
       router.push("/");
     } catch (error) {
-      console.error("OTP verification failed:", error);
+      logger.error("OTP verification failed:", error);
     }
   };
 
@@ -60,7 +61,7 @@ export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
     try {
       await sendOtp({ email }).unwrap();
     } catch (error) {
-      console.error("OTP resend failed:", error);
+      logger.error("OTP resend failed:", error);
     }
   };
 
