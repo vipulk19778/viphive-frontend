@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, staging]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, staging]
 
 permissions:
   contents: read
@@ -12,6 +12,10 @@ permissions:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_APP_NAME: VIPHive
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+      NEXT_PUBLIC_RAZORPAY_KEY_ID: ci-placeholder
 
     steps:
       - name: Checkout repository

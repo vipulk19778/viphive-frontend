@@ -55,6 +55,18 @@ Application logs are routed through `src/lib/logger.ts`:
 
 The logger uses Vercel's `VERCEL_ENV` value so Preview deployments remain distinguishable from Production even when `NODE_ENV` is `production`.
 
+## Registration And OTP Verification
+
+After registration, VIPHive sends the user to `/verify-otp` with the registered email address. The verification screen supports six-digit entry, pasting the complete code, and automatic verification after the final digit.
+
+The screen also provides a resend action with a 30-second cooldown. Entering a new code re-enables automatic verification. A successful verification consumes the OTP and signs the user in, so the same code must not be submitted more than once.
+
+The frontend uses these backend endpoints:
+
+- `POST /auth/register`
+- `POST /auth/verify-otp` with `purpose: "REGISTER"`
+- `POST /auth/send-otp` with `purpose: "REGISTER"`
+
 ## Deploying on Vercel
 
 The repository includes [vercel.json](vercel.json) with the Next.js framework, install command, and build command configured.
