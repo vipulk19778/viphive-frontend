@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { loginSchema, type LoginFormValues } from "../schemas/auth.schema";
 
 import { useLoginMutation } from "@/services/api/auth.api";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { logger } from "@/lib/logger";
 
 import { useAppDispatch } from "@/store/hooks";
@@ -46,7 +47,10 @@ export function LoginForm() {
     } catch (error) {
       logger.error("Login failed:", error);
       setSubmitError(
-        "We couldn’t sign you in with those details. Please try again.",
+        getApiErrorMessage(
+          error,
+          "We couldn’t sign you in with those details. Please try again.",
+        ),
       );
     }
   };

@@ -10,6 +10,7 @@ import {
   useSendOtpMutation,
   useVerifyOtpMutation,
 } from "@/services/api/auth.api";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { logger } from "@/lib/logger";
 
 import { useAppDispatch } from "@/store/hooks";
@@ -17,23 +18,6 @@ import { setCredentials } from "@/store/slices/auth.slice";
 
 interface VerifyOtpFormProps {
   email: string;
-}
-
-function getOtpErrorMessage(error: unknown) {
-  if (typeof error === "object" && error !== null && "data" in error) {
-    const responseData = error.data;
-
-    if (
-      typeof responseData === "object" &&
-      responseData !== null &&
-      "message" in responseData &&
-      typeof responseData.message === "string"
-    ) {
-      return responseData.message;
-    }
-  }
-
-  return "That code could not be verified. Check the code and try again.";
 }
 
 export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
@@ -73,7 +57,12 @@ export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
         })
         .catch((error) => {
           logger.error("OTP verification failed:", error);
-          setSubmitError(getOtpErrorMessage(error));
+          setSubmitError(
+            getApiErrorMessage(
+              error,
+              "That code could not be verified. Check the code and try again.",
+            ),
+          );
         });
     }
   }, [dispatch, email, otp, router, verifyOtp]);
@@ -147,7 +136,12 @@ export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
         router.push("/");
       } catch (error) {
         logger.error("OTP verification failed:", error);
-        setSubmitError(getOtpErrorMessage(error));
+        setSubmitError(
+          getApiErrorMessage(
+            error,
+            "That code could not be verified. Check the code and try again.",
+          ),
+        );
       }
     },
     [dispatch, email, otp, router, verifyOtp],
@@ -164,7 +158,12 @@ export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
       setResendMessage("A new code was sent. Check your inbox.");
     } catch (error) {
       logger.error("OTP resend failed:", error);
-      setResendMessage("We could not resend the code. Please try again.");
+      setResendMessage(
+        getApiErrorMessage(
+          error,
+          "We could not resend the code. Please try again.",
+        ),
+      );
     }
   };
 

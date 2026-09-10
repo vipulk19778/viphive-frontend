@@ -17,6 +17,7 @@ All notable changes to VIPHive are documented here.
 
 ### Added
 
+- Shared backend API error handling for `{ success: false, message, errors }` responses.
 - GitHub Actions CI checks for linting and production builds.
 - Environment-aware application logging documentation.
 - A dedicated `/verify-otp` screen with six-digit OTP input boxes.

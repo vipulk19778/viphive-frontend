@@ -13,6 +13,7 @@ import {
 } from "../schemas/auth.schema";
 
 import { useRegisterMutation } from "@/services/api/auth.api";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { logger } from "@/lib/logger";
 
 export function RegisterForm() {
@@ -39,7 +40,10 @@ export function RegisterForm() {
     } catch (error) {
       logger.error("Registration failed:", error);
       setSubmitError(
-        "We couldn’t create your account. Please review your details and try again.",
+        getApiErrorMessage(
+          error,
+          "We couldn’t create your account. Please review your details and try again.",
+        ),
       );
     }
   };

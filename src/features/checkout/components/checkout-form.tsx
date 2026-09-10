@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 import { loadRazorpay } from "@/services/razorpay/razorpay";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { useCreateOrderMutation } from "@/services/api/orders.api";
 import {
   useCreatePaymentMutation,
@@ -20,17 +21,6 @@ const initialAddress = {
   postalCode: "",
   country: "India",
 };
-
-function getPaymentError(cause: unknown) {
-  if (cause && typeof cause === "object" && "data" in cause) {
-    const data = (cause as { data?: { message?: string } }).data;
-    if (data?.message) return data.message;
-  }
-
-  return cause instanceof Error
-    ? cause.message
-    : "We could not start payment. Please try again.";
-}
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -114,7 +104,12 @@ export function CheckoutForm() {
       });
       razorpayCheckout.open();
     } catch (cause) {
-      setError(getPaymentError(cause));
+      setError(
+        getApiErrorMessage(
+          cause,
+          "We could not start payment. Please try again.",
+        ),
+      );
       setIsPaying(false);
     }
   };
