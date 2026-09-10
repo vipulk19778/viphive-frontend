@@ -6,11 +6,13 @@ All notable changes to VIPHive are documented here.
 
 ### Added
 
+- Centralized backend API error handling for `{ success: false, message, errors }` responses.
 - Six-box OTP verification with automatic submission, resend cooldown, paste support, and API error feedback.
 - GitHub Actions CI checks for staging, main, and master branches.
 
 ### Fixed
 
+- Updated Next.js to `16.3.4`, resolving the audited critical security vulnerability.
 - Removed the duplicate misspelled OTP route and prevented duplicate OTP API requests.
 
 ## [Unreleased]
