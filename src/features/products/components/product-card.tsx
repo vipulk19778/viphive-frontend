@@ -45,23 +45,65 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-lg font-semibold">
             ₹{product.price.toLocaleString("en-IN")}
           </p>
-
         </div>
       </Link>
 
       <div className="px-4 pb-4">
         {cartItem ? (
           <div className="flex h-9 items-center justify-between rounded-lg border bg-background px-1">
-            <button type="button" onClick={() => cartItem.quantity === 1 ? dispatch(removeFromCart(product._id)) : dispatch(updateCartItemQuantity({ productId: product._id, quantity: cartItem.quantity - 1 }))} className="grid size-7 place-items-center rounded-md transition-colors hover:bg-muted" aria-label={`Remove one ${product.name}`}><Minus className="size-4" /></button>
-            <span className="text-sm font-semibold" aria-live="polite">{cartItem.quantity} in cart</span>
-            <button type="button" disabled={cartItem.quantity >= product.stock} onClick={() => dispatch(updateCartItemQuantity({ productId: product._id, quantity: cartItem.quantity + 1 }))} className="grid size-7 place-items-center rounded-md transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40" aria-label={`Add one ${product.name}`}><Plus className="size-4" /></button>
+            <button
+              type="button"
+              onClick={() =>
+                cartItem.quantity === 1
+                  ? dispatch(removeFromCart(product._id))
+                  : dispatch(
+                      updateCartItemQuantity({
+                        productId: product._id,
+                        quantity: cartItem.quantity - 1,
+                      }),
+                    )
+              }
+              className="grid size-7 place-items-center rounded-md transition-colors hover:bg-muted"
+              aria-label={`Remove one ${product.name}`}
+            >
+              <Minus className="size-4" />
+            </button>
+            <span className="text-sm font-semibold" aria-live="polite">
+              {cartItem.quantity} in cart
+            </span>
+            <button
+              type="button"
+              disabled={cartItem.quantity >= product.stock}
+              onClick={() =>
+                dispatch(
+                  updateCartItemQuantity({
+                    productId: product._id,
+                    quantity: cartItem.quantity + 1,
+                  }),
+                )
+              }
+              className="grid size-7 place-items-center rounded-md transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+              aria-label={`Add one ${product.name}`}
+            >
+              <Plus className="size-4" />
+            </button>
           </div>
         ) : (
           <button
             type="button"
             disabled={isOutOfStock}
-            onClick={() => dispatch(addToCart({ productId: product._id, name: product.name, price: product.price, quantity: 1, imageUrl: product.imageUrl }))}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  productId: product._id,
+                  name: product.name,
+                  price: product.price,
+                  quantity: 1,
+                  imageUrl: product.imageUrl,
+                }),
+              )
+            }
+            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ShoppingBag className="size-4" />
             {isOutOfStock ? "Out of stock" : "Add to cart"}

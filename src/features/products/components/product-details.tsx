@@ -130,13 +130,64 @@ export function ProductDetails({ productId }: ProductDetailsProps) {
         <div className="mt-8">
           {cartItem ? (
             <div className="flex items-center justify-between rounded-lg border bg-card p-1">
-              <button type="button" onClick={() => cartItem.quantity === 1 ? dispatch(removeFromCart(product._id)) : dispatch(updateCartItemQuantity({ productId: product._id, quantity: cartItem.quantity - 1 }))} className="grid size-10 place-items-center rounded-md transition-colors hover:bg-muted" aria-label={`Remove one ${product.name}`}><Minus className="size-5" /></button>
-              <span className="text-sm font-semibold" aria-live="polite">{cartItem.quantity} in cart</span>
-              <button type="button" disabled={cartItem.quantity >= product.stock} onClick={() => dispatch(updateCartItemQuantity({ productId: product._id, quantity: cartItem.quantity + 1 }))} className="grid size-10 place-items-center rounded-md transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40" aria-label={`Add one ${product.name}`}><Plus className="size-5" /></button>
+              <button
+                type="button"
+                onClick={() =>
+                  cartItem.quantity === 1
+                    ? dispatch(removeFromCart(product._id))
+                    : dispatch(
+                        updateCartItemQuantity({
+                          productId: product._id,
+                          quantity: cartItem.quantity - 1,
+                        }),
+                      )
+                }
+                className="grid size-10 place-items-center rounded-md transition-colors hover:bg-muted"
+                aria-label={`Remove one ${product.name}`}
+              >
+                <Minus className="size-5" />
+              </button>
+              <span className="text-sm font-semibold" aria-live="polite">
+                {cartItem.quantity} in cart
+              </span>
+              <button
+                type="button"
+                disabled={cartItem.quantity >= product.stock}
+                onClick={() =>
+                  dispatch(
+                    updateCartItemQuantity({
+                      productId: product._id,
+                      quantity: cartItem.quantity + 1,
+                    }),
+                  )
+                }
+                className="grid size-10 place-items-center rounded-md transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+                aria-label={`Add one ${product.name}`}
+              >
+                <Plus className="size-5" />
+              </button>
             </div>
           ) : (
-            <button type="button" disabled={isOutOfStock} onClick={() => dispatch(addToCart({ productId: product._id, name: product.name, price: product.price, quantity: 1, imageUrl: product.imageUrl }))} className="w-full rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
-              <span className="inline-flex items-center gap-2"><ShoppingBag className="size-4" />{isOutOfStock ? "Out of stock" : "Add to cart"}</span>
+            <button
+              type="button"
+              disabled={isOutOfStock}
+              onClick={() =>
+                dispatch(
+                  addToCart({
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    imageUrl: product.imageUrl,
+                  }),
+                )
+              }
+              className="w-full cursor-pointer rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <span className="inline-flex items-center gap-2">
+                <ShoppingBag className="size-4" />
+                {isOutOfStock ? "Out of stock" : "Add to cart"}
+              </span>
             </button>
           )}
         </div>

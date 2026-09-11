@@ -29,6 +29,7 @@ All notable changes to VIPHive are documented here.
 ### Changed
 
 - Documented local setup, Vercel deployment, environment variables, and project structure.
+- Added pointer cursors to enabled Add to cart buttons while preserving the disabled state cursor.
 - Registration now routes users to the email verification screen after account creation.
 - OTP verification supports paste, keyboard navigation, visible API errors, and backend error messages.
 - OTP submission is guarded against duplicate requests that could consume a valid OTP and produce an `OTP not found` response.
