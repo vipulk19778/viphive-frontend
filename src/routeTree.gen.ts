@@ -15,6 +15,7 @@ import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as VerifyOtpRouteImport } from './routes/verify-otp'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
@@ -55,6 +56,11 @@ const VerifyOtpRoute = VerifyOtpRouteImport.update({
   id: '/verify-otp',
   path: '/verify-otp',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/verify-otp': typeof VerifyOtpRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin/': typeof AdminIndexRoute
   '/cart/': typeof CartIndexRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/verify-otp': typeof VerifyOtpRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin': typeof AdminIndexRoute
   '/cart': typeof CartIndexRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/verify-otp': typeof VerifyOtpRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin/': typeof AdminIndexRoute
   '/cart/': typeof CartIndexRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verify-otp'
+    | '/profile'
     | '/products/$productId'
     | '/admin/'
     | '/cart/'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verify-otp'
+    | '/profile'
     | '/products/$productId'
     | '/admin'
     | '/cart'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verify-otp'
+    | '/_authenticated/profile'
     | '/products/$productId'
     | '/admin/'
     | '/cart/'
@@ -283,6 +295,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/verify-otp'
       preLoaderRoute: typeof VerifyOtpRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -365,12 +384,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
   AuthenticatedOrdersIndexRoute: typeof AuthenticatedOrdersIndexRoute
   AuthenticatedPaymentsIndexRoute: typeof AuthenticatedPaymentsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
   AuthenticatedOrdersIndexRoute: AuthenticatedOrdersIndexRoute,
   AuthenticatedPaymentsIndexRoute: AuthenticatedPaymentsIndexRoute,

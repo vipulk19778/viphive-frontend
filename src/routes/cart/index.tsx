@@ -1,9 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/cart/')({
-  component: RouteComponent,
-})
+import { CartPage } from "@/features/cart";
 
-function RouteComponent() {
-  return <div>Hello "/cart/"!</div>
-}
+export const Route = createFileRoute("/cart/")({
+  component: CartPage,
+});
