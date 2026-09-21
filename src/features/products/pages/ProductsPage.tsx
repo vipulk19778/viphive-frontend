@@ -7,7 +7,7 @@ import {
   SlidersHorizontal,
   ShoppingCart,
 } from "lucide-react";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useCartStore } from "@/features/cart/store/cart.store";
@@ -137,8 +137,7 @@ export function ProductsPage() {
           </span>
         </div>
         <Swiper
-          modules={[Navigation, Autoplay]}
-          navigation
+          modules={[Autoplay]}
           autoplay={{ delay: 4500, disableOnInteraction: false }}
           spaceBetween={12}
           slidesPerView={1.15}
