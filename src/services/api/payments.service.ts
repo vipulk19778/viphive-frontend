@@ -1,10 +1,9 @@
 import { apiClient } from "@/lib/api/client";
-
 import type {
   CreatePaymentRequest,
   PaymentOrder,
   VerifyPaymentRequest,
-} from "../types/payment.types";
+} from "@/features/payments/types/payment.types";
 
 interface ApiResponse<T> {
   data: T;

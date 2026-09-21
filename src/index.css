@@ -10,8 +10,8 @@
 :root {
   font-family: "DM Sans", "Avenir Next", sans-serif;
 
-  color: #111827;
-  background-color: #f8fafc;
+  color: #172033;
+  background-color: #f4f7fb;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -32,7 +32,7 @@ body,
 
 body {
   min-height: 100vh;
-  background: #f8fafc;
+  background: linear-gradient(180deg, #fbfcfe 0%, #f1f5f9 100%);
   transition:
     background-color 180ms ease,
     color 180ms ease;
@@ -40,6 +40,19 @@ body {
 
 .dark body {
   background: #020617;
+}
+
+::selection {
+  background: rgb(251 191 36 / 0.35);
+  color: #172033;
+}
+
+button,
+a,
+select,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .best-products-swiper {

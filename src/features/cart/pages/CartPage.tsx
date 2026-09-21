@@ -28,7 +28,7 @@ export function CartPage() {
           </p>
           <Link
             to="/products"
-            className="mt-6 inline-block rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white dark:bg-amber-400 dark:text-slate-950"
+            className="mt-6 inline-block rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
           >
             Browse Products
           </Link>
@@ -112,7 +112,7 @@ export function CartPage() {
             </div>
           ))}
         </div>
-        <aside className="h-fit min-w-0 max-w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <aside className="h-fit min-w-0 max-w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-28 dark:border-slate-800 dark:bg-slate-900">
           <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">
             Order summary
           </h2>
@@ -124,7 +124,7 @@ export function CartPage() {
           </div>
           <Link
             to="/checkout"
-            className="mt-6 block w-full rounded-xl bg-slate-950 px-4 py-3.5 text-center text-sm font-bold text-white dark:bg-amber-400 dark:text-slate-950"
+            className="mt-6 block w-full rounded-xl bg-slate-950 px-4 py-3.5 text-center text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
           >
             Proceed to Checkout
           </Link>

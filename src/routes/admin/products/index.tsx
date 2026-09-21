@@ -8,7 +8,7 @@ import {
   useProducts,
   useUpdateProduct,
 } from "@/features/products/hooks/use-products";
-import type { ProductInput } from "@/features/products/api/products.api";
+import type { ProductInput } from "@/features/products/types/product.types";
 import type { Product } from "@/features/products/types/product.types";
 
 export const Route = createFileRoute("/admin/products/")({
@@ -111,7 +111,7 @@ export default function AdminProductsPage() {
         <button
           type="button"
           onClick={openCreate}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white dark:bg-amber-400 dark:text-slate-950"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
         >
           <Plus className="h-4 w-4" /> Add product
         </button>
@@ -286,7 +286,7 @@ export default function AdminProductsPage() {
             <button
               type="submit"
               disabled={createMutation.isPending || updateMutation.isPending}
-              className="mt-6 w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3 font-bold text-white disabled:cursor-not-allowed dark:bg-amber-400 dark:text-slate-950"
+              className="mt-6 w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
             >
               {createMutation.isPending || updateMutation.isPending
                 ? "Saving..."

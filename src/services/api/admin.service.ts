@@ -1,10 +1,9 @@
 import { apiClient } from "@/lib/api/client";
-
 import type {
   AdminUser,
   Analytics,
   PaginatedPayments,
-} from "../types/admin.types";
+} from "@/features/admin/types/admin.types";
 
 interface ApiResponse<T> {
   data: T;

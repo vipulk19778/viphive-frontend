@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   LogOut,
+  ChevronDown,
   Menu,
   Moon,
   Search,
@@ -30,6 +31,7 @@ export function AppHeader() {
   );
   const query = useCatalogStore((state) => state.query);
   const setQuery = useCatalogStore((state) => state.setQuery);
+  const firstName = user?.name?.trim().split(/\s+/)[0] ?? "Account";
 
   const handleLogout = () => {
     logout();
@@ -46,7 +48,7 @@ export function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-950/90 dark:shadow-none">
       <div className="mx-auto flex h-18.25 max-w-7xl items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6 lg:px-8">
         <Link to="/" aria-label="VIPHive home">
           <ViphiveLogo />
@@ -55,7 +57,7 @@ export function AppHeader() {
           onSubmit={submitSearch}
           className="mx-2 hidden min-w-0 flex-1 md:flex md:max-w-xl"
         >
-          <label className="flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-slate-400 transition focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-400/15 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500">
+          <label className="flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm transition focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-400/15 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500 dark:shadow-none">
             <Search className="h-4 w-4 shrink-0" />
             <input
               value={query}
@@ -66,7 +68,7 @@ export function AppHeader() {
             <button
               type="submit"
               aria-label="Search"
-              className="cursor-pointer rounded-lg bg-amber-400 p-1.5 text-slate-950 hover:bg-amber-300"
+              className="cursor-pointer rounded-lg bg-[#F5B942] p-1.5 text-slate-950 hover:bg-[#E5A52E]"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -107,8 +109,9 @@ export function AppHeader() {
                 >
                   <User className="h-5 w-5" />
                   <span className="hidden max-w-28 truncate text-sm font-medium text-slate-700 dark:text-slate-200 lg:block">
-                    {user?.name}
+                    {firstName}
                   </span>
+                  <ChevronDown className="h-4 w-4 text-slate-400 transition group-hover:rotate-180" />
                 </Link>
                 <div className="invisible absolute right-0 top-full z-50 w-56 translate-y-2 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                   <div className="rounded-2xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-800 dark:bg-slate-900">
@@ -145,7 +148,7 @@ export function AppHeader() {
             ) : (
               <Link
                 to="/login"
-                className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
               >
                 Login
               </Link>
@@ -168,19 +171,26 @@ export function AppHeader() {
           </button>
         </div>
       </div>
+      <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden">
+        <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-400/15 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500">
+          <Search className="h-4 w-4 shrink-0" />
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search products"
+            className="min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            className="cursor-pointer rounded-lg bg-[#F5B942] p-1.5 text-slate-950 hover:bg-[#E5A52E]"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        </label>
+      </form>
       {isMenuOpen && (
         <div className="border-t border-slate-200 bg-white px-4 py-4 shadow-lg dark:border-slate-800 dark:bg-slate-950 sm:hidden">
-          <form onSubmit={submitSearch} className="mb-3">
-            <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-400 dark:border-slate-800 dark:bg-slate-900">
-              <Search className="h-4 w-4" />
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search products"
-                className="min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none dark:text-white"
-              />
-            </label>
-          </form>
           <nav className="space-y-1">
             {isAuthenticated && (
               <Link
@@ -212,7 +222,7 @@ export function AppHeader() {
               <Link
                 to="/login"
                 onClick={closeMenu}
-                className="block rounded-xl bg-slate-950 px-3 py-3 text-center text-sm font-semibold text-white dark:bg-amber-400 dark:text-slate-950"
+                className="block rounded-xl bg-slate-950 px-3 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
               >
                 Login
               </Link>

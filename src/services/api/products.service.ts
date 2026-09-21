@@ -1,6 +1,9 @@
 import { apiClient } from "@/lib/api/client";
-
-import type { PaginatedProducts, Product } from "../types/product.types";
+import type {
+  PaginatedProducts,
+  Product,
+  ProductInput,
+} from "@/features/products/types/product.types";
 
 interface ApiResponse<T> {
   data: T;
@@ -10,7 +13,6 @@ export async function getProducts(page = 1, limit = 12) {
   const response = await apiClient.get<PaginatedProducts>("/products", {
     params: { page, limit },
   });
-
   return response.data;
 }
 
@@ -18,17 +20,7 @@ export async function getProductById(productId: string) {
   const response = await apiClient.get<ApiResponse<Product>>(
     `/products/${productId}`,
   );
-
   return response.data.data;
-}
-
-export interface ProductInput {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  stock: number;
-  image?: File;
 }
 
 function toProductFormData(input: ProductInput) {
@@ -61,3 +53,5 @@ export async function updateProduct(productId: string, input: ProductInput) {
 export async function deleteProduct(productId: string) {
   await apiClient.delete(`/products/${productId}`);
 }
+
+export type { ProductInput };

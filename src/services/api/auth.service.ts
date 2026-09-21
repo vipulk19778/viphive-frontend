@@ -7,45 +7,48 @@ import type {
   RegisterRequest,
   SendOtpRequest,
   VerifyOtpRequest,
-} from "../types/auth.types";
+} from "@/features/auth/types/auth.types";
 
 interface ApiResponse<T> {
   data: T;
-  message?: string;
 }
-
 const AUTH_PATH = "/auth";
 
-export const register = async (
+export async function register(
   data: RegisterRequest,
-): Promise<ApiMessageResponse> => {
+): Promise<ApiMessageResponse> {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_PATH}/register`,
     data,
   );
-
   return response.data;
-};
+}
 
-export const login = async (data: LoginRequest): Promise<AuthResponse> => {
+export async function login(data: LoginRequest): Promise<AuthResponse> {
   const response = await apiClient.post<ApiResponse<AuthApiPayload>>(
     `${AUTH_PATH}/login`,
     data,
   );
-
   return normalizeAuthResponse(response.data.data);
-};
+}
 
-export const verifyOtp = async (
-  data: VerifyOtpRequest,
-): Promise<AuthResponse> => {
+export async function verifyOtp(data: VerifyOtpRequest): Promise<AuthResponse> {
   const response = await apiClient.post<ApiResponse<AuthApiPayload>>(
     `${AUTH_PATH}/verify-otp`,
     data,
   );
-
   return normalizeAuthResponse(response.data.data);
-};
+}
+
+export async function sendOtp(
+  data: SendOtpRequest,
+): Promise<ApiMessageResponse> {
+  const response = await apiClient.post<ApiMessageResponse>(
+    `${AUTH_PATH}/send-otp`,
+    data,
+  );
+  return response.data;
+}
 
 function normalizeAuthResponse(payload: AuthApiPayload): AuthResponse {
   return {
@@ -59,14 +62,3 @@ function normalizeAuthResponse(payload: AuthApiPayload): AuthResponse {
     },
   };
 }
-
-export const sendOtp = async (
-  data: SendOtpRequest,
-): Promise<ApiMessageResponse> => {
-  const response = await apiClient.post<ApiMessageResponse>(
-    `${AUTH_PATH}/send-otp`,
-    data,
-  );
-
-  return response.data;
-};

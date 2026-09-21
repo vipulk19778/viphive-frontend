@@ -44,7 +44,7 @@ function ProductCartControl({ product }: { product: Product }) {
           type="button"
           onClick={() => updateQuantity(product._id, cartItem.quantity + 1)}
           aria-label={`Increase ${product.name} quantity`}
-          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg bg-amber-400 text-slate-950 hover:bg-amber-300"
+          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg bg-[#F5B942] text-slate-950 hover:bg-[#E5A52E]"
         >
           <Plus className="h-3.5 w-3.5" />
         </button>
@@ -69,7 +69,7 @@ function ProductCartControl({ product }: { product: Product }) {
           ? `Add ${product.name} to cart`
           : `${product.name} is sold out`
       }
-      className="cursor-pointer rounded-xl bg-slate-950 p-2 text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 sm:px-3 sm:py-2 sm:text-xs sm:font-bold dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+      className="cursor-pointer rounded-xl bg-slate-950 p-2 text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 sm:px-3 sm:py-2 sm:text-xs sm:font-bold dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
     >
       <ShoppingCart className="h-4 w-4 sm:hidden" />
       <span className="hidden sm:inline">

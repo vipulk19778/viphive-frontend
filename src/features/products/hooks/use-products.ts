@@ -7,7 +7,7 @@ import {
   getProducts,
   updateProduct,
   type ProductInput,
-} from "../api/products.api";
+} from "@/services/api/products.service";
 
 export function useProducts(page = 1, limit = 12) {
   return useQuery({

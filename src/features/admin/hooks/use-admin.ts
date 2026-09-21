@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getAnalytics, getPayments, getUsers } from "../api/admin.api";
+import {
+  getAnalytics,
+  getPayments,
+  getUsers,
+} from "@/services/api/admin.service";
 
 export function useAnalytics(days = 30) {
   return useQuery({

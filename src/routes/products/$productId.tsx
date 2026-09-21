@@ -94,7 +94,7 @@ function ProductDetailPage() {
                   updateQuantity(product._id, cartItem.quantity + 1)
                 }
                 aria-label="Increase quantity"
-                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-amber-400 text-slate-950 hover:bg-amber-300"
+                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-[#F5B942] text-slate-950 hover:bg-[#E5A52E]"
               >
                 <Plus className="h-4 w-4" />
               </button>
@@ -111,7 +111,7 @@ function ProductDetailPage() {
                   image: product.imageUrl,
                 })
               }
-              className="mt-8 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3.5 font-bold text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+              className="mt-8 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
             >
               <ShoppingBag className="h-5 w-5" />
               <span className="hidden sm:inline">

@@ -1,6 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { login, register, sendOtp, verifyOtp } from "../api/auth.api";
+import {
+  login,
+  register,
+  sendOtp,
+  verifyOtp,
+} from "@/services/api/auth.service";
 
 import { useAuthStore } from "@/stores/auth.store";
 

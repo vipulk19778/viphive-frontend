@@ -5,7 +5,7 @@ import {
   getAllOrders,
   getMyOrders,
   updateOrderStatus,
-} from "../api/orders.api";
+} from "@/services/api/orders.service";
 
 export function useMyOrders() {
   return useQuery({
