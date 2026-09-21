@@ -6,8 +6,40 @@ import { z } from "zod";
 
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useCreateOrder } from "@/features/orders/hooks/use-orders";
+import {
+  useCreatePayment,
+  useVerifyPayment,
+} from "@/features/payments/hooks/use-payments";
 import type { OrderAddress } from "@/features/orders/types/order.types";
 import { useAuthStore } from "@/stores/auth.store";
+
+interface RazorpayResponse {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorpayResponse) => void;
+  modal?: { ondismiss?: () => void };
+  theme?: { color: string };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+}
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: RazorpayOptions) => RazorpayInstance;
+  }
+}
 
 const addressSchema = z.object({
   fullName: z.string().trim().min(1, "Full name is required"),
@@ -32,7 +64,10 @@ function CheckoutPage() {
   const clearCart = useCartStore((state) => state.clearCart);
   const subtotal = useCartStore((state) => state.getSubtotal());
   const createOrderMutation = useCreateOrder();
+  const createPaymentMutation = useCreatePayment();
+  const verifyPaymentMutation = useVerifyPayment();
   const [submittedOrderId, setSubmittedOrderId] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState("");
   const {
     register,
     handleSubmit,
@@ -41,9 +76,25 @@ function CheckoutPage() {
     resolver: zodResolver(addressSchema),
   });
 
-  const onSubmit = (address: OrderAddress) => {
-    createOrderMutation.mutate(
-      {
+  const loadRazorpay = () =>
+    new Promise<boolean>((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+
+  const onSubmit = async (address: OrderAddress) => {
+    setPaymentError("");
+
+    try {
+      const order = await createOrderMutation.mutateAsync({
         items: items.map((item) => ({
           product: item.productId,
           qty: item.quantity,
@@ -51,14 +102,53 @@ function CheckoutPage() {
         })),
         totalAmount: subtotal,
         address,
-      },
-      {
-        onSuccess: (order) => {
-          clearCart();
-          setSubmittedOrderId(order._id);
+      });
+      const paymentScriptLoaded = await loadRazorpay();
+      if (!paymentScriptLoaded || !window.Razorpay) {
+        setPaymentError(
+          "Payment checkout could not be loaded. Please try again.",
+        );
+        return;
+      }
+
+      const paymentOrder = await createPaymentMutation.mutateAsync({
+        amount: subtotal,
+        currency: "INR",
+        orderId: order._id,
+      });
+
+      const razorpay = new window.Razorpay({
+        key: paymentOrder.keyId,
+        amount: paymentOrder.amount,
+        currency: paymentOrder.currency,
+        name: "VIPHive",
+        description: "VIPHive order payment",
+        order_id: paymentOrder.orderId,
+        theme: { color: "#fbbf24" },
+        handler: (response) => {
+          void verifyPaymentMutation
+            .mutateAsync({ ...response, orderId: order._id })
+            .then(() => {
+              clearCart();
+              setSubmittedOrderId(order._id);
+            })
+            .catch(() =>
+              setPaymentError(
+                "Payment verification failed. Please contact support.",
+              ),
+            );
         },
-      },
-    );
+        modal: {
+          ondismiss: () =>
+            setPaymentError(
+              "Payment was cancelled. Your order is still pending payment.",
+            ),
+        },
+      });
+      razorpay.open();
+    } catch {
+      setPaymentError("Unable to start payment. Please try again.");
+    }
   };
 
   if (submittedOrderId) {
@@ -113,14 +203,36 @@ function CheckoutPage() {
             )}
           </label>
         ))}
+        <section className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-400/30 dark:bg-amber-400/10">
+          <p className="text-sm font-bold text-slate-950 dark:text-white">
+            Payment method
+          </p>
+          <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+            <input type="radio" checked readOnly className="accent-amber-500" />
+            <span>
+              <strong>Razorpay</strong>
+              <span className="block text-xs text-slate-500 dark:text-slate-400">
+                Secure online payment
+              </span>
+            </span>
+          </label>
+        </section>
         <div className="flex items-center justify-between border-t pt-4">
           <span className="font-semibold">Total: ₹{subtotal.toFixed(2)}</span>
           <button
             type="submit"
-            disabled={createOrderMutation.isPending}
-            className="rounded-md bg-black px-5 py-3 font-medium text-white disabled:bg-gray-400"
+            disabled={
+              createOrderMutation.isPending ||
+              createPaymentMutation.isPending ||
+              verifyPaymentMutation.isPending
+            }
+            className="cursor-pointer rounded-md bg-black px-5 py-3 font-medium text-white disabled:cursor-not-allowed disabled:bg-gray-400"
           >
-            {createOrderMutation.isPending ? "Placing order..." : "Place order"}
+            {createOrderMutation.isPending ||
+            createPaymentMutation.isPending ||
+            verifyPaymentMutation.isPending
+              ? "Opening payment..."
+              : "Pay securely"}
           </button>
         </div>
         {createOrderMutation.isError && (
@@ -128,6 +240,7 @@ function CheckoutPage() {
             Unable to place the order. Please try again.
           </p>
         )}
+        {paymentError && <p className="text-sm text-red-600">{paymentError}</p>}
       </form>
     </main>
   );

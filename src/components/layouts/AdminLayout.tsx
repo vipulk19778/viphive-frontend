@@ -1,5 +1,11 @@
 import { Link, Outlet } from "@tanstack/react-router";
-import { BarChart3, Boxes, ClipboardList, Users } from "lucide-react";
+import {
+  BarChart3,
+  Boxes,
+  ClipboardList,
+  CreditCard,
+  Users,
+} from "lucide-react";
 
 import { ViphiveLogo } from "@/components/common/ViphiveLogo";
 
@@ -7,6 +13,7 @@ const navigation = [
   { to: "/admin", label: "Overview", icon: BarChart3 },
   { to: "/admin/products", label: "Products", icon: Boxes },
   { to: "/admin/orders", label: "Orders", icon: ClipboardList },
+  { to: "/admin/payments", label: "Payments", icon: CreditCard },
   { to: "/admin/users", label: "Users", icon: Users },
 ] as const;
 

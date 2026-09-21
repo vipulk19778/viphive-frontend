@@ -35,6 +35,15 @@ export interface AuthResponse {
   user?: User;
 }
 
+export interface AuthApiPayload {
+  _id: string;
+  name: string;
+  email: string;
+  role?: string | number;
+  token: string;
+  verified?: boolean;
+}
+
 export interface ApiMessageResponse {
   message: string;
 }

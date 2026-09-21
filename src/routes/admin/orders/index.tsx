@@ -82,7 +82,7 @@ function AdminOrdersPage() {
                         status: event.target.value,
                       })
                     }
-                    className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm disabled:cursor-not-allowed dark:border-slate-700 dark:bg-slate-950 dark:text-white"
                   >
                     <option value="pending">Pending</option>
                     <option value="shipped">Shipped</option>

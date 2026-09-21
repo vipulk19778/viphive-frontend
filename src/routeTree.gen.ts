@@ -25,6 +25,7 @@ import { Route as AuthenticatedOrdersIndexRouteImport } from './routes/_authenti
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders/$orderId'
 import { Route as AuthenticatedPaymentsIndexRouteImport } from './routes/_authenticated/payments/index'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin/orders/index'
+import { Route as AdminPaymentsIndexRouteImport } from './routes/admin/payments/index'
 import { Route as AdminProductsIndexRouteImport } from './routes/admin/products/index'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 
@@ -110,6 +111,11 @@ const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
   path: '/orders/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminPaymentsIndexRoute = AdminPaymentsIndexRouteImport.update({
+  id: '/payments/',
+  path: '/payments/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminProductsIndexRoute = AdminProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/orders/': typeof AuthenticatedOrdersIndexRoute
   '/payments/': typeof AuthenticatedPaymentsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
+  '/admin/payments/': typeof AdminPaymentsIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
 }
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/orders': typeof AuthenticatedOrdersIndexRoute
   '/payments': typeof AuthenticatedPaymentsIndexRoute
   '/admin/orders': typeof AdminOrdersIndexRoute
+  '/admin/payments': typeof AdminPaymentsIndexRoute
   '/admin/products': typeof AdminProductsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
 }
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/_authenticated/orders/': typeof AuthenticatedOrdersIndexRoute
   '/_authenticated/payments/': typeof AuthenticatedPaymentsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
+  '/admin/payments/': typeof AdminPaymentsIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
 }
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/orders/'
     | '/payments/'
     | '/admin/orders/'
+    | '/admin/payments/'
     | '/admin/products/'
     | '/admin/users/'
   fileRoutesByTo: FileRoutesByTo
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/payments'
     | '/admin/orders'
+    | '/admin/payments'
     | '/admin/products'
     | '/admin/users'
   id:
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/_authenticated/orders/'
     | '/_authenticated/payments/'
     | '/admin/orders/'
+    | '/admin/payments/'
     | '/admin/products/'
     | '/admin/users/'
   fileRoutesById: FileRoutesById
@@ -366,6 +378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/payments/': {
+      id: '/admin/payments/'
+      path: '/payments'
+      fullPath: '/admin/payments/'
+      preLoaderRoute: typeof AdminPaymentsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/products/': {
       id: '/admin/products/'
       path: '/products'
@@ -403,6 +422,7 @@ const AuthenticatedRouteRouteWithChildren =
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
+  AdminPaymentsIndexRoute: typeof AdminPaymentsIndexRoute
   AdminProductsIndexRoute: typeof AdminProductsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
@@ -410,6 +430,7 @@ interface AdminRouteRouteChildren {
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
+  AdminPaymentsIndexRoute: AdminPaymentsIndexRoute,
   AdminProductsIndexRoute: AdminProductsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
 }

@@ -57,32 +57,32 @@ export function CartPage() {
           {items.map((item) => (
             <div
               key={item.productId}
-              className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+              className="flex min-w-0 gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:gap-4"
             >
               {item.image && (
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="h-28 w-28 rounded-xl object-cover"
+                  className="h-20 w-20 shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
                 />
               )}
-              <div className="flex flex-1 flex-col justify-between">
+              <div className="min-w-0 flex-1">
                 <div>
-                  <h2 className="font-bold text-slate-950 dark:text-white">
+                  <h2 className="truncate font-bold text-slate-950 dark:text-white">
                     {item.name}
                   </h2>
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     ₹{item.price.toFixed(2)}
                   </p>
                 </div>
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-4 flex flex-wrap items-center gap-2 sm:gap-3">
                   <button
                     type="button"
                     onClick={() =>
                       updateQuantity(item.productId, item.quantity - 1)
                     }
                     aria-label={`Decrease ${item.name} quantity`}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
                     <Minus className="h-3.5 w-3.5" />
                   </button>
@@ -95,16 +95,16 @@ export function CartPage() {
                       updateQuantity(item.productId, item.quantity + 1)
                     }
                     aria-label={`Increase ${item.name} quantity`}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
                     <Plus className="h-3.5 w-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => removeItem(item.productId)}
-                    className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-rose-500 hover:text-rose-600"
+                    className="basis-full cursor-pointer pt-1 text-left text-sm font-semibold text-rose-500 hover:text-rose-600 sm:ml-auto sm:basis-auto sm:pt-0"
                   >
-                    <Trash2 className="h-4 w-4" /> Remove
+                    <Trash2 className="mr-1 inline h-4 w-4" /> Remove
                   </button>
                 </div>
               </div>

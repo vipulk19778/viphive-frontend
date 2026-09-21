@@ -1,6 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getProductById, getProducts } from "../api/products.api";
+import {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  getProducts,
+  updateProduct,
+  type ProductInput,
+} from "../api/products.api";
 
 export function useProducts(page = 1, limit = 12) {
   return useQuery({
@@ -14,5 +21,38 @@ export function useProduct(productId: string) {
     queryKey: ["products", productId],
     queryFn: () => getProductById(productId),
     enabled: Boolean(productId),
+  });
+}
+
+export function useCreateProduct() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createProduct,
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: ["products"] }),
+  });
+}
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      productId,
+      input,
+    }: {
+      productId: string;
+      input: ProductInput;
+    }) => updateProduct(productId, input),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: ["products"] }),
+  });
+}
+
+export function useDeleteProduct() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: ["products"] }),
   });
 }

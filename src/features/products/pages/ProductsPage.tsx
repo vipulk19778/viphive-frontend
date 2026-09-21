@@ -101,7 +101,7 @@ export function ProductsPage() {
                         image: product.imageUrl,
                       })
                     }
-                    className="rounded-xl bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                    className="cursor-pointer rounded-xl bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
                   >
                     {product.stock > 0 ? "Add to cart" : "Sold out"}
                   </button>

@@ -17,7 +17,7 @@ function RootLayout() {
   const isAuthPage = ["/login", "/register", "/verify-otp"].includes(pathname);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-white">
+    <div className="min-h-screen overflow-x-clip bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-white">
       {!isAuthPage && <AppHeader />}
 
       <main>

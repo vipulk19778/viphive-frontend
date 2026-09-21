@@ -84,7 +84,7 @@ export function RegisterPage() {
         <button
           type="submit"
           disabled={registerMutation.isPending}
-          className="w-full rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:opacity-50 dark:bg-amber-400 dark:text-slate-950"
+          className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-amber-400 dark:text-slate-950"
         >
           {registerMutation.isPending
             ? "Creating account..."
