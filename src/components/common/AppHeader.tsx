@@ -32,6 +32,7 @@ export function AppHeader() {
   const query = useCatalogStore((state) => state.query);
   const setQuery = useCatalogStore((state) => state.setQuery);
   const firstName = user?.name?.trim().split(/\s+/)[0] ?? "Account";
+  const isAdmin = user?.role === "admin";
 
   const handleLogout = () => {
     logout();
@@ -136,6 +137,19 @@ export function AppHeader() {
                     >
                       My orders
                     </Link>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        activeOptions={{ exact: true }}
+                        activeProps={{
+                          className:
+                            "bg-slate-950 text-white dark:bg-slate-800",
+                        }}
+                        className="mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+                      >
+                        Admin panel
+                      </Link>
+                    )}
                     <button
                       type="button"
                       onClick={handleLogout}
@@ -200,6 +214,19 @@ export function AppHeader() {
                 className="block rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Orders
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                activeOptions={{ exact: true }}
+                onClick={closeMenu}
+                activeProps={{
+                  className: "bg-slate-950 text-white dark:bg-slate-800",
+                }}
+                className="block rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                Admin panel
               </Link>
             )}
             {isAuthenticated ? (

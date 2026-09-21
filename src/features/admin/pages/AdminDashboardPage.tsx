@@ -60,10 +60,10 @@ export function AdminDashboardPage() {
       <div className="mt-2 flex items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-950 dark:text-white">
-            Good morning, admin.
+            Store performance at a glance.
           </h1>
           <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-            Here is what is happening across VIPHive.
+            Monitor orders, payments, and revenue across VIPHive.
           </p>
         </div>
         <span className="hidden rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-400 sm:block">

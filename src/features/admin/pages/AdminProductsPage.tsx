@@ -118,8 +118,8 @@ export function AdminProductsPage() {
           <div className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-950/60">
             <span>Product</span>
             <span>Category</span>
-            <span className="text-right">Price</span>
-            <span className="text-right">Stock</span>
+            <span className="text-center">Price</span>
+            <span className="text-center">Stock</span>
             <span className="text-right">Actions</span>
           </div>
           {data.data.map((product) => (
@@ -148,14 +148,14 @@ export function AdminProductsPage() {
               >
                 {product.category}
               </span>
-              <span className="text-right font-semibold text-slate-950 dark:text-white">
+              <span className="text-center font-semibold text-slate-950 dark:text-white">
                 ₹{product.price.toFixed(2)}
               </span>
               <span
                 className={
                   product.stock < 5
-                    ? "text-right font-semibold text-rose-500"
-                    : "text-right text-slate-500"
+                    ? "text-center font-semibold text-rose-500"
+                    : "text-center text-slate-500"
                 }
               >
                 {product.stock}
