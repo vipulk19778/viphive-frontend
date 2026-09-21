@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/")({
-  component: AdminDashboardPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/products" });
+  },
+  component: () => null,
 });

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
-  ChevronDown,
   Filter,
   Minus,
   Plus,
@@ -10,9 +9,6 @@ import {
 } from "lucide-react";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import "swiper/css";
-import "swiper/css/navigation";
 
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useProducts } from "@/features/products/hooks/use-products";
@@ -226,7 +222,6 @@ export function ProductsPage() {
               <option value="price-low">Price: Low to high</option>
               <option value="price-high">Price: High to low</option>
             </select>
-            <ChevronDown className="h-4 w-4" />
           </label>
         </div>
 

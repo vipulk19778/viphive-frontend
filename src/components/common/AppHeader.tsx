@@ -44,6 +44,7 @@ export function AppHeader() {
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsMenuOpen(false);
+    setQuery(query.trim());
     void navigate({ to: "/products" });
   };
 
