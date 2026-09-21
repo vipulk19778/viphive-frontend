@@ -13,15 +13,25 @@ export function VerifyOtpPage() {
   const verifyOtpMutation = useVerifyOtp();
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const submittedOtpRef = useRef<string | null>(null);
 
   const submitOtp = async (nextDigits: string[]) => {
     const otp = nextDigits.join("");
-    if (otp.length !== OTP_LENGTH || verifyOtpMutation.isPending) return;
+    if (
+      otp.length !== OTP_LENGTH ||
+      verifyOtpMutation.isPending ||
+      submittedOtpRef.current === otp
+    ) {
+      return;
+    }
+
+    submittedOtpRef.current = otp;
 
     try {
       await verifyOtpMutation.mutateAsync({ email, otp, purpose });
       await navigate({ to: "/" });
     } catch {
+      submittedOtpRef.current = null;
       setDigits(Array(OTP_LENGTH).fill(""));
       inputRefs.current[0]?.focus();
     }
@@ -64,7 +74,9 @@ export function VerifyOtpPage() {
     );
     setDigits(nextDigits);
     inputRefs.current[Math.min(pasted.length, OTP_LENGTH - 1)]?.focus();
-    if (pasted.length === OTP_LENGTH) void submitOtp(nextDigits);
+    if (pasted.length === OTP_LENGTH) {
+      void submitOtp(nextDigits);
+    }
   };
 
   return (
