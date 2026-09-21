@@ -17,6 +17,7 @@ import { Route as AuthChangePasswordRouteImport } from './routes/_auth/change-pa
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthVerifyOtpRouteImport } from './routes/_auth/verify-otp'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -68,6 +69,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthVerifyOtpRoute = AuthVerifyOtpRouteImport.update({
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/reset-password': typeof AuthResetPasswordRoute
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/products/$productId': typeof ProductsProductIdRoute
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/reset-password': typeof AuthResetPasswordRoute
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/products/$productId': typeof ProductsProductIdRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/verify-otp': typeof AuthVerifyOtpRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/products/$productId': typeof ProductsProductIdRoute
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/verify-otp'
     | '/profile'
     | '/products/$productId'
@@ -242,6 +252,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/verify-otp'
     | '/profile'
     | '/products/$productId'
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/_auth/forgot-password'
     | '/_auth/login'
     | '/_auth/register'
+    | '/_auth/reset-password'
     | '/_auth/verify-otp'
     | '/_authenticated/profile'
     | '/products/$productId'
@@ -349,6 +361,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/reset-password': {
+      id: '/_auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/_auth/verify-otp': {
@@ -457,6 +476,7 @@ interface AuthRouteRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthVerifyOtpRoute: typeof AuthVerifyOtpRoute
 }
 
@@ -465,6 +485,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthVerifyOtpRoute: AuthVerifyOtpRoute,
 }
 

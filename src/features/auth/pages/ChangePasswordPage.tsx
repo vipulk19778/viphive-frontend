@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 import { KeyRound } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAuthStore } from "@/stores/auth.store";
@@ -13,7 +13,6 @@ import {
 } from "../hooks/useAuth";
 
 const OTP_LENGTH = 6;
-const OTP_EXPIRY_SECONDS = 10 * 60;
 
 const changePasswordSchema = z
   .object({
@@ -38,9 +37,6 @@ const maskEmail = (email = "") => {
   return `${localPart.slice(0, 1)}${"*".repeat(Math.max(localPart.length - 1, 3))}@${domain}`;
 };
 
-const formatTime = (seconds: number) =>
-  `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
-
 export function ChangePasswordPage() {
   const user = useAuthStore((state) => state.user);
   const sendOtpMutation = useSendAuthOtp();
@@ -48,7 +44,6 @@ export function ChangePasswordPage() {
   const changePasswordMutation = useChangePassword();
   const [step, setStep] = useState<"send" | "verify" | "password">("send");
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
-  const [secondsLeft, setSecondsLeft] = useState(OTP_EXPIRY_SECONDS);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const {
     register,
@@ -59,22 +54,12 @@ export function ChangePasswordPage() {
     resolver: zodResolver(changePasswordSchema),
   });
 
-  useEffect(() => {
-    if (step !== "verify" || secondsLeft <= 0) return;
-    const timer = window.setInterval(
-      () => setSecondsLeft((current) => Math.max(current - 1, 0)),
-      1000,
-    );
-    return () => window.clearInterval(timer);
-  }, [secondsLeft, step]);
-
   const sendOtp = () => {
     sendOtpMutation.mutate(
       { purpose: "CHANGE_PASSWORD" },
       {
         onSuccess: () => {
           setDigits(Array(OTP_LENGTH).fill(""));
-          setSecondsLeft(OTP_EXPIRY_SECONDS);
           verifyOtpMutation.reset();
           setStep("verify");
           window.setTimeout(() => inputRefs.current[0]?.focus(), 0);
@@ -179,7 +164,7 @@ export function ChangePasswordPage() {
               type="button"
               onClick={sendOtp}
               disabled={sendOtpMutation.isPending}
-              className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+              className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
             >
               {sendOtpMutation.isPending ? "Sending OTP..." : "Send OTP"}
             </button>
@@ -217,7 +202,7 @@ export function ChangePasswordPage() {
                 </p>
               )}
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+            <div className="flex flex-wrap items-center gap-3 text-sm">
               <span className="text-slate-500 dark:text-slate-400">
                 Didn't receive the code?{" "}
                 <button
@@ -229,9 +214,6 @@ export function ChangePasswordPage() {
                   Resend OTP
                 </button>
               </span>
-              <span className="font-semibold text-slate-500 dark:text-slate-400">
-                Expires in {formatTime(secondsLeft)}
-              </span>
             </div>
             <button
               type="button"
@@ -240,7 +222,7 @@ export function ChangePasswordPage() {
                 verifyOtpMutation.isPending ||
                 digits.join("").length !== OTP_LENGTH
               }
-              className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+              className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
             >
               {verifyOtpMutation.isPending ? "Verifying OTP..." : "Verify OTP"}
             </button>
@@ -293,7 +275,7 @@ export function ChangePasswordPage() {
             <button
               type="submit"
               disabled={changePasswordMutation.isPending}
-              className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+              className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
             >
               {changePasswordMutation.isPending
                 ? "Changing password..."

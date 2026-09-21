@@ -59,7 +59,7 @@ export function AppHeader() {
           onSubmit={submitSearch}
           className="mx-2 hidden min-w-0 flex-1 md:flex md:max-w-xl"
         >
-          <label className="flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm transition focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-400/15 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500 dark:shadow-none">
+          <label className="brand-focus-within flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500 dark:shadow-none">
             <Search className="h-4 w-4 shrink-0" />
             <input
               value={query}
@@ -70,7 +70,7 @@ export function AppHeader() {
             <button
               type="submit"
               aria-label="Search"
-              className="brand-secondary brand-secondary-hover cursor-pointer rounded-lg p-1.5"
+              className="brand-primary brand-primary-hover cursor-pointer rounded-lg p-1.5"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -96,7 +96,7 @@ export function AppHeader() {
           >
             <ShoppingCart className="h-5 w-5" />
             {cartItemCount > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-400 px-1 text-xs font-bold text-slate-950">
+              <span className="brand-primary absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold">
                 {cartItemCount}
               </span>
             )}
@@ -187,7 +187,7 @@ export function AppHeader() {
         </div>
       </div>
       <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden">
-        <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-400/15 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500">
+        <label className="brand-focus-within flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500">
           <Search className="h-4 w-4 shrink-0" />
           <input
             value={query}
@@ -198,7 +198,7 @@ export function AppHeader() {
           <button
             type="submit"
             aria-label="Search"
-            className="brand-secondary brand-secondary-hover cursor-pointer rounded-lg p-1.5"
+            className="brand-primary brand-primary-hover cursor-pointer rounded-lg p-1.5"
           >
             <Search className="h-4 w-4" />
           </button>

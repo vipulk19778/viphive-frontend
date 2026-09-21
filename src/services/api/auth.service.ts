@@ -6,6 +6,7 @@ import type {
   ChangePasswordRequest,
   LoginRequest,
   RegisterRequest,
+  ResetPasswordRequest,
   SendOtpRequest,
   SendAuthOtpRequest,
   VerifyAuthOtpRequest,
@@ -78,6 +79,16 @@ export async function changePassword(
 ): Promise<ApiMessageResponse> {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_PATH}/change-password`,
+    data,
+  );
+  return response.data;
+}
+
+export async function resetPassword(
+  data: ResetPasswordRequest,
+): Promise<ApiMessageResponse> {
+  const response = await apiClient.post<ApiMessageResponse>(
+    `${AUTH_PATH}/reset-password`,
     data,
   );
   return response.data;

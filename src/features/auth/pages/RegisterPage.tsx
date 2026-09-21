@@ -83,7 +83,9 @@ export function RegisterPage() {
         </label>
         {registerMutation.isError && (
           <p className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-            Unable to create your account. Please try again.
+            {registerMutation.error instanceof Error
+              ? registerMutation.error.message
+              : "Unable to create your account. Please try again."}
           </p>
         )}
         <button

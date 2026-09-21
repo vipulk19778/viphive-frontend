@@ -20,6 +20,7 @@ function RootLayout() {
     "/verify-otp",
     "/forgot-password",
     "/change-password",
+    "/reset-password",
   ].includes(pathname);
 
   return (

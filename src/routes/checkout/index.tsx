@@ -178,7 +178,7 @@ function CheckoutPage() {
           </p>
           <Link
             to="/orders"
-            className="mt-7 inline-flex cursor-pointer rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            className="brand-primary brand-primary-hover mt-7 inline-flex cursor-pointer rounded-xl px-5 py-3 text-sm font-bold transition"
           >
             View my orders
           </Link>
@@ -200,7 +200,7 @@ function CheckoutPage() {
           </p>
           <Link
             to="/products"
-            className="mt-7 inline-flex cursor-pointer rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            className="brand-primary brand-primary-hover mt-7 inline-flex cursor-pointer rounded-xl px-5 py-3 text-sm font-bold transition"
           >
             Continue shopping
           </Link>
@@ -338,7 +338,7 @@ function CheckoutPage() {
                   createPaymentMutation.isPending ||
                   verifyPaymentMutation.isPending
                 }
-                className="mt-4 w-full cursor-pointer rounded-xl bg-slate-950 px-5 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-300 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+                className="brand-primary brand-primary-hover mt-4 w-full cursor-pointer rounded-xl px-5 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:bg-slate-300"
               >
                 {createOrderMutation.isPending ||
                 createPaymentMutation.isPending ||

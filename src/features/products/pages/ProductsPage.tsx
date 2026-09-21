@@ -24,7 +24,7 @@ function ProductCartControl({ product }: { product: Product }) {
 
   if (cartItem) {
     return (
-      <div className="inline-flex items-center gap-2 rounded-xl border border-amber-300 bg-amber-50 p-1 dark:border-amber-400/40 dark:bg-amber-400/10">
+      <div className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1 dark:border-amber-400/40 dark:bg-amber-400/10">
         <button
           type="button"
           onClick={() => updateQuantity(product._id, cartItem.quantity - 1)}
@@ -40,7 +40,7 @@ function ProductCartControl({ product }: { product: Product }) {
           type="button"
           onClick={() => updateQuantity(product._id, cartItem.quantity + 1)}
           aria-label={`Increase ${product.name} quantity`}
-          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg bg-[#F5B942] text-slate-950 hover:bg-[#E5A52E]"
+          className="brand-primary brand-primary-hover flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg"
         >
           <Plus className="h-3.5 w-3.5" />
         </button>
@@ -65,7 +65,7 @@ function ProductCartControl({ product }: { product: Product }) {
           ? `Add ${product.name} to cart`
           : `${product.name} is sold out`
       }
-      className="cursor-pointer rounded-xl bg-slate-950 p-2 text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 sm:px-3 sm:py-2 sm:text-xs sm:font-bold dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+      className="brand-primary brand-primary-hover cursor-pointer rounded-xl p-2 transition disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 sm:px-3 sm:py-2 sm:text-xs sm:font-bold"
     >
       <ShoppingCart className="h-4 w-4 sm:hidden" />
       <span className="hidden sm:inline">
@@ -187,7 +187,7 @@ export function ProductsPage() {
               key={item}
               type="button"
               onClick={() => setCategory(item)}
-              className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition ${category === item ? "bg-slate-950 text-white dark:bg-amber-400 dark:text-slate-950" : "bg-slate-100 text-slate-600 hover:bg-amber-50 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"}`}
+              className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition ${category === item ? "brand-primary brand-primary-hover" : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"}`}
             >
               {item}
             </button>

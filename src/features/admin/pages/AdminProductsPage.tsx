@@ -108,7 +108,7 @@ export function AdminProductsPage() {
         <button
           type="button"
           onClick={openCreate}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+          className="brand-primary brand-primary-hover inline-flex cursor-pointer items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition"
         >
           <Plus className="h-4 w-4" /> Add product
         </button>
@@ -288,7 +288,7 @@ export function AdminProductsPage() {
             <button
               type="submit"
               disabled={createMutation.isPending || updateMutation.isPending}
-              className="mt-6 w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+              className="brand-primary brand-primary-hover mt-6 w-full cursor-pointer rounded-xl px-4 py-3 font-bold transition disabled:cursor-not-allowed"
             >
               {createMutation.isPending || updateMutation.isPending
                 ? "Saving..."

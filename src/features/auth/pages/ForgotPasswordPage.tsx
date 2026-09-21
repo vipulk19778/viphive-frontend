@@ -74,7 +74,7 @@ export function ForgotPasswordPage() {
         <button
           type="submit"
           disabled={sendOtpMutation.isPending}
-          className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+          className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
         >
           {sendOtpMutation.isPending
             ? "Sending code..."

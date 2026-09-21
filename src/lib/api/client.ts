@@ -30,8 +30,13 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
     if (axios.isAxiosError(error)) {
+      const responseData = error.response?.data as
+        | { message?: string; error?: string; errors?: { message?: string }[] }
+        | undefined;
       const message =
-        error.response?.data?.message ??
+        responseData?.message ??
+        responseData?.error ??
+        responseData?.errors?.[0]?.message ??
         error.message ??
         "Something went wrong. Please try again.";
 

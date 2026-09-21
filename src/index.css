@@ -23,6 +23,7 @@
 :root {
   --viphive-primary: #111827;
   --viphive-primary-hover: #1f2937;
+  --viphive-primary-contrast: #ffffff;
   --viphive-secondary: #f5b942;
   --viphive-secondary-hover: #dfa62e;
   --viphive-warning: #f59e0b;
@@ -71,8 +72,9 @@ body {
 }
 
 .dark {
-  --viphive-primary: #111827;
-  --viphive-primary-hover: #1f2937;
+  --viphive-primary: #f5c451;
+  --viphive-primary-hover: #eab308;
+  --viphive-primary-contrast: #111827;
   --viphive-secondary: #f5c451;
   --viphive-secondary-hover: #eab308;
   --viphive-warning: #f59e0b;
@@ -89,7 +91,7 @@ body {
 
 .brand-primary {
   background-color: var(--viphive-primary);
-  color: var(--viphive-primary-contrast, #ffffff);
+  color: var(--viphive-primary-contrast);
 }
 
 .brand-primary-hover:hover {
@@ -109,6 +111,17 @@ body {
   border-color: var(--viphive-secondary);
   box-shadow: 0 0 0 4px
     color-mix(in srgb, var(--viphive-secondary) 15%, transparent);
+}
+
+.brand-focus-within:focus-within {
+  border-color: var(--viphive-primary);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--viphive-primary) 15%, transparent);
+}
+
+.dark .brand-focus-within:focus-within {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 4px rgb(251 191 36 / 0.15);
 }
 
 ::selection {

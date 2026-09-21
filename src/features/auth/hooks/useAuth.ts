@@ -4,6 +4,7 @@ import {
   login,
   changePassword,
   register,
+  resetPassword,
   sendAuthOtp,
   sendOtp,
   verifyAuthOtp,
@@ -77,5 +78,11 @@ export function useVerifyAuthOtp() {
 export function useChangePassword() {
   return useMutation({
     mutationFn: changePassword,
+  });
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: resetPassword,
   });
 }

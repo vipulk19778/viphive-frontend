@@ -34,6 +34,12 @@ export interface ChangePasswordRequest {
   newPassword: string;
 }
 
+export interface ResetPasswordRequest {
+  email: string;
+  otp: string;
+  newPassword: string;
+}
+
 export interface User {
   _id: string;
   name: string;

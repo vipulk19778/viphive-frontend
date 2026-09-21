@@ -13,36 +13,12 @@ export function VerifyOtpPage() {
   const resendOtpMutation = useSendOtp();
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const submittedOtpRef = useRef<string | null>(null);
-
-  const submitOtp = async (nextDigits: string[]) => {
-    const otp = nextDigits.join("");
-    if (
-      otp.length !== OTP_LENGTH ||
-      verifyOtpMutation.isPending ||
-      submittedOtpRef.current === otp
-    ) {
-      return;
-    }
-
-    submittedOtpRef.current = otp;
-
-    try {
-      await verifyOtpMutation.mutateAsync({ email, otp, purpose });
-      await navigate({
-        to: purpose === "FORGOT_PASSWORD" ? "/change-password" : "/",
-      });
-    } catch {
-      submittedOtpRef.current = null;
-      setDigits(Array(OTP_LENGTH).fill(""));
-      inputRefs.current[0]?.focus();
-    }
-  };
 
   const updateDigit = (index: number, value: string) => {
     const nextValue = value.replace(/\D/g, "").slice(-1);
     const nextDigits = [...digits];
     nextDigits[index] = nextValue;
+    verifyOtpMutation.reset();
     setDigits(nextDigits);
 
     if (nextValue && index < OTP_LENGTH - 1) {
@@ -58,9 +34,16 @@ export function VerifyOtpPage() {
     index: number,
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (event.key === "Backspace" && !digits[index] && index > 0) {
+    if (event.key !== "Backspace") return;
+    event.preventDefault();
+    const nextDigits = [...digits];
+    if (nextDigits[index]) nextDigits[index] = "";
+    else if (index > 0) {
+      nextDigits[index - 1] = "";
       inputRefs.current[index - 1]?.focus();
     }
+    verifyOtpMutation.reset();
+    setDigits(nextDigits);
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
@@ -74,11 +57,41 @@ export function VerifyOtpPage() {
       { length: OTP_LENGTH },
       (_, index) => pasted[index] ?? "",
     );
+    verifyOtpMutation.reset();
     setDigits(nextDigits);
     inputRefs.current[Math.min(pasted.length, OTP_LENGTH - 1)]?.focus();
-    if (pasted.length === OTP_LENGTH) {
-      void submitOtp(nextDigits);
+  };
+
+  const submitOtp = async (nextDigits = digits) => {
+    try {
+      await verifyOtpMutation.mutateAsync({
+        email,
+        otp: nextDigits.join(""),
+        purpose,
+      });
+      await navigate({
+        to: purpose === "FORGOT_PASSWORD" ? "/reset-password" : "/",
+        ...(purpose === "FORGOT_PASSWORD" && {
+          search: { email, otp: nextDigits.join("") },
+        }),
+      });
+    } catch {
+      setDigits(Array(OTP_LENGTH).fill(""));
+      inputRefs.current[0]?.focus();
     }
+  };
+
+  const resendOtp = () => {
+    resendOtpMutation.mutate(
+      { email, purpose },
+      {
+        onSuccess: () => {
+          setDigits(Array(OTP_LENGTH).fill(""));
+          verifyOtpMutation.reset();
+          inputRefs.current[0]?.focus();
+        },
+      },
+    );
   };
 
   return (
@@ -139,13 +152,25 @@ export function VerifyOtpPage() {
               : "Unable to resend OTP."}
           </p>
         )}
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <button
+            type="button"
+            onClick={resendOtp}
+            disabled={resendOtpMutation.isPending}
+            className="cursor-pointer font-bold text-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {resendOtpMutation.isPending ? "Sending..." : "Resend OTP"}
+          </button>
+        </div>
         <button
           type="button"
-          onClick={() => resendOtpMutation.mutate({ email, purpose })}
-          disabled={resendOtpMutation.isPending}
-          className="mx-auto block cursor-pointer text-sm font-bold text-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={() => void submitOtp()}
+          disabled={
+            verifyOtpMutation.isPending || digits.join("").length !== OTP_LENGTH
+          }
+          className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {resendOtpMutation.isPending ? "Sending..." : "Resend OTP"}
+          {verifyOtpMutation.isPending ? "Verifying OTP..." : "Verify OTP"}
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
           <Link to="/login" className="font-bold text-amber-600">
