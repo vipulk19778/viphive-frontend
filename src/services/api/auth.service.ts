@@ -8,6 +8,7 @@ import type {
   RegisterRequest,
   SendOtpRequest,
   SendAuthOtpRequest,
+  VerifyAuthOtpRequest,
   VerifyOtpRequest,
 } from "@/features/auth/types/auth.types";
 
@@ -57,6 +58,16 @@ export async function sendAuthOtp(
 ): Promise<ApiMessageResponse> {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_PATH}/send-auth-otp`,
+    data,
+  );
+  return response.data;
+}
+
+export async function verifyAuthOtp(
+  data: VerifyAuthOtpRequest,
+): Promise<ApiMessageResponse> {
+  const response = await apiClient.post<ApiMessageResponse>(
+    `${AUTH_PATH}/verify-auth-otp`,
     data,
   );
   return response.data;

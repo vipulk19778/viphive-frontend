@@ -4,10 +4,17 @@ import { KeyRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useAuthStore } from "@/stores/auth.store";
 
-import { useChangePassword, useSendAuthOtp } from "../hooks/useAuth";
+import {
+  useChangePassword,
+  useSendAuthOtp,
+  useVerifyAuthOtp,
+} from "../hooks/useAuth";
 
 const OTP_LENGTH = 6;
+const OTP_EXPIRY_SECONDS = 10 * 60;
+
 const changePasswordSchema = z
   .object({
     newPassword: z
@@ -22,12 +29,26 @@ const changePasswordSchema = z
 
 type ChangePasswordForm = z.infer<typeof changePasswordSchema>;
 
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
+
+const maskEmail = (email = "") => {
+  const [localPart, domain] = email.split("@");
+  if (!localPart || !domain) return email;
+  return `${localPart.slice(0, 1)}${"*".repeat(Math.max(localPart.length - 1, 3))}@${domain}`;
+};
+
+const formatTime = (seconds: number) =>
+  `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+
 export function ChangePasswordPage() {
+  const user = useAuthStore((state) => state.user);
   const sendOtpMutation = useSendAuthOtp();
-  const sendOtp = sendOtpMutation.mutate;
+  const verifyOtpMutation = useVerifyAuthOtp();
   const changePasswordMutation = useChangePassword();
+  const [step, setStep] = useState<"send" | "verify" | "password">("send");
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
-  const [otpInfo, setOtpInfo] = useState<string>("");
+  const [secondsLeft, setSecondsLeft] = useState(OTP_EXPIRY_SECONDS);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const {
     register,
@@ -39,37 +60,73 @@ export function ChangePasswordPage() {
   });
 
   useEffect(() => {
-    sendOtp(
+    if (step !== "verify" || secondsLeft <= 0) return;
+    const timer = window.setInterval(
+      () => setSecondsLeft((current) => Math.max(current - 1, 0)),
+      1000,
+    );
+    return () => window.clearInterval(timer);
+  }, [secondsLeft, step]);
+
+  const sendOtp = () => {
+    sendOtpMutation.mutate(
       { purpose: "CHANGE_PASSWORD" },
       {
-        onSuccess: () => setOtpInfo("Verification code sent."),
-        onError: () => setOtpInfo(""),
+        onSuccess: () => {
+          setDigits(Array(OTP_LENGTH).fill(""));
+          setSecondsLeft(OTP_EXPIRY_SECONDS);
+          verifyOtpMutation.reset();
+          setStep("verify");
+          window.setTimeout(() => inputRefs.current[0]?.focus(), 0);
+        },
       },
     );
-  }, [sendOtp]);
-
-  const otpErrorMessage =
-    changePasswordMutation.isError &&
-    changePasswordMutation.error instanceof Error &&
-    /otp|code/i.test(changePasswordMutation.error.message)
-      ? changePasswordMutation.error.message
-      : "";
-
-  const passwordErrorMessage =
-    changePasswordMutation.isError &&
-    changePasswordMutation.error instanceof Error &&
-    !/otp|code/i.test(changePasswordMutation.error.message)
-      ? changePasswordMutation.error.message
-      : "";
+  };
 
   const updateDigit = (index: number, value: string) => {
     const next = [...digits];
     next[index] = value.replace(/\D/g, "").slice(-1);
-    if (otpInfo) setOtpInfo("");
-    if (changePasswordMutation.isError) changePasswordMutation.reset();
+    verifyOtpMutation.reset();
     setDigits(next);
     if (next[index] && index < OTP_LENGTH - 1)
       inputRefs.current[index + 1]?.focus();
+  };
+
+  const handleKeyDown = (
+    index: number,
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key !== "Backspace") return;
+    event.preventDefault();
+    const next = [...digits];
+    if (next[index]) next[index] = "";
+    else if (index > 0) {
+      next[index - 1] = "";
+      inputRefs.current[index - 1]?.focus();
+    }
+    verifyOtpMutation.reset();
+    setDigits(next);
+  };
+
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const pasted = event.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, OTP_LENGTH);
+    if (!pasted) return;
+    setDigits(
+      Array.from({ length: OTP_LENGTH }, (_, index) => pasted[index] ?? ""),
+    );
+    verifyOtpMutation.reset();
+    inputRefs.current[Math.min(pasted.length, OTP_LENGTH - 1)]?.focus();
+  };
+
+  const verifyOtp = () => {
+    verifyOtpMutation.mutate(
+      { otp: digits.join(""), purpose: "CHANGE_PASSWORD" },
+      { onSuccess: () => setStep("password") },
+    );
   };
 
   const onSubmit = async (data: ChangePasswordForm) => {
@@ -78,142 +135,180 @@ export function ChangePasswordPage() {
         otp: digits.join(""),
         newPassword: data.newPassword,
       });
-      setOtpInfo("");
-      setDigits(Array(OTP_LENGTH).fill(""));
       reset();
+      setDigits(Array(OTP_LENGTH).fill(""));
     } catch {
-      // Normalized API error is rendered below.
+      // Mutation error is rendered below the password fields.
     }
   };
 
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
         Account security
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-        Change your password.
+        {step === "send" && "Change Password"}
+        {step === "verify" && "Verify it's you"}
+        {step === "password" && "Create New Password"}
       </h1>
       <p className="mt-3 max-w-md leading-6 text-slate-500 dark:text-slate-400">
-        We sent a verification code to your logged-in email address.
+        {step === "send" && "We'll send a verification code to"}
+        {step === "verify" && "Enter the 6-digit code sent to"}
+        {step === "password" && "Choose a strong password for your account."}
       </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5B942]/15 text-[#DFA62E] dark:bg-[#F5B942]/15 dark:text-[#F5C451]">
+      {step !== "password" && (
+        <p className="mt-1 break-all text-sm font-semibold text-slate-700 dark:text-slate-200">
+          {maskEmail(user?.email)}
+        </p>
+      )}
+
+      <div className="mt-8 space-y-5">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5B942]/15 text-[#DFA62E] dark:text-[#F5C451]">
           <KeyRound className="h-7 w-7" />
         </div>
-        {sendOtpMutation.isError && (
-          <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-600">
-            {sendOtpMutation.error instanceof Error
-              ? sendOtpMutation.error.message
-              : "Unable to send OTP."}
-          </p>
+
+        {step === "send" && (
+          <>
+            {sendOtpMutation.isError && (
+              <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
+                {getErrorMessage(sendOtpMutation.error, "Unable to send OTP.")}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={sendOtp}
+              disabled={sendOtpMutation.isPending}
+              className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            >
+              {sendOtpMutation.isPending ? "Sending OTP..." : "Send OTP"}
+            </button>
+          </>
         )}
-        {!!otpInfo && (
-          <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
-            {otpInfo}
-          </p>
+
+        {step === "verify" && (
+          <>
+            <div>
+              <div className="grid grid-cols-6 gap-2 sm:gap-3">
+                {digits.map((digit, index) => (
+                  <input
+                    key={index}
+                    ref={(element) => {
+                      inputRefs.current[index] = element;
+                    }}
+                    value={digit}
+                    onChange={(event) => updateDigit(index, event.target.value)}
+                    onKeyDown={(event) => handleKeyDown(index, event)}
+                    onPaste={handlePaste}
+                    inputMode="numeric"
+                    autoComplete={index === 0 ? "one-time-code" : "off"}
+                    maxLength={1}
+                    aria-label={`Password change OTP digit ${index + 1}`}
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-xl font-bold text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  />
+                ))}
+              </div>
+              {verifyOtpMutation.isError && (
+                <p className="mt-2 rounded-xl bg-rose-50 p-3 text-sm text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
+                  {getErrorMessage(
+                    verifyOtpMutation.error,
+                    "That code could not be verified.",
+                  )}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+              <span className="text-slate-500 dark:text-slate-400">
+                Didn't receive the code?{" "}
+                <button
+                  type="button"
+                  onClick={sendOtp}
+                  disabled={sendOtpMutation.isPending}
+                  className="cursor-pointer font-bold text-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Resend OTP
+                </button>
+              </span>
+              <span className="font-semibold text-slate-500 dark:text-slate-400">
+                Expires in {formatTime(secondsLeft)}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={verifyOtp}
+              disabled={
+                verifyOtpMutation.isPending ||
+                digits.join("").length !== OTP_LENGTH
+              }
+              className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            >
+              {verifyOtpMutation.isPending ? "Verifying OTP..." : "Verify OTP"}
+            </button>
+          </>
         )}
-        <div>
-          <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-            Verification code
-          </p>
-          <div className="mt-2 grid grid-cols-6 gap-2">
-            {digits.map((digit, index) => (
+
+        {step === "password" && (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+              New password
               <input
-                key={index}
-                ref={(element) => {
-                  inputRefs.current[index] = element;
-                }}
-                value={digit}
-                onChange={(event) => updateDigit(index, event.target.value)}
-                inputMode="numeric"
-                maxLength={1}
-                aria-label={`Password change OTP digit ${index + 1}`}
-                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-xl font-bold text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                type="password"
+                autoComplete="new-password"
+                {...register("newPassword")}
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
-            ))}
-          </div>
-          {!!otpErrorMessage && (
-            <p className="mt-2 rounded-xl bg-rose-50 p-3 text-sm text-rose-600">
-              {otpErrorMessage}
-            </p>
-          )}
-        </div>
-        <button
-          type="button"
-          onClick={() => {
-            changePasswordMutation.reset();
-            setOtpInfo("");
-            sendOtp(
-              { purpose: "CHANGE_PASSWORD" },
-              {
-                onSuccess: () => setOtpInfo("Verification code sent."),
-                onError: () => setOtpInfo(""),
-              },
-            );
-          }}
-          disabled={sendOtpMutation.isPending}
-          className="cursor-pointer text-sm font-bold text-amber-600 disabled:cursor-not-allowed"
-        >
-          {sendOtpMutation.isPending ? "Sending..." : "Resend code"}
-        </button>
-        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
-          New password
-          <input
-            type="password"
-            autoComplete="new-password"
-            {...register("newPassword")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-          />
-          {errors.newPassword && (
-            <span className="mt-1 block text-xs text-rose-500">
-              {errors.newPassword.message}
-            </span>
-          )}
-        </label>
-        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
-          Confirm new password
-          <input
-            type="password"
-            autoComplete="new-password"
-            {...register("confirmPassword")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-          />
-          {errors.confirmPassword && (
-            <span className="mt-1 block text-xs text-rose-500">
-              {errors.confirmPassword.message}
-            </span>
-          )}
-        </label>
-        {changePasswordMutation.isSuccess && (
-          <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
-            Password changed successfully.
-          </p>
+              {errors.newPassword && (
+                <span className="mt-1 block text-xs text-rose-500">
+                  {errors.newPassword.message}
+                </span>
+              )}
+            </label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+              Confirm password
+              <input
+                type="password"
+                autoComplete="new-password"
+                {...register("confirmPassword")}
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              />
+              {errors.confirmPassword && (
+                <span className="mt-1 block text-xs text-rose-500">
+                  {errors.confirmPassword.message}
+                </span>
+              )}
+            </label>
+            {changePasswordMutation.isError && (
+              <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
+                {getErrorMessage(
+                  changePasswordMutation.error,
+                  "Unable to change password.",
+                )}
+              </p>
+            )}
+            {changePasswordMutation.isSuccess && (
+              <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
+                Password changed successfully.
+              </p>
+            )}
+            <button
+              type="submit"
+              disabled={changePasswordMutation.isPending}
+              className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            >
+              {changePasswordMutation.isPending
+                ? "Changing password..."
+                : "Change Password"}
+            </button>
+          </form>
         )}
-        {!!passwordErrorMessage && (
-          <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-600">
-            {passwordErrorMessage || "Unable to change password."}
-          </p>
-        )}
-        <button
-          type="submit"
-          disabled={
-            changePasswordMutation.isPending ||
-            digits.join("").length !== OTP_LENGTH
-          }
-          className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
-        >
-          {changePasswordMutation.isPending
-            ? "Changing password..."
-            : "Change password"}
-        </button>
+
         <Link
           to="/profile"
           className="block text-center text-sm font-bold text-amber-600"
         >
           Back to profile
         </Link>
-      </form>
+      </div>
     </div>
   );
 }

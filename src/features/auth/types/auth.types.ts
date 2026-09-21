@@ -24,6 +24,11 @@ export interface SendAuthOtpRequest {
   purpose: string;
 }
 
+export interface VerifyAuthOtpRequest {
+  otp: string;
+  purpose: string;
+}
+
 export interface ChangePasswordRequest {
   otp: string;
   newPassword: string;

@@ -6,6 +6,7 @@ import {
   register,
   sendAuthOtp,
   sendOtp,
+  verifyAuthOtp,
   verifyOtp,
 } from "@/services/api/auth.service";
 
@@ -15,6 +16,7 @@ import type {
   LoginRequest,
   RegisterRequest,
   SendOtpRequest,
+  VerifyAuthOtpRequest,
   VerifyOtpRequest,
 } from "../types/auth.types";
 
@@ -64,6 +66,12 @@ export function useSendOtp() {
 
 export function useSendAuthOtp() {
   return useMutation({ mutationFn: sendAuthOtp });
+}
+
+export function useVerifyAuthOtp() {
+  return useMutation({
+    mutationFn: (data: VerifyAuthOtpRequest) => verifyAuthOtp(data),
+  });
 }
 
 export function useChangePassword() {
