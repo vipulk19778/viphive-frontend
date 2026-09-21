@@ -24,9 +24,14 @@
   --viphive-primary: #111827;
   --viphive-primary-hover: #1f2937;
   --viphive-primary-contrast: #ffffff;
-  --viphive-secondary: #f5b942;
-  --viphive-secondary-hover: #dfa62e;
-  --viphive-warning: #f59e0b;
+  --viphive-primary-text: #111827;
+  --viphive-accent: #334155;
+  --viphive-accent-hover: #475569;
+  --viphive-accent-contrast: #334155;
+  --viphive-secondary: #334155;
+  --viphive-secondary-hover: #475569;
+  --viphive-secondary-contrast: #ffffff;
+  --viphive-warning: #f97316;
   --viphive-error: #ef4444;
   --viphive-success: #22c55e;
   --viphive-info: #60a5fa;
@@ -72,12 +77,17 @@ body {
 }
 
 .dark {
-  --viphive-primary: #f5c451;
-  --viphive-primary-hover: #eab308;
-  --viphive-primary-contrast: #111827;
-  --viphive-secondary: #f5c451;
-  --viphive-secondary-hover: #eab308;
-  --viphive-warning: #f59e0b;
+  --viphive-primary: #334155;
+  --viphive-primary-hover: #475569;
+  --viphive-primary-contrast: #ffffff;
+  --viphive-primary-text: #cbd5e1;
+  --viphive-accent: var(--viphive-primary);
+  --viphive-accent-hover: var(--viphive-primary-hover);
+  --viphive-accent-contrast: var(--viphive-primary-text);
+  --viphive-secondary: #475569;
+  --viphive-secondary-hover: #64748b;
+  --viphive-secondary-contrast: #ffffff;
+  --viphive-warning: #f97316;
   --viphive-error: #ef4444;
   --viphive-success: #22c55e;
   --viphive-info: #60a5fa;
@@ -98,9 +108,54 @@ body {
   background-color: var(--viphive-primary-hover);
 }
 
+.brand-accent {
+  color: var(--viphive-accent);
+}
+
+.brand-accent-strong {
+  color: var(--viphive-accent-contrast);
+}
+
+.brand-accent-hover:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--viphive-accent-hover) 10%,
+    transparent
+  );
+  color: var(--viphive-accent-contrast);
+}
+
+.brand-accent-soft {
+  background-color: color-mix(in srgb, var(--viphive-accent) 12%, transparent);
+  color: var(--viphive-accent-contrast);
+}
+
+.brand-accent-panel {
+  border: 1px solid color-mix(in srgb, var(--viphive-accent) 35%, transparent);
+  background-color: color-mix(in srgb, var(--viphive-accent) 10%, transparent);
+}
+
+.brand-accent-border {
+  border-color: color-mix(in srgb, var(--viphive-accent) 35%, transparent);
+}
+
+.brand-accent-focus:focus {
+  border-color: var(--viphive-accent);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--viphive-accent) 15%, transparent);
+}
+
+.brand-accent-spinner {
+  border-top-color: var(--viphive-accent);
+}
+
+.brand-accent-form {
+  accent-color: var(--viphive-accent);
+}
+
 .brand-secondary {
   background-color: var(--viphive-secondary);
-  color: #111827;
+  color: var(--viphive-secondary-contrast);
 }
 
 .brand-secondary-hover:hover {
@@ -120,12 +175,13 @@ body {
 }
 
 .dark .brand-focus-within:focus-within {
-  border-color: #fbbf24;
-  box-shadow: 0 0 0 4px rgb(251 191 36 / 0.15);
+  border-color: var(--viphive-accent);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--viphive-accent) 15%, transparent);
 }
 
 ::selection {
-  background: rgb(251 191 36 / 0.35);
+  background: rgb(14 165 233 / 0.25);
   color: #172033;
 }
 
@@ -202,7 +258,7 @@ textarea:-webkit-autofill:focus {
 }
 
 .best-products-swiper {
-  --swiper-navigation-color: #f59e0b;
+  --swiper-navigation-color: var(--viphive-accent);
   --swiper-navigation-size: 18px;
 }
 

@@ -54,7 +54,7 @@ export function AdminDashboardPage() {
 
   return (
     <main>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Admin overview
       </p>
       <div className="mt-2 flex items-end justify-between gap-4">
@@ -78,10 +78,10 @@ export function AdminDashboardPage() {
             className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
           >
             <div className="flex items-center justify-between">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-400">
+              <span className="brand-accent-soft flex h-10 w-10 items-center justify-center rounded-xl">
                 <Icon className="h-5 w-5" />
               </span>
-              <ArrowUpRight className="h-4 w-4 text-slate-300 transition group-hover:text-amber-500" />
+              <ArrowUpRight className="brand-accent h-4 w-4 transition" />
             </div>
             <p className="mt-5 text-sm text-slate-500 dark:text-slate-400">
               {label}
@@ -108,7 +108,7 @@ export function AdminDashboardPage() {
                 <span className="w-24 text-slate-500">{item._id}</span>
                 <div className="h-2 flex-1 rounded-full bg-slate-100 dark:bg-slate-800">
                   <div
-                    className="h-2 rounded-full bg-amber-400"
+                    className="brand-primary h-2 rounded-full"
                     style={{
                       width: `${Math.min(100, (item.revenue / Math.max(data.summary.totalRevenue, 1)) * 100 * 4)}%`,
                     }}
@@ -128,13 +128,13 @@ export function AdminDashboardPage() {
           <div className="mt-5 space-y-2">
             <Link
               to="/admin/products"
-              className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-amber-50 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="brand-accent-hover flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               Manage products <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link
               to="/admin/orders"
-              className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-amber-50 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="brand-accent-hover flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               Review orders <ArrowUpRight className="h-4 w-4" />
             </Link>

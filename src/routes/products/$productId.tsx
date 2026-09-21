@@ -35,7 +35,7 @@ function ProductDetailPage() {
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <Link
         to="/products"
-        className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-amber-600 dark:text-slate-400"
+        className="brand-accent-hover inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition dark:text-slate-400"
       >
         <ArrowLeft className="h-4 w-4" /> Back to shop
       </Link>
@@ -48,14 +48,14 @@ function ProductDetailPage() {
           />
         </div>
         <section className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-9">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+          <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
             {product.category}
           </p>
           <h1 className="font-display mt-3 text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
             {product.name}
           </h1>
           <div className="mt-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span className="inline-flex items-center gap-1 font-semibold text-amber-500">
+            <span className="brand-accent inline-flex items-center gap-1 font-semibold">
               <Star className="h-4 w-4 fill-current" />{" "}
               {product.rating.toFixed(1)}
             </span>
@@ -74,7 +74,7 @@ function ProductDetailPage() {
               : "Currently unavailable"}
           </div>
           {cartItem ? (
-            <div className="mt-8 flex w-full items-center justify-center gap-5 rounded-xl border border-slate-200 bg-slate-50 px-5 py-3.5 dark:border-amber-400/40 dark:bg-amber-400/10">
+            <div className="brand-accent-panel mt-8 flex w-full items-center justify-center gap-5 rounded-xl px-5 py-3.5">
               <button
                 type="button"
                 onClick={() =>

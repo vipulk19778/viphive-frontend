@@ -26,7 +26,7 @@ export function AdminOrdersPage() {
     <main>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+          <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
             Operations
           </p>
           <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white">
@@ -36,7 +36,7 @@ export function AdminOrdersPage() {
             Keep every customer order moving.
           </p>
         </div>
-        <PackageCheck className="hidden h-7 w-7 text-amber-500 sm:block" />
+        <PackageCheck className="brand-accent hidden h-7 w-7 sm:block" />
       </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">

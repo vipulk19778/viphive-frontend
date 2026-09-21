@@ -129,7 +129,7 @@ export function ChangePasswordPage() {
 
   return (
     <div className="min-w-0">
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Account security
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -149,7 +149,7 @@ export function ChangePasswordPage() {
       )}
 
       <div className="mt-8 space-y-5">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5B942]/15 text-[#DFA62E] dark:text-[#F5C451]">
+        <div className="brand-accent-soft flex h-14 w-14 items-center justify-center rounded-2xl">
           <KeyRound className="h-7 w-7" />
         </div>
 
@@ -189,7 +189,7 @@ export function ChangePasswordPage() {
                     autoComplete={index === 0 ? "one-time-code" : "off"}
                     maxLength={1}
                     aria-label={`Password change OTP digit ${index + 1}`}
-                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-xl font-bold text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    className="brand-accent-focus h-12 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-xl font-bold text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
                   />
                 ))}
               </div>
@@ -209,7 +209,7 @@ export function ChangePasswordPage() {
                   type="button"
                   onClick={sendOtp}
                   disabled={sendOtpMutation.isPending}
-                  className="cursor-pointer font-bold text-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="brand-accent cursor-pointer font-bold disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Resend OTP
                 </button>
@@ -237,7 +237,7 @@ export function ChangePasswordPage() {
                 type="password"
                 autoComplete="new-password"
                 {...register("newPassword")}
-                className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
               {errors.newPassword && (
                 <span className="mt-1 block text-xs text-rose-500">
@@ -251,7 +251,7 @@ export function ChangePasswordPage() {
                 type="password"
                 autoComplete="new-password"
                 {...register("confirmPassword")}
-                className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
               {errors.confirmPassword && (
                 <span className="mt-1 block text-xs text-rose-500">
@@ -286,7 +286,7 @@ export function ChangePasswordPage() {
 
         <Link
           to="/profile"
-          className="block text-center text-sm font-bold text-amber-600"
+          className="brand-accent block text-center text-sm font-bold"
         >
           Back to profile
         </Link>

@@ -96,7 +96,7 @@ export function VerifyOtpPage() {
 
   return (
     <div>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         One last step
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -106,7 +106,7 @@ export function VerifyOtpPage() {
         Enter the 6-digit code we sent to {email}.
       </p>
       <div className="mt-8 space-y-5">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-400/15 dark:text-amber-400">
+        <div className="brand-accent-soft flex h-14 w-14 items-center justify-center rounded-2xl">
           <MailCheck className="h-7 w-7" />
         </div>
         <div>
@@ -128,7 +128,7 @@ export function VerifyOtpPage() {
                 autoComplete={index === 0 ? "one-time-code" : "off"}
                 maxLength={1}
                 aria-label={`Verification digit ${index + 1}`}
-                className="h-14 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-2xl font-bold text-slate-950 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="brand-accent-focus h-14 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-2xl font-bold text-slate-950 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
             ))}
           </div>
@@ -157,7 +157,7 @@ export function VerifyOtpPage() {
             type="button"
             onClick={resendOtp}
             disabled={resendOtpMutation.isPending}
-            className="cursor-pointer font-bold text-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="brand-accent cursor-pointer font-bold disabled:cursor-not-allowed disabled:opacity-50"
           >
             {resendOtpMutation.isPending ? "Sending..." : "Resend OTP"}
           </button>
@@ -173,7 +173,7 @@ export function VerifyOtpPage() {
           {verifyOtpMutation.isPending ? "Verifying OTP..." : "Verify OTP"}
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link to="/login" className="font-bold text-amber-600">
+          <Link to="/login" className="brand-accent font-bold">
             Back to sign in
           </Link>
         </p>

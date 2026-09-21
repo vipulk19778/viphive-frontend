@@ -29,7 +29,7 @@ export function LoginPage() {
 
   return (
     <div>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Welcome back
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -45,7 +45,7 @@ export function LoginPage() {
             type="email"
             autoComplete="email"
             {...register("email")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.email && (
             <span className="mt-1 block text-xs font-medium text-rose-500">
@@ -59,7 +59,7 @@ export function LoginPage() {
             type="password"
             autoComplete="current-password"
             {...register("password")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.password && (
             <span className="mt-1 block text-xs font-medium text-rose-500">
@@ -82,14 +82,14 @@ export function LoginPage() {
           {loginMutation.isPending ? "Signing in..." : "Sign in"}
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link to="/forgot-password" className="font-bold text-amber-600">
+          <Link to="/forgot-password" className="brand-accent font-bold">
             Forgot password?
           </Link>
           <span className="mx-2">·</span>
           New to VIPHive?{" "}
           <Link
             to="/register"
-            className="font-bold text-amber-600 hover:text-amber-500"
+            className="brand-accent font-bold hover:opacity-80"
           >
             Create an account
           </Link>

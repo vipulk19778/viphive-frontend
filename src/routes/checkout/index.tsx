@@ -135,7 +135,11 @@ function CheckoutPage() {
         name: "VIPHive",
         description: "VIPHive order payment",
         order_id: paymentOrder.orderId,
-        theme: { color: "#fbbf24" },
+        theme: {
+          color: getComputedStyle(document.documentElement)
+            .getPropertyValue("--viphive-accent")
+            .trim(),
+        },
         handler: (response) => {
           void verifyPaymentMutation
             .mutateAsync({ ...response, orderId: order._id })
@@ -191,7 +195,7 @@ function CheckoutPage() {
     return (
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-12">
-          <ShoppingBag className="mx-auto h-12 w-12 text-amber-500" />
+          <ShoppingBag className="brand-accent mx-auto h-12 w-12" />
           <h1 className="font-display mt-5 text-3xl font-bold text-slate-950 dark:text-white">
             Your cart is empty
           </h1>
@@ -214,7 +218,7 @@ function CheckoutPage() {
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+            <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
               Secure checkout
             </p>
             <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white sm:text-4xl">
@@ -234,7 +238,7 @@ function CheckoutPage() {
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="col-span-full flex items-center gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-400/15 dark:text-amber-400">
+              <span className="brand-accent-soft flex h-10 w-10 items-center justify-center rounded-xl">
                 <MapPin className="h-5 w-5" />
               </span>
               <div>
@@ -265,7 +269,7 @@ function CheckoutPage() {
                 </span>
                 <input
                   {...register(field)}
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-950 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-950 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
                 />
                 {errors[field] && (
                   <span className="mt-1 block text-sm text-red-600">
@@ -280,7 +284,7 @@ function CheckoutPage() {
               <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">
                 Order summary
               </h2>
-              <ShoppingBag className="h-5 w-5 text-amber-500" />
+              <ShoppingBag className="brand-accent h-5 w-5" />
             </div>
             <div className="mt-4 space-y-3">
               {items.map((item) => (
@@ -306,7 +310,7 @@ function CheckoutPage() {
             </div>
             <section className="mt-5 rounded-xl border border-slate-700 bg-slate-950 p-4 text-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
               <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-[#F5B942]" />
+                <CreditCard className="brand-accent h-4 w-4" />
                 <p className="text-sm font-bold">Payment method</p>
               </div>
               <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-slate-200">
@@ -314,7 +318,7 @@ function CheckoutPage() {
                   type="radio"
                   checked
                   readOnly
-                  className="accent-[#F5B942]"
+                  className="brand-accent-form"
                 />
                 <span>
                   <strong>Razorpay</strong>

@@ -44,7 +44,7 @@ export function AdminLayout() {
       </aside>
       <section className="min-w-0 flex-1">
         <div className="mb-5 flex items-center justify-between md:hidden">
-          <Link to="/products" className="text-sm font-semibold text-amber-600">
+          <Link to="/products" className="brand-accent text-sm font-semibold">
             Storefront
           </Link>
           <button

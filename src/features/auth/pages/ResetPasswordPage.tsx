@@ -47,7 +47,7 @@ export function ResetPasswordPage() {
 
   return (
     <div>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Account recovery
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -57,7 +57,7 @@ export function ResetPasswordPage() {
         Choose a new password for your VIPHive account.
       </p>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5B942]/15 text-[#DFA62E] dark:text-[#F5C451]">
+        <div className="brand-accent-soft flex h-14 w-14 items-center justify-center rounded-2xl">
           <KeyRound className="h-7 w-7" />
         </div>
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
@@ -66,7 +66,7 @@ export function ResetPasswordPage() {
             type="password"
             autoComplete="new-password"
             {...register("newPassword")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.newPassword && (
             <span className="mt-1 block text-xs text-rose-500">
@@ -80,7 +80,7 @@ export function ResetPasswordPage() {
             type="password"
             autoComplete="new-password"
             {...register("confirmPassword")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.confirmPassword && (
             <span className="mt-1 block text-xs text-rose-500">
@@ -105,7 +105,7 @@ export function ResetPasswordPage() {
             : "Reset Password"}
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link to="/login" className="font-bold text-amber-600">
+          <Link to="/login" className="brand-accent font-bold">
             Back to sign in
           </Link>
         </p>

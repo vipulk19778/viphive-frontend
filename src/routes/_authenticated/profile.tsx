@@ -12,7 +12,7 @@ function ProfilePage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl min-w-0 overflow-x-hidden px-4 sm:px-0">
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Account
       </p>
       <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white">
@@ -20,7 +20,7 @@ function ProfilePage() {
       </h1>
       <div className="mt-7 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="bg-slate-950 px-6 py-8 text-white dark:bg-slate-800">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-400 text-slate-950">
+          <div className="brand-primary flex h-16 w-16 items-center justify-center rounded-2xl">
             <UserRound className="h-8 w-8" />
           </div>
           <h2 className="mt-4 text-2xl font-bold">{user?.name}</h2>
@@ -28,7 +28,7 @@ function ProfilePage() {
         </div>
         <div className="grid min-w-0 gap-4 p-6 sm:grid-cols-2">
           <div className="flex min-w-0 items-center gap-3 rounded-xl bg-slate-50 p-4 dark:bg-slate-950">
-            <Mail className="h-5 w-5 text-amber-600" />
+            <Mail className="brand-accent h-5 w-5" />
             <div className="min-w-0">
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Email

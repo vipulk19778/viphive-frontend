@@ -17,7 +17,7 @@ export function CartPage() {
     return (
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-400/15 dark:text-amber-400">
+          <span className="brand-accent-soft mx-auto flex h-16 w-16 items-center justify-center rounded-2xl">
             <ShoppingBag className="h-7 w-7" />
           </span>
           <h1 className="font-display mt-6 text-3xl font-bold text-slate-950 dark:text-white">
@@ -41,7 +41,7 @@ export function CartPage() {
     <main className="mx-auto w-full max-w-7xl overflow-x-clip px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex min-w-0 items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+          <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
             Ready when you are
           </p>
           <h1 className="font-display mt-2 text-4xl font-bold text-slate-950 dark:text-white">

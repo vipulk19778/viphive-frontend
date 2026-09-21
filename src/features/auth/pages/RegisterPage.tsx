@@ -29,7 +29,7 @@ export function RegisterPage() {
   };
   return (
     <div>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Join the hive
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -45,7 +45,7 @@ export function RegisterPage() {
           <input
             autoComplete="name"
             {...register("name")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.name && (
             <span className="mt-1 block text-xs font-medium text-rose-500">
@@ -59,7 +59,7 @@ export function RegisterPage() {
             type="email"
             autoComplete="email"
             {...register("email")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.email && (
             <span className="mt-1 block text-xs font-medium text-rose-500">
@@ -73,7 +73,7 @@ export function RegisterPage() {
             type="password"
             autoComplete="new-password"
             {...register("password")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.password && (
             <span className="mt-1 block text-xs font-medium text-rose-500">
@@ -99,7 +99,7 @@ export function RegisterPage() {
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account?{" "}
-          <Link to="/login" className="font-bold text-amber-600">
+          <Link to="/login" className="brand-accent font-bold">
             Sign in
           </Link>
         </p>

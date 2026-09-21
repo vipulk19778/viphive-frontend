@@ -37,7 +37,7 @@ export function ForgotPasswordPage() {
 
   return (
     <div>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Account recovery
       </p>
       <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -47,7 +47,7 @@ export function ForgotPasswordPage() {
         We will send a six-digit verification code to your email address.
       </p>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5B942]/15 text-[#DFA62E] dark:bg-[#F5B942]/15 dark:text-[#F5C451]">
+        <div className="brand-accent-soft flex h-14 w-14 items-center justify-center rounded-2xl">
           <Mail className="h-7 w-7" />
         </div>
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
@@ -56,7 +56,7 @@ export function ForgotPasswordPage() {
             type="email"
             autoComplete="email"
             {...register("email")}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none focus:border-[#F5B942] focus:ring-4 focus:ring-[#F5B942]/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.email && (
             <span className="mt-1 block text-xs text-rose-500">
@@ -81,7 +81,7 @@ export function ForgotPasswordPage() {
             : "Send verification code"}
         </button>
         <p className="text-center text-sm text-slate-500">
-          <Link to="/login" className="font-bold text-amber-600">
+          <Link to="/login" className="brand-accent font-bold">
             Back to sign in
           </Link>
         </p>

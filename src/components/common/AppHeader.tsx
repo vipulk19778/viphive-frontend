@@ -127,13 +127,13 @@ export function AppHeader() {
                     </div>
                     <Link
                       to="/profile"
-                      className="mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="brand-accent-hover mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                       My profile
                     </Link>
                     <Link
                       to="/orders"
-                      className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="brand-accent-hover block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                       My orders
                     </Link>

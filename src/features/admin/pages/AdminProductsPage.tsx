@@ -95,7 +95,7 @@ export function AdminProductsPage() {
     <main>
       <header className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+          <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
             Catalog
           </p>
           <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white">
@@ -165,7 +165,7 @@ export function AdminProductsPage() {
                   type="button"
                   onClick={() => openEdit(product)}
                   aria-label={`Edit ${product.name}`}
-                  className="cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-amber-50 hover:text-amber-600"
+                  className="brand-accent-hover cursor-pointer rounded-lg p-2 text-slate-500"
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
@@ -193,7 +193,7 @@ export function AdminProductsPage() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold uppercase tracking-wider text-amber-600">
+                <p className="brand-accent text-sm font-bold uppercase tracking-wider">
                   Catalog editor
                 </p>
                 <h2 className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">
@@ -265,7 +265,7 @@ export function AdminProductsPage() {
                 />
               </label>
               <label className="sm:col-span-2 flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-slate-300 p-4 text-sm font-semibold text-slate-600 dark:border-slate-700 dark:text-slate-300">
-                <ImagePlus className="h-5 w-5 text-amber-500" />
+                <ImagePlus className="brand-accent h-5 w-5" />
                 {form.image?.name ??
                   (editing
                     ? "Replace image (optional)"

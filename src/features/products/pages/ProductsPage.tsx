@@ -24,7 +24,7 @@ function ProductCartControl({ product }: { product: Product }) {
 
   if (cartItem) {
     return (
-      <div className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1 dark:border-amber-400/40 dark:bg-amber-400/10">
+      <div className="brand-accent-panel inline-flex items-center gap-2 rounded-xl p-1">
         <button
           type="button"
           onClick={() => updateQuantity(product._id, cartItem.quantity - 1)}
@@ -125,7 +125,7 @@ export function ProductsPage() {
       <section className="border-b border-slate-200 py-5 dark:border-slate-800 sm:py-6">
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+            <p className="brand-accent text-xs font-bold uppercase tracking-[0.2em]">
               Top picks
             </p>
             <h1 className="font-display mt-1 text-2xl font-bold text-slate-950 dark:text-white sm:text-3xl">
@@ -161,7 +161,7 @@ export function ProductsPage() {
                   className="h-full w-2/5 object-cover transition duration-500 group-hover:scale-105"
                 />
                 <div className="min-w-0 flex-1 p-3">
-                  <p className="truncate text-[11px] font-bold uppercase tracking-wider text-amber-600">
+                  <p className="brand-accent truncate text-[11px] font-bold uppercase tracking-wider">
                     {product.category}
                   </p>
                   <h2 className="mt-1 line-clamp-2 font-bold text-slate-950 dark:text-white">
@@ -258,7 +258,7 @@ export function ProductsPage() {
                   )}
                 </Link>
                 <div className="p-4">
-                  <p className="text-xs font-bold uppercase tracking-wider text-amber-600">
+                  <p className="brand-accent text-xs font-bold uppercase tracking-wider">
                     {product.category}
                   </p>
                   <Link

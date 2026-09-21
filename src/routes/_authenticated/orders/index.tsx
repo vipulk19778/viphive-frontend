@@ -25,7 +25,7 @@ function OrdersPage() {
 
   return (
     <main className="mx-auto max-w-5xl">
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Account
       </p>
       <div className="mt-2 flex items-end justify-between gap-4">
@@ -37,7 +37,7 @@ function OrdersPage() {
             Track your VIPHive purchases in one place.
           </p>
         </div>
-        <ClipboardList className="hidden h-7 w-7 text-amber-500 sm:block" />
+        <ClipboardList className="brand-accent hidden h-7 w-7 sm:block" />
       </div>
       <div className="mt-6 space-y-4">
         {orders.length === 0 && (

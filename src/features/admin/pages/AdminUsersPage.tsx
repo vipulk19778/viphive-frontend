@@ -16,7 +16,7 @@ export function AdminUsersPage() {
     );
   return (
     <main>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         People
       </p>
       <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white">
@@ -50,7 +50,7 @@ export function AdminUsersPage() {
                 </td>
                 <td className="px-5 py-4">
                   <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${user.verified ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}
+                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${user.verified ? "bg-emerald-100 text-emerald-700" : "brand-accent-soft"}`}
                   >
                     {user.verified ? "Verified" : "Unverified"}
                   </span>

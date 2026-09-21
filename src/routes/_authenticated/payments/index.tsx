@@ -28,7 +28,7 @@ function PaymentsPage() {
 
   return (
     <main>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
         Account
       </p>
       <div className="mt-2 flex items-end justify-between gap-4">
@@ -40,7 +40,7 @@ function PaymentsPage() {
             Track payments connected to your VIPHive orders.
           </p>
         </div>
-        <span className="hidden rounded-2xl bg-amber-100 p-3 text-amber-700 dark:bg-amber-400/15 dark:text-amber-400 sm:block">
+        <span className="brand-accent-soft hidden rounded-2xl p-3 sm:block">
           <CreditCard className="h-6 w-6" />
         </span>
       </div>
@@ -71,7 +71,7 @@ function PaymentsPage() {
               >
                 <div className="flex items-center gap-3">
                   <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${isVerified ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-400/15 dark:text-emerald-400" : isFailed ? "bg-rose-100 text-rose-600 dark:bg-rose-400/15 dark:text-rose-400" : "bg-amber-100 text-amber-600 dark:bg-amber-400/15 dark:text-amber-400"}`}
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${isVerified ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-400/15 dark:text-emerald-400" : isFailed ? "bg-rose-100 text-rose-600 dark:bg-rose-400/15 dark:text-rose-400" : "brand-accent-soft"}`}
                   >
                     <Icon className="h-5 w-5" />
                   </span>

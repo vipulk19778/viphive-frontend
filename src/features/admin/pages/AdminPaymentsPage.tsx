@@ -20,7 +20,7 @@ export function AdminPaymentsPage() {
     <main>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+          <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
             Finance
           </p>
           <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white">
@@ -30,7 +30,7 @@ export function AdminPaymentsPage() {
             {data.meta.total} payment records.
           </p>
         </div>
-        <CreditCard className="h-7 w-7 text-amber-500" />
+        <CreditCard className="brand-accent h-7 w-7" />
       </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">
