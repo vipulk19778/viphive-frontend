@@ -25,3 +25,19 @@ apiClient.interceptors.request.use((config) => {
 
   return config;
 });
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error: unknown) => {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message ??
+        error.message ??
+        "Something went wrong. Please try again.";
+
+      return Promise.reject(new Error(message));
+    }
+
+    return Promise.reject(error);
+  },
+);

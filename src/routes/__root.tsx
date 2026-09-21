@@ -14,7 +14,13 @@ function RootLayout() {
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
-  const isAuthPage = ["/login", "/register", "/verify-otp"].includes(pathname);
+  const isAuthPage = [
+    "/login",
+    "/register",
+    "/verify-otp",
+    "/forgot-password",
+    "/change-password",
+  ].includes(pathname);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-white">

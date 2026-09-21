@@ -20,6 +20,15 @@ export interface SendOtpRequest {
   purpose: string;
 }
 
+export interface SendAuthOtpRequest {
+  purpose: string;
+}
+
+export interface ChangePasswordRequest {
+  otp: string;
+  newPassword: string;
+}
+
 export interface User {
   _id: string;
   name: string;

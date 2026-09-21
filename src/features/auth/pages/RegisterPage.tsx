@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
-import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { useRegister } from "../hooks/useAuth";
 import { registerSchema, type RegisterFormData } from "../schemas/auth.schema";
 
@@ -29,12 +28,18 @@ export function RegisterPage() {
     }
   };
   return (
-    <AuthLayout
-      eyebrow="Join the hive"
-      title="Make room for better finds."
-      description="Create your account to keep your collection, checkout, and orders beautifully organized."
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <div>
+      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+        Join the hive
+      </p>
+      <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        Make room for better finds.
+      </h1>
+      <p className="mt-3 max-w-md leading-6 text-slate-500 dark:text-slate-400">
+        Create your account to keep your collection, checkout, and orders
+        beautifully organized.
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
           Name
           <input
@@ -84,7 +89,7 @@ export function RegisterPage() {
         <button
           type="submit"
           disabled={registerMutation.isPending}
-          className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950"
+          className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
         >
           {registerMutation.isPending
             ? "Creating account..."
@@ -97,6 +102,6 @@ export function RegisterPage() {
           </Link>
         </p>
       </form>
-    </AuthLayout>
+    </div>
   );
 }

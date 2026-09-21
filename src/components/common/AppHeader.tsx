@@ -70,7 +70,7 @@ export function AppHeader() {
             <button
               type="submit"
               aria-label="Search"
-              className="cursor-pointer rounded-lg bg-[#F5B942] p-1.5 text-slate-950 hover:bg-[#E5A52E]"
+              className="brand-secondary brand-secondary-hover cursor-pointer rounded-lg p-1.5"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -163,7 +163,7 @@ export function AppHeader() {
             ) : (
               <Link
                 to="/login"
-                className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+                className="brand-primary brand-primary-hover rounded-lg px-4 py-2 text-sm font-semibold transition"
               >
                 Login
               </Link>
@@ -198,7 +198,7 @@ export function AppHeader() {
           <button
             type="submit"
             aria-label="Search"
-            className="cursor-pointer rounded-lg bg-[#F5B942] p-1.5 text-slate-950 hover:bg-[#E5A52E]"
+            className="brand-secondary brand-secondary-hover cursor-pointer rounded-lg p-1.5"
           >
             <Search className="h-4 w-4" />
           </button>
@@ -250,7 +250,7 @@ export function AppHeader() {
               <Link
                 to="/login"
                 onClick={closeMenu}
-                className="block rounded-xl bg-slate-950 px-3 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+                className="brand-primary brand-primary-hover block rounded-xl px-3 py-3 text-center text-sm font-semibold transition"
               >
                 Login
               </Link>

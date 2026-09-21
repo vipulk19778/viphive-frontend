@@ -3,9 +3,11 @@ import type {
   ApiMessageResponse,
   AuthApiPayload,
   AuthResponse,
+  ChangePasswordRequest,
   LoginRequest,
   RegisterRequest,
   SendOtpRequest,
+  SendAuthOtpRequest,
   VerifyOtpRequest,
 } from "@/features/auth/types/auth.types";
 
@@ -45,6 +47,26 @@ export async function sendOtp(
 ): Promise<ApiMessageResponse> {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_PATH}/send-otp`,
+    data,
+  );
+  return response.data;
+}
+
+export async function sendAuthOtp(
+  data: SendAuthOtpRequest,
+): Promise<ApiMessageResponse> {
+  const response = await apiClient.post<ApiMessageResponse>(
+    `${AUTH_PATH}/send-auth-otp`,
+    data,
+  );
+  return response.data;
+}
+
+export async function changePassword(
+  data: ChangePasswordRequest,
+): Promise<ApiMessageResponse> {
+  const response = await apiClient.post<ApiMessageResponse>(
+    `${AUTH_PATH}/change-password`,
     data,
   );
   return response.data;

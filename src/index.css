@@ -5,13 +5,40 @@
 @theme {
   --font-display: "Space Grotesk", "Avenir Next", sans-serif;
   --font-sans: "DM Sans", "Avenir Next", sans-serif;
+  --color-primary: var(--viphive-primary);
+  --color-primary-hover: var(--viphive-primary-hover);
+  --color-secondary: var(--viphive-secondary);
+  --color-secondary-hover: var(--viphive-secondary-hover);
+  --color-warning: var(--viphive-warning);
+  --color-error: var(--viphive-error);
+  --color-success: var(--viphive-success);
+  --color-info: var(--viphive-info);
+  --color-surface: var(--viphive-surface);
+  --color-surface-elevated: var(--viphive-surface-elevated);
+  --color-text-primary: var(--viphive-text-primary);
+  --color-text-secondary: var(--viphive-text-secondary);
+  --color-border: var(--viphive-border);
 }
 
 :root {
+  --viphive-primary: #111827;
+  --viphive-primary-hover: #1f2937;
+  --viphive-secondary: #f5b942;
+  --viphive-secondary-hover: #dfa62e;
+  --viphive-warning: #f59e0b;
+  --viphive-error: #ef4444;
+  --viphive-success: #22c55e;
+  --viphive-info: #60a5fa;
+  --viphive-background: #020617;
+  --viphive-surface: #f8fafc;
+  --viphive-surface-elevated: #ffffff;
+  --viphive-text-primary: #111827;
+  --viphive-text-secondary: #64748b;
+  --viphive-border: #e2e8f0;
   font-family: "DM Sans", "Avenir Next", sans-serif;
 
-  color: #172033;
-  background-color: #f4f7fb;
+  color: #111827;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,6 +55,7 @@ body,
 #root {
   min-height: 100%;
   margin: 0;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -40,6 +68,47 @@ body {
 
 .dark body {
   background: #020617;
+}
+
+.dark {
+  --viphive-primary: #111827;
+  --viphive-primary-hover: #1f2937;
+  --viphive-secondary: #f5c451;
+  --viphive-secondary-hover: #eab308;
+  --viphive-warning: #f59e0b;
+  --viphive-error: #ef4444;
+  --viphive-success: #22c55e;
+  --viphive-info: #60a5fa;
+  --viphive-background: #0f0f14;
+  --viphive-surface: #18181f;
+  --viphive-surface-elevated: #22222b;
+  --viphive-text-primary: #f4f4f5;
+  --viphive-text-secondary: #a1a1aa;
+  --viphive-border: #2f2f3a;
+}
+
+.brand-primary {
+  background-color: var(--viphive-primary);
+  color: var(--viphive-primary-contrast, #ffffff);
+}
+
+.brand-primary-hover:hover {
+  background-color: var(--viphive-primary-hover);
+}
+
+.brand-secondary {
+  background-color: var(--viphive-secondary);
+  color: #111827;
+}
+
+.brand-secondary-hover:hover {
+  background-color: var(--viphive-secondary-hover);
+}
+
+.brand-focus:focus {
+  border-color: var(--viphive-secondary);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--viphive-secondary) 15%, transparent);
 }
 
 ::selection {

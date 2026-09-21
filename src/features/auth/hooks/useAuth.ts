@@ -2,7 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 
 import {
   login,
+  changePassword,
   register,
+  sendAuthOtp,
   sendOtp,
   verifyOtp,
 } from "@/services/api/auth.service";
@@ -57,5 +59,15 @@ export function useVerifyOtp() {
 export function useSendOtp() {
   return useMutation({
     mutationFn: (data: SendOtpRequest) => sendOtp(data),
+  });
+}
+
+export function useSendAuthOtp() {
+  return useMutation({ mutationFn: sendAuthOtp });
+}
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: changePassword,
   });
 }

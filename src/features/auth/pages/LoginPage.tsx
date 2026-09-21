@@ -2,13 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
-import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { useLogin } from "../hooks/useAuth";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { redirectTo } = useSearch({ from: "/login" });
+  const { redirectTo } = useSearch({ from: "/_auth/login" });
   const loginMutation = useLogin();
   const {
     register,
@@ -29,12 +28,17 @@ export function LoginPage() {
   };
 
   return (
-    <AuthLayout
-      eyebrow="Welcome back"
-      title="Welcome back to VIPHive."
-      description="Your saved pieces, order updates, and next great find are waiting."
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <div>
+      <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
+        Welcome back
+      </p>
+      <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        Welcome back to VIPHive.
+      </h1>
+      <p className="mt-3 max-w-md leading-6 text-slate-500 dark:text-slate-400">
+        Your saved pieces, order updates, and next great find are waiting.
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
           Email
           <input
@@ -65,17 +69,23 @@ export function LoginPage() {
         </label>
         {loginMutation.isError && (
           <p className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-            Unable to sign in. Check your credentials and try again.
+            {loginMutation.error instanceof Error
+              ? loginMutation.error.message
+              : "Unable to sign in."}
           </p>
         )}
         <button
           type="submit"
           disabled={loginMutation.isPending}
-          className="w-full cursor-pointer rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#F5B942] dark:text-slate-950"
+          className="brand-primary brand-primary-hover w-full cursor-pointer rounded-xl px-4 py-3.5 font-bold transition disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loginMutation.isPending ? "Signing in..." : "Sign in"}
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+          <Link to="/forgot-password" className="font-bold text-amber-600">
+            Forgot password?
+          </Link>
+          <span className="mx-2">·</span>
           New to VIPHive?{" "}
           <Link
             to="/register"
@@ -85,6 +95,6 @@ export function LoginPage() {
           </Link>
         </p>
       </form>
-    </AuthLayout>
+    </div>
   );
 }

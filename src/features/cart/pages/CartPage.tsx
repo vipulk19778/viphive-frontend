@@ -28,7 +28,7 @@ export function CartPage() {
           </p>
           <Link
             to="/products"
-            className="mt-6 inline-block rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            className="brand-primary brand-primary-hover mt-6 inline-block rounded-xl px-5 py-3 text-sm font-bold transition"
           >
             Browse Products
           </Link>
@@ -124,7 +124,7 @@ export function CartPage() {
           </div>
           <Link
             to="/checkout"
-            className="mt-6 block w-full rounded-xl bg-slate-950 px-4 py-3.5 text-center text-sm font-bold text-white transition hover:bg-[#F5B942] hover:text-slate-950 dark:bg-[#F5B942] dark:text-slate-950 dark:hover:bg-[#E5A52E]"
+            className="brand-primary brand-primary-hover mt-6 block w-full rounded-xl px-4 py-3.5 text-center text-sm font-bold transition"
           >
             Proceed to Checkout
           </Link>
