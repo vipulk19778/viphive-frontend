@@ -1,139 +1,102 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
-import { registerSchema, type RegisterFormData } from "../schemas/auth.schema";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { useRegister } from "../hooks/useAuth";
+import { registerSchema, type RegisterFormData } from "../schemas/auth.schema";
 
 export function RegisterPage() {
   const navigate = useNavigate();
   const registerMutation = useRegister();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
+    defaultValues: { name: "", email: "", password: "" },
   });
-
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerMutation.mutateAsync(data);
-
       await navigate({
         to: "/verify-otp",
-        search: {
-          email: data.email,
-          purpose: "REGISTER",
-        },
+        search: { email: data.email, purpose: "REGISTER" },
       });
     } catch {
-      // Error is available through registerMutation.error.
+      /* mutation state renders the error */
     }
   };
-
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md rounded-xl border bg-white p-8 shadow-sm">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">
-            Create your account
-          </h1>
-
-          <p className="mt-1 text-sm text-gray-500">Join VIPHive today</p>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-
-            <input
-              id="name"
-              type="text"
-              autoComplete="name"
-              {...register("name")}
-              className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
-            />
-
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-
-            <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              {...register("email")}
-              className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
-            />
-
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-
-            <input
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              {...register("password")}
-              className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
-            />
-
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          {registerMutation.isError && (
-            <p className="text-sm text-red-600">
-              Unable to create your account. Please try again.
-            </p>
+    <AuthLayout
+      eyebrow="Join the hive"
+      title="Make room for better finds."
+      description="Create your account to keep your collection, checkout, and orders beautifully organized."
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+          Name
+          <input
+            autoComplete="name"
+            {...register("name")}
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          />
+          {errors.name && (
+            <span className="mt-1 block text-xs font-medium text-rose-500">
+              {errors.name.message}
+            </span>
           )}
-
-          <button
-            type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full rounded-md bg-black px-4 py-2.5 font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {registerMutation.isPending
-              ? "Creating account..."
-              : "Create account"}
-          </button>
-        </form>
-      </div>
-    </main>
+        </label>
+        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+          Email
+          <input
+            type="email"
+            autoComplete="email"
+            {...register("email")}
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          />
+          {errors.email && (
+            <span className="mt-1 block text-xs font-medium text-rose-500">
+              {errors.email.message}
+            </span>
+          )}
+        </label>
+        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+          Password
+          <input
+            type="password"
+            autoComplete="new-password"
+            {...register("password")}
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          />
+          {errors.password && (
+            <span className="mt-1 block text-xs font-medium text-rose-500">
+              {errors.password.message}
+            </span>
+          )}
+        </label>
+        {registerMutation.isError && (
+          <p className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
+            Unable to create your account. Please try again.
+          </p>
+        )}
+        <button
+          type="submit"
+          disabled={registerMutation.isPending}
+          className="w-full rounded-xl bg-slate-950 px-4 py-3.5 font-bold text-white transition hover:bg-amber-400 hover:text-slate-950 disabled:opacity-50 dark:bg-amber-400 dark:text-slate-950"
+        >
+          {registerMutation.isPending
+            ? "Creating account..."
+            : "Create account"}
+        </button>
+        <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+          Already have an account?{" "}
+          <Link to="/login" className="font-bold text-amber-600">
+            Sign in
+          </Link>
+        </p>
+      </form>
+    </AuthLayout>
   );
 }

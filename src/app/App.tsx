@@ -1,11 +1,13 @@
 import { QueryProvider } from "./providers/QueryProvider";
 import { RouterProvider } from "@tanstack/react-router";
 
+import { ThemeController } from "../components/common/ThemeController";
 import { router } from "../router";
 
 function App() {
   return (
     <QueryProvider>
+      <ThemeController />
       <RouterProvider router={router} />
     </QueryProvider>
   );

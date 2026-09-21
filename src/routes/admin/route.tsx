@@ -1,5 +1,6 @@
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { useAuthStore } from "@/stores/auth.store";
 
 export const Route = createFileRoute("/admin")({
@@ -21,11 +22,3 @@ export const Route = createFileRoute("/admin")({
 
   component: AdminLayout,
 });
-
-function AdminLayout() {
-  return (
-    <div className="min-h-screen">
-      <Outlet />
-    </div>
-  );
-}
