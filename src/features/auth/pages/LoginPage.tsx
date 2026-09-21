@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
 import { AuthLayout } from "@/components/layouts/AuthLayout";
@@ -8,6 +8,7 @@ import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { redirectTo } = useSearch({ from: "/login" });
   const loginMutation = useLogin();
   const {
     register,
@@ -21,7 +22,7 @@ export function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await loginMutation.mutateAsync(data);
-      await navigate({ to: "/" });
+      await navigate({ to: redirectTo ?? "/" });
     } catch {
       /* mutation state renders the error */
     }
@@ -30,7 +31,7 @@ export function LoginPage() {
   return (
     <AuthLayout
       eyebrow="Welcome back"
-      title="Sign in to your world."
+      title="Welcome back to VIPHive."
       description="Your saved pieces, order updates, and next great find are waiting."
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

@@ -60,7 +60,10 @@ const addressSchema = z.object({
 export const Route = createFileRoute("/checkout/")({
   beforeLoad: () => {
     if (!useAuthStore.getState().isAuthenticated) {
-      throw redirect({ to: "/login" });
+      throw redirect({
+        to: "/login",
+        search: { redirectTo: "/checkout" },
+      });
     }
   },
   component: CheckoutPage,
@@ -301,23 +304,21 @@ function CheckoutPage() {
                 </div>
               ))}
             </div>
-            <section className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-400/30 dark:bg-amber-400/10">
+            <section className="mt-5 rounded-xl border border-slate-700 bg-slate-950 p-4 text-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
               <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-amber-600" />
-                <p className="text-sm font-bold text-slate-950 dark:text-white">
-                  Payment method
-                </p>
+                <CreditCard className="h-4 w-4 text-[#F5B942]" />
+                <p className="text-sm font-bold">Payment method</p>
               </div>
-              <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+              <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-slate-200">
                 <input
                   type="radio"
                   checked
                   readOnly
-                  className="accent-amber-500"
+                  className="accent-[#F5B942]"
                 />
                 <span>
                   <strong>Razorpay</strong>
-                  <span className="block text-xs text-slate-500 dark:text-slate-400">
+                  <span className="block text-xs text-slate-400">
                     Secure online payment
                   </span>
                 </span>

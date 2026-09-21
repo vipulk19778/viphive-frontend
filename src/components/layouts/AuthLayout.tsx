@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Link } from "@tanstack/react-router";
-import { ShieldCheck, Sparkles } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 import { ViphiveLogo } from "@/components/common/ViphiveLogo";
 
@@ -26,10 +26,7 @@ export function AuthLayout({
           <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-amber-400/10" />
           <ViphiveLogo />
           <div className="relative mt-24">
-            <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-amber-400">
-              <Sparkles className="h-4 w-4" /> VIP access
-            </p>
-            <h2 className="font-display mt-4 text-4xl font-bold leading-tight">
+            <h2 className="font-display text-4xl font-bold leading-tight">
               Good things are worth keeping close.
             </h2>
             <p className="mt-5 max-w-sm leading-7 text-slate-300">
