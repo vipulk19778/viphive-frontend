@@ -38,8 +38,8 @@ export function CartPage() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex items-end justify-between">
+    <main className="mx-auto w-full max-w-7xl overflow-x-clip px-4 py-8 sm:px-6 lg:px-8">
+      <div className="flex min-w-0 items-end justify-between gap-4">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-600">
             Ready when you are
@@ -52,21 +52,21 @@ export function CartPage() {
           {items.length} product{items.length === 1 ? "" : "s"}
         </span>
       </div>
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-4">
+      <div className="mt-8 grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0 space-y-4">
           {items.map((item) => (
             <div
               key={item.productId}
-              className="flex min-w-0 gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:gap-4"
+              className="flex w-full min-w-0 max-w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:gap-4"
             >
               {item.image && (
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="h-20 w-20 shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
+                  className="h-44 w-full shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
                 />
               )}
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 pt-4 sm:pt-0">
                 <div>
                   <h2 className="truncate font-bold text-slate-950 dark:text-white">
                     {item.name}
@@ -102,16 +102,17 @@ export function CartPage() {
                   <button
                     type="button"
                     onClick={() => removeItem(item.productId)}
-                    className="basis-full cursor-pointer pt-1 text-left text-sm font-semibold text-rose-500 hover:text-rose-600 sm:ml-auto sm:basis-auto sm:pt-0"
+                    className="ml-auto cursor-pointer rounded-lg p-1 text-left text-sm font-semibold text-rose-500 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-400/10"
                   >
-                    <Trash2 className="mr-1 inline h-4 w-4" /> Remove
+                    <Trash2 className="mr-1 inline h-4 w-4" />
+                    <span className="hidden sm:inline">Remove</span>
                   </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <aside className="h-fit min-w-0 max-w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">
             Order summary
           </h2>

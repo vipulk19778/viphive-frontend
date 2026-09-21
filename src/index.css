@@ -41,3 +41,23 @@ body {
 .dark body {
   background: #020617;
 }
+
+.best-products-swiper {
+  --swiper-navigation-color: #f59e0b;
+  --swiper-navigation-size: 18px;
+}
+
+.best-products-swiper .swiper-button-prev,
+.best-products-swiper .swiper-button-next {
+  height: 34px;
+  width: 34px;
+  border: 1px solid rgb(226 232 240 / 0.9);
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.92);
+}
+
+.dark .best-products-swiper .swiper-button-prev,
+.dark .best-products-swiper .swiper-button-next {
+  border-color: rgb(51 65 85 / 0.9);
+  background: rgb(15 23 42 / 0.92);
+}

@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LogOut, Menu, Moon, ShoppingCart, Sun, User, X } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  Moon,
+  Search,
+  ShoppingCart,
+  Sun,
+  User,
+  X,
+} from "lucide-react";
 
 import { ViphiveLogo } from "./ViphiveLogo";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useAuthStore } from "@/stores/auth.store";
 import { useThemeStore } from "@/stores/theme.store";
+import { useCatalogStore } from "@/stores/catalog.store";
 
 export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,6 +28,8 @@ export function AppHeader() {
   const cartItemCount = useCartStore((state) =>
     state.items.reduce((total, item) => total + item.quantity, 0),
   );
+  const query = useCatalogStore((state) => state.query);
+  const setQuery = useCatalogStore((state) => state.setQuery);
 
   const handleLogout = () => {
     logout();
@@ -27,12 +39,39 @@ export function AppHeader() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsMenuOpen(false);
+    void navigate({ to: "/products" });
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
       <div className="mx-auto flex h-18.25 max-w-7xl items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6 lg:px-8">
         <Link to="/" aria-label="VIPHive home">
           <ViphiveLogo />
         </Link>
+        <form
+          onSubmit={submitSearch}
+          className="mx-2 hidden min-w-0 flex-1 md:flex md:max-w-xl"
+        >
+          <label className="flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-slate-400 transition focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-400/15 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500">
+            <Search className="h-4 w-4 shrink-0" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search for products, brands and more"
+              className="min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
+            />
+            <button
+              type="submit"
+              aria-label="Search"
+              className="cursor-pointer rounded-lg bg-amber-400 p-1.5 text-slate-950 hover:bg-amber-300"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+          </label>
+        </form>
         <div className="flex items-center gap-1 sm:gap-1.5">
           <button
             type="button"
@@ -60,25 +99,48 @@ export function AppHeader() {
           </Link>
           <div className="hidden sm:block">
             {isAuthenticated ? (
-              <div className="flex items-center gap-2">
+              <div className="group relative flex items-center gap-2">
                 <Link
                   to="/profile"
-                  aria-label="Profile"
-                  className="rounded-full p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                  aria-label="Open profile menu"
+                  className="flex cursor-pointer items-center gap-2 rounded-xl px-2 py-1.5 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                 >
                   <User className="h-5 w-5" />
+                  <span className="hidden max-w-28 truncate text-sm font-medium text-slate-700 dark:text-slate-200 lg:block">
+                    {user?.name}
+                  </span>
                 </Link>
-                <span className="hidden text-sm font-medium text-slate-700 dark:text-slate-200 sm:block">
-                  {user?.name}
-                </span>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-                >
-                  <LogOut className="mr-1.5 inline h-4 w-4" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
+                <div className="invisible absolute right-0 top-full z-50 w-56 translate-y-2 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                    <div className="border-b border-slate-100 px-3 pb-3 pt-2 dark:border-slate-800">
+                      <p className="truncate text-sm font-bold text-slate-950 dark:text-white">
+                        {user?.name}
+                      </p>
+                      <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                        {user?.email}
+                      </p>
+                    </div>
+                    <Link
+                      to="/profile"
+                      className="mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    >
+                      My profile
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    >
+                      My orders
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex w-full cursor-pointer items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-400/10"
+                    >
+                      <LogOut className="h-4 w-4" /> Logout
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : (
               <Link
@@ -108,6 +170,17 @@ export function AppHeader() {
       </div>
       {isMenuOpen && (
         <div className="border-t border-slate-200 bg-white px-4 py-4 shadow-lg dark:border-slate-800 dark:bg-slate-950 sm:hidden">
+          <form onSubmit={submitSearch} className="mb-3">
+            <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-400 dark:border-slate-800 dark:bg-slate-900">
+              <Search className="h-4 w-4" />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search products"
+                className="min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none dark:text-white"
+              />
+            </label>
+          </form>
           <nav className="space-y-1">
             {isAuthenticated && (
               <Link
