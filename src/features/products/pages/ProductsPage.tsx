@@ -119,7 +119,11 @@ export function ProductsPage() {
       if (sort === "price-low") return first.price - second.price;
       if (sort === "price-high") return second.price - first.price;
       if (sort === "rating") return second.rating - first.rating;
-      return 0;
+      if (second.rating !== first.rating) return second.rating - first.rating;
+      if (second.numReviews !== first.numReviews) {
+        return second.numReviews - first.numReviews;
+      }
+      return first.name.localeCompare(second.name);
     });
   const bestProducts = [...products]
     .sort((first, second) => second.rating - first.rating)
@@ -160,12 +164,12 @@ export function ProductsPage() {
                   : category}
             </h2>
           </div>
-          <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+          <label className="brand-focus-within flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
             <SlidersHorizontal className="h-4 w-4" />
             <select
               value={sort}
               onChange={(event) => setSort(event.target.value)}
-              className="cursor-pointer bg-transparent outline-none dark:bg-slate-900"
+              className="cursor-pointer bg-transparent outline-none focus:outline-none focus:ring-0 dark:bg-slate-900"
             >
               <option value="featured">Sort: Featured</option>
               <option value="rating">Top rated</option>
