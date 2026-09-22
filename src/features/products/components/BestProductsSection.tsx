@@ -1,6 +1,7 @@
 import { BestProductCard } from "@/features/products/components/BestProductCard";
 import type { Product } from "@/features/products/types/product.types";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 type BestProductsSectionProps = {
@@ -24,8 +25,10 @@ export function BestProductsSection({ products }: BestProductsSectionProps) {
         </span>
       </div>
       <Swiper
+        modules={[Autoplay]}
         spaceBetween={16}
         slidesPerView={1.1}
+        autoplay={{ delay: 2000 }}
         breakpoints={{
           640: { slidesPerView: 2 },
           1024: { slidesPerView: 3 },
@@ -34,7 +37,7 @@ export function BestProductsSection({ products }: BestProductsSectionProps) {
         className="-mx-4 px-4 pb-3 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
       >
         {products.map((product, index) => (
-          <SwiperSlide key={product._id} className="h-auto">
+          <SwiperSlide key={product._id} className="h-auto overflow-hidden">
             <BestProductCard product={product} priority={index < 4} />
           </SwiperSlide>
         ))}
