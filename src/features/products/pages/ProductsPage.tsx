@@ -1,79 +1,10 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
-import {
-  Filter,
-  Minus,
-  Plus,
-  SlidersHorizontal,
-  ShoppingCart,
-} from "lucide-react";
+import { Filter, SlidersHorizontal } from "lucide-react";
 
-import { useCartStore } from "@/features/cart/store/cart.store";
+import { ProductCard } from "@/features/products/components/ProductCard";
 import { BestProductsSection } from "@/features/products/components/BestProductsSection";
 import { useProducts } from "@/features/products/hooks/use-products";
-import type { Product } from "@/features/products/types/product.types";
 import { useCatalogStore } from "@/stores/catalog.store";
-import { formatCurrency } from "@/utils/format-currency";
-
-function ProductCartControl({ product }: { product: Product }) {
-  const addItem = useCartStore((state) => state.addItem);
-  const cartItem = useCartStore((state) =>
-    state.items.find((item) => item.productId === product._id),
-  );
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
-
-  if (cartItem) {
-    return (
-      <div className="quantity-control inline-flex items-center gap-2 rounded-xl p-1">
-        <button
-          type="button"
-          onClick={() => updateQuantity(product._id, cartItem.quantity - 1)}
-          aria-label={`Decrease ${product.name} quantity`}
-          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
-          <Minus className="h-3.5 w-3.5" />
-        </button>
-        <span className="min-w-5 text-center text-sm font-bold text-slate-950 dark:text-white">
-          {cartItem.quantity}
-        </span>
-        <button
-          type="button"
-          onClick={() => updateQuantity(product._id, cartItem.quantity + 1)}
-          aria-label={`Increase ${product.name} quantity`}
-          className="brand-primary brand-primary-hover flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg"
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      disabled={product.stock < 1}
-      onClick={() =>
-        addItem({
-          productId: product._id,
-          name: product.name,
-          price: product.price,
-          image: product.imageUrl,
-        })
-      }
-      aria-label={
-        product.stock > 0
-          ? `Add ${product.name} to cart`
-          : `${product.name} is sold out`
-      }
-      className="brand-primary brand-primary-hover cursor-pointer rounded-xl p-2 transition disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 sm:px-3 sm:py-2 sm:text-xs sm:font-bold"
-    >
-      <ShoppingCart className="h-4 w-4 sm:hidden" />
-      <span className="hidden sm:inline">
-        {product.stock > 0 ? "Add to cart" : "Sold out"}
-      </span>
-    </button>
-  );
-}
 
 export function ProductsPage() {
   const { data, isPending, isError } = useProducts(1, 100);
@@ -181,57 +112,7 @@ export function ProductsPage() {
         ) : (
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProducts.map((product) => (
-              <article
-                key={product._id}
-                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
-              >
-                <Link
-                  to="/products/$productId"
-                  params={{ productId: product._id }}
-                  className="relative block overflow-hidden bg-slate-100 dark:bg-slate-800"
-                >
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="aspect-4/3 w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  {product.stock < 5 && product.stock > 0 && (
-                    <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold text-rose-600">
-                      Only {product.stock} left
-                    </span>
-                  )}
-                </Link>
-                <div className="p-4">
-                  <p className="brand-accent text-xs font-bold uppercase tracking-wider">
-                    {product.category}
-                  </p>
-                  <Link
-                    to="/products/$productId"
-                    params={{ productId: product._id }}
-                  >
-                    <h3 className="mt-1 truncate text-lg font-bold text-slate-950 dark:text-white">
-                      {product.name}
-                    </h3>
-                  </Link>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1 rounded bg-emerald-600 px-2 py-0.5 text-xs font-bold text-white">
-                      {product.rating.toFixed(1)} ★
-                    </span>
-                    <span className="text-xs text-slate-400">
-                      {product.numReviews} reviews
-                    </span>
-                  </div>
-                  <p className="mt-2 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500 dark:text-slate-400">
-                    {product.description}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between gap-3">
-                    <span className="text-lg font-bold text-slate-950 dark:text-white">
-                      {formatCurrency(product.price)}
-                    </span>
-                    <ProductCartControl product={product} />
-                  </div>
-                </div>
-              </article>
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         )}

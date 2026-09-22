@@ -8,17 +8,15 @@ import {
 } from "lucide-react";
 
 import { useAnalytics } from "../hooks/use-admin";
+import { Card } from "@/components/ui/Card";
+import { Chip } from "@/components/ui/Chip";
 import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminDashboardPage() {
   const { data, isPending, isError } = useAnalytics();
 
   if (isPending)
-    return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500 dark:border-slate-800 dark:bg-slate-900">
-        Loading analytics...
-      </div>
-    );
+    return <Card className="p-8 text-slate-500">Loading analytics...</Card>;
   if (isError)
     return (
       <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
@@ -67,9 +65,9 @@ export function AdminDashboardPage() {
             Monitor orders, payments, and revenue across VIPHive.
           </p>
         </div>
-        <span className="hidden rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-400 sm:block">
+        <Chip variant="success" className="hidden sm:inline-flex">
           Last 30 days
-        </span>
+        </Chip>
       </div>
       <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map(({ label, value, icon: Icon, to }) => (
@@ -94,7 +92,7 @@ export function AdminDashboardPage() {
         ))}
       </div>
       <section className="mt-7 grid gap-5 lg:grid-cols-[1.3fr_0.7fr]">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <Card className="p-6">
           <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">
             Payment trend
           </h2>
@@ -121,8 +119,8 @@ export function AdminDashboardPage() {
               </div>
             ))}
           </div>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        </Card>
+        <Card className="p-6">
           <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">
             Quick actions
           </h2>
@@ -140,7 +138,7 @@ export function AdminDashboardPage() {
               Review orders <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
-        </div>
+        </Card>
       </section>
     </main>
   );

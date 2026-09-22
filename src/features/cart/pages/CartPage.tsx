@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
+import { Card } from "@/components/ui/Card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { formatCurrency } from "@/utils/format-currency";
 
@@ -56,9 +57,10 @@ export function CartPage() {
       <div className="mt-8 grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0 space-y-4">
           {items.map((item) => (
-            <div
+            <Card
               key={item.productId}
-              className="flex w-full min-w-0 max-w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:gap-4"
+              variant="elevated"
+              className="flex w-full min-w-0 max-w-full flex-col overflow-hidden p-4 sm:flex-row sm:gap-4"
             >
               {item.image && (
                 <img
@@ -112,10 +114,14 @@ export function CartPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
-        <aside className="h-fit min-w-0 max-w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-28 dark:border-slate-800 dark:bg-slate-900">
+        <Card
+          as="aside"
+          variant="elevated"
+          className="h-fit min-w-0 max-w-full p-6 shadow-sm lg:sticky lg:top-28"
+        >
           <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">
             Order summary
           </h2>
@@ -131,7 +137,7 @@ export function CartPage() {
           >
             Proceed to Checkout
           </Link>
-        </aside>
+        </Card>
       </div>
     </main>
   );
