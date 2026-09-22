@@ -7,6 +7,8 @@ import { useInfiniteProducts } from "@/features/products/hooks/use-products";
 import { useCatalogStore } from "@/stores/catalog.store";
 
 export function ProductsPage() {
+  const query = useCatalogStore((state) => state.query);
+  const normalizedQuery = query.trim().toLowerCase();
   const {
     data,
     isPending,
@@ -14,12 +16,10 @@ export function ProductsPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteProducts(12);
-  const query = useCatalogStore((state) => state.query);
+  } = useInfiniteProducts(12, normalizedQuery);
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("featured");
   const loadMoreRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;
     if (!loadMoreElement || !hasNextPage) return;
@@ -35,7 +35,7 @@ export function ProductsPage() {
 
     observer.observe(loadMoreElement);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, normalizedQuery]);
 
   if (isPending) {
     return (
@@ -105,7 +105,6 @@ export function ProductsPage() {
     "All",
     ...Array.from(new Set(products.map((product) => product.category))),
   ];
-  const normalizedQuery = query.trim().toLowerCase();
   const filteredProducts = products
     .filter((product) => category === "All" || product.category === category)
     .filter(

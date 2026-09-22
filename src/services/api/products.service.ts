@@ -9,9 +9,9 @@ interface ApiResponse<T> {
   data: T;
 }
 
-export async function getProducts(page = 1, limit = 12) {
+export async function getProducts(page = 1, limit = 12, query = "") {
   const response = await apiClient.get<PaginatedProducts>("/products", {
-    params: { page, limit },
+    params: { page, limit, q: query || undefined },
   });
   return response.data;
 }

@@ -21,10 +21,10 @@ export function useProducts(page = 1, limit = 12) {
   });
 }
 
-export function useInfiniteProducts(limit = 12) {
+export function useInfiniteProducts(limit = 12, query = "") {
   return useInfiniteQuery({
-    queryKey: ["products", "infinite", limit],
-    queryFn: ({ pageParam }) => getProducts(pageParam, limit),
+    queryKey: ["products", "infinite", limit, query],
+    queryFn: ({ pageParam }) => getProducts(pageParam, limit, query),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined,
