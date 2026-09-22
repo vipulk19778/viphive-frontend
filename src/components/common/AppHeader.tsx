@@ -1,5 +1,5 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   LogOut,
   ChevronDown,
@@ -17,11 +17,16 @@ import { useCartStore } from "@/features/cart/store/cart.store";
 import { useAuthStore } from "@/stores/auth.store";
 import { useThemeStore } from "@/stores/theme.store";
 import { useCatalogStore } from "@/stores/catalog.store";
+import { useAdminSearchStore } from "@/stores/admin-search.store";
 
 export function AppHeader() {
   // Header state and shared store values.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+  const isAdminSearchPage = pathname.startsWith("/admin/");
   const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.token);
   const isAuthenticated = Boolean(user && token);
@@ -33,17 +38,21 @@ export function AppHeader() {
   );
   const query = useCatalogStore((state) => state.query);
   const setQuery = useCatalogStore((state) => state.setQuery);
-  const [searchInput, setSearchInput] = useState(query);
+  const adminQuery = useAdminSearchStore((state) => state.query);
+  const setAdminQuery = useAdminSearchStore((state) => state.setQuery);
+  const activeQuery = isAdminSearchPage ? adminQuery : query;
+  const setActiveQuery = isAdminSearchPage ? setAdminQuery : setQuery;
+  const [searchInput, setSearchInput] = useState(activeQuery);
   const firstName = user?.name?.trim().split(/\s+/)[0] ?? "Account";
   const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      setQuery(searchInput.trim());
+      setActiveQuery(searchInput.trim());
     }, 400);
 
     return () => window.clearTimeout(timeoutId);
-  }, [searchInput, setQuery]);
+  }, [searchInput, setActiveQuery]);
 
   // Header actions for logout, menu closing, and product search.
   const handleLogout = () => {
@@ -58,8 +67,8 @@ export function AppHeader() {
     event.preventDefault();
     setIsMenuOpen(false);
     const nextQuery = searchInput.trim();
-    setQuery(nextQuery);
-    void navigate({ to: "/products" });
+    setActiveQuery(nextQuery);
+    if (!isAdminSearchPage) void navigate({ to: "/products" });
   };
 
   // Shared header layout and desktop controls.
@@ -70,6 +79,7 @@ export function AppHeader() {
           <ViphiveLogo />
         </Link>
         <form
+          key={isAdminSearchPage ? "admin-search" : "store-search"}
           onSubmit={submitSearch}
           className="mx-2 hidden min-w-0 flex-1 md:flex md:max-w-xl"
         >
@@ -78,7 +88,11 @@ export function AppHeader() {
             <input
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
-              placeholder="Search for products, brands and more"
+              placeholder={
+                isAdminSearchPage
+                  ? "Search this admin section"
+                  : "Search for products, brands and more"
+              }
               className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
             />
             <button
@@ -209,7 +223,11 @@ export function AppHeader() {
           <input
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
-            placeholder="Search products"
+            placeholder={
+              isAdminSearchPage
+                ? "Search this admin section"
+                : "Search products"
+            }
             className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
           />
           <button

@@ -11,6 +11,7 @@
 - Replaced the native product delete alert with a shared confirmation modal.
 - Added a 10px backdrop blur when the confirmation modal opens.
 - Improved admin mobile pagination, debounced admin searches, and sortable table headers.
+- Consolidated admin search into the shared header search field.
 
 ### Changed
 

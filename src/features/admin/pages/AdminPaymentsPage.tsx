@@ -1,20 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreditCard } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
-import { AdminSearch } from "@/features/admin/components/AdminSearch";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { usePayments } from "@/features/admin/hooks/use-admin";
 import { formatCurrency } from "@/utils/format-currency";
+import { useAdminSearchStore } from "@/stores/admin-search.store";
 
 export function AdminPaymentsPage() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const search = useAdminSearchStore((state) => state.query);
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
   const { data, isPending, isError } = usePayments(page, limit, search, sort);
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setPage(1), 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
   if (isPending)
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500 dark:border-slate-800 dark:bg-slate-900">
@@ -39,16 +43,6 @@ export function AdminPaymentsPage() {
           </p>
         </div>
         <CreditCard className="brand-accent h-7 w-7" />
-      </div>
-      <div className="mt-6">
-        <AdminSearch
-          value={search}
-          onChange={(value) => {
-            setSearch(value);
-            setPage(1);
-          }}
-          placeholder="Search payments"
-        />
       </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">

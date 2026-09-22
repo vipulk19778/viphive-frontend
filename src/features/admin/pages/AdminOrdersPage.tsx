@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PackageCheck } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
-import { AdminSearch } from "@/features/admin/components/AdminSearch";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import {
@@ -10,15 +9,21 @@ import {
   useUpdateOrderStatus,
 } from "@/features/orders/hooks/use-orders";
 import { formatCurrency } from "@/utils/format-currency";
+import { useAdminSearchStore } from "@/stores/admin-search.store";
 
 export function AdminOrdersPage() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const search = useAdminSearchStore((state) => state.query);
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
   const { data, isPending, isError } = useAllOrders(page, limit, search, sort);
   const updateStatus = useUpdateOrderStatus();
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setPage(1), 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
 
   if (isPending)
     return (
@@ -45,16 +50,6 @@ export function AdminOrdersPage() {
           </p>
         </div>
         <PackageCheck className="brand-accent hidden h-7 w-7 sm:block" />
-      </div>
-      <div className="mt-6">
-        <AdminSearch
-          value={search}
-          onChange={(value) => {
-            setSearch(value);
-            setPage(1);
-          }}
-          placeholder="Search orders"
-        />
       </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">

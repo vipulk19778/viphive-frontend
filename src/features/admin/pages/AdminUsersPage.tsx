@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
-import { AdminSearch } from "@/features/admin/components/AdminSearch";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { useUsers } from "@/features/admin/hooks/use-admin";
+import { useAdminSearchStore } from "@/stores/admin-search.store";
 
 export function AdminUsersPage() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const search = useAdminSearchStore((state) => state.query);
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
   const { data, isPending, isError } = useUsers(page, limit, search, sort);
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setPage(1), 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
   if (isPending)
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500 dark:border-slate-800 dark:bg-slate-900">
@@ -33,16 +37,6 @@ export function AdminUsersPage() {
       <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
         A clear view of the VIPHive community.
       </p>
-      <div className="mt-6">
-        <AdminSearch
-          value={search}
-          onChange={(value) => {
-            setSearch(value);
-            setPage(1);
-          }}
-          placeholder="Search users"
-        />
-      </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60">

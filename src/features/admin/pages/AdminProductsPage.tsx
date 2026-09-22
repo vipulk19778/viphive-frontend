@@ -1,11 +1,11 @@
-import { useState, type SyntheticEvent } from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
-import { AdminSearch } from "@/features/admin/components/AdminSearch";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
+import { useAdminSearchStore } from "@/stores/admin-search.store";
 import {
   useCreateProduct,
   useDeleteProduct,
@@ -29,7 +29,7 @@ const emptyForm: ProductInput = {
 
 export function AdminProductsPage() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const search = useAdminSearchStore((state) => state.query);
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("name-asc");
@@ -42,6 +42,11 @@ export function AdminProductsPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setPage(1), 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
 
   const openCreate = () => {
     setEditing(null);
@@ -123,16 +128,6 @@ export function AdminProductsPage() {
           <Plus className="h-4 w-4" /> Add product
         </button>
       </header>
-      <div className="mt-6">
-        <AdminSearch
-          value={search}
-          onChange={(value) => {
-            setSearch(value);
-            setPage(1);
-          }}
-          placeholder="Search products"
-        />
-      </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="min-w-220">
           <div className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-950/60">
