@@ -3,6 +3,7 @@ import { PackageCheck } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminSearch } from "@/features/admin/components/AdminSearch";
+import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import {
   useAllOrders,
@@ -15,7 +16,8 @@ export function AdminOrdersPage() {
   const [search, setSearch] = useState("");
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
-  const { data, isPending, isError } = useAllOrders(page, limit, search);
+  const [sort, setSort] = useState("createdAt-desc");
+  const { data, isPending, isError } = useAllOrders(page, limit, search, sort);
   const updateStatus = useUpdateOrderStatus();
 
   if (isPending)
@@ -58,10 +60,50 @@ export function AdminOrdersPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60">
             <tr>
-              <th className="px-5 py-4 text-slate-500">Order</th>
-              <th className="px-5 py-4 text-slate-500">Customer</th>
-              <th className="px-5 py-4 text-slate-500">Total</th>
-              <th className="px-5 py-4 text-slate-500">Status</th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Order"
+                  sortKey="createdAt"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Customer"
+                  sortKey="customer"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Total"
+                  sortKey="totalAmount"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Status"
+                  sortKey="status"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
             </tr>
           </thead>
           <tbody>

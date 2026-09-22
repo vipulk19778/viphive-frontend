@@ -16,12 +16,12 @@ export function AdminPagination({
   onLimitChange,
 }: AdminPaginationProps) {
   return (
-    <div className="flex items-center justify-between gap-4 px-1 py-4 text-sm text-slate-500 dark:text-slate-400">
-      <span>
-        Page {page} of {Math.max(totalPages, 1)}
-      </span>
-
-      <div className="flex gap-2">
+    <div className="flex flex-col gap-3 px-1 py-4 text-sm text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center justify-between gap-3 sm:justify-start">
+        <span>
+          Page {page} of {Math.max(totalPages, 1)}
+        </span>
+        <div className="flex gap-2 sm:order-first">
         <button
           type="button"
           disabled={page === 1}
@@ -42,9 +42,10 @@ export function AdminPagination({
         >
           <ChevronRight className="h-4 w-4" />
         </button>
+        </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between gap-3 sm:justify-start">
         <span>Rows</span>
         <select
           value={limit}

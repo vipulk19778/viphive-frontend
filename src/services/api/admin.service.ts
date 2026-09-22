@@ -16,16 +16,26 @@ export async function getAnalytics(days = 30) {
   return response.data.data;
 }
 
-export async function getUsers(page = 1, limit = 20, query = "") {
+export async function getUsers(
+  page = 1,
+  limit = 20,
+  query = "",
+  sort = "createdAt-desc",
+) {
   const response = await apiClient.get<PaginatedUsers>("/auth/users", {
-    params: { page, limit, q: query || undefined },
+    params: { page, limit, q: query || undefined, sort },
   });
   return response.data;
 }
 
-export async function getPayments(page = 1, limit = 20, query = "") {
+export async function getPayments(
+  page = 1,
+  limit = 20,
+  query = "",
+  sort = "createdAt-desc",
+) {
   const response = await apiClient.get<PaginatedPayments>("/payments", {
-    params: { page, limit, q: query || undefined },
+    params: { page, limit, q: query || undefined, sort },
   });
   return response.data;
 }

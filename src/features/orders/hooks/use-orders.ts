@@ -25,10 +25,15 @@ export function useCreateOrder() {
   });
 }
 
-export function useAllOrders(page = 1, limit = 20, query = "") {
+export function useAllOrders(
+  page = 1,
+  limit = 20,
+  query = "",
+  sort = "createdAt-desc",
+) {
   return useQuery({
-    queryKey: ["orders", "all", page, limit, query],
-    queryFn: () => getAllOrders(page, limit, query),
+    queryKey: ["orders", "all", page, limit, query, sort],
+    queryFn: () => getAllOrders(page, limit, query, sort),
   });
 }
 

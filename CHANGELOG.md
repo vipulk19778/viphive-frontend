@@ -9,6 +9,8 @@
 - Added button-based pagination and search controls to admin Products, Orders, Payments, and Users sections.
 - Added responsive admin row limits, icon-only pagination buttons, and wrapper-level search focus styling.
 - Replaced the native product delete alert with a shared confirmation modal.
+- Added a 10px backdrop blur when the confirmation modal opens.
+- Improved admin mobile pagination, debounced admin searches, and sortable table headers.
 
 ### Changed
 

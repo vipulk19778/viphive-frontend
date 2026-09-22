@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 
 import { Button } from "./button";
 
@@ -25,7 +25,7 @@ export function ConfirmationModal({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-slate-950/50" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-slate-950/50 backdrop-blur-[10px]" />
         <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -52,7 +52,13 @@ export function ConfirmationModal({
                 Cancel
               </Button>
             </Dialog.Close>
-            <Button variant="danger" onClick={onConfirm} disabled={isPending}>
+            <Button
+              variant="danger"
+              onClick={onConfirm}
+              disabled={isPending}
+              className="gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
               {isPending ? "Deleting..." : confirmLabel}
             </Button>
           </div>

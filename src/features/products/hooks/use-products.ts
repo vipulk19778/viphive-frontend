@@ -14,10 +14,15 @@ import {
   type ProductInput,
 } from "@/services/api/products.service";
 
-export function useProducts(page = 1, limit = 12, query = "") {
+export function useProducts(
+  page = 1,
+  limit = 12,
+  query = "",
+  sort = "name-asc",
+) {
   return useQuery({
-    queryKey: ["products", page, limit, query],
-    queryFn: () => getProducts(page, limit, query),
+    queryKey: ["products", page, limit, query, sort],
+    queryFn: () => getProducts(page, limit, query, sort),
   });
 }
 

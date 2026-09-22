@@ -23,9 +23,14 @@ export async function getMyOrders() {
   return response.data.data;
 }
 
-export async function getAllOrders(page = 1, limit = 20, query = "") {
+export async function getAllOrders(
+  page = 1,
+  limit = 20,
+  query = "",
+  sort = "createdAt-desc",
+) {
   const response = await apiClient.get<PaginatedOrdersResponse>("/orders", {
-    params: { page, limit, q: query || undefined },
+    params: { page, limit, q: query || undefined, sort },
   });
   return response.data;
 }

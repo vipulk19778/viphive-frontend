@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminSearch } from "@/features/admin/components/AdminSearch";
+import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { useUsers } from "@/features/admin/hooks/use-admin";
 
@@ -10,7 +11,8 @@ export function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
-  const { data, isPending, isError } = useUsers(page, limit, search);
+  const [sort, setSort] = useState("createdAt-desc");
+  const { data, isPending, isError } = useUsers(page, limit, search, sort);
   if (isPending)
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500 dark:border-slate-800 dark:bg-slate-900">
@@ -45,10 +47,50 @@ export function AdminUsersPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60">
             <tr>
-              <th className="px-5 py-4 text-slate-500">User</th>
-              <th className="px-5 py-4 text-slate-500">Email</th>
-              <th className="px-5 py-4 text-slate-500">Role</th>
-              <th className="px-5 py-4 text-slate-500">Status</th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="User"
+                  sortKey="name"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Email"
+                  sortKey="email"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Role"
+                  sortKey="role"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
+              <th className="px-5 py-4">
+                <AdminSortableHeader
+                  label="Status"
+                  sortKey="verified"
+                  activeSort={sort}
+                  onSort={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                />
+              </th>
             </tr>
           </thead>
           <tbody>
