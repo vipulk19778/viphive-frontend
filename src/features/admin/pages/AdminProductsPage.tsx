@@ -2,6 +2,7 @@ import { useEffect, useState, type SyntheticEvent } from "react";
 import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
@@ -169,68 +170,72 @@ export function AdminProductsPage() {
             />
             <span className="text-right">Actions</span>
           </div>
-          {data.data.map((product) => (
-            <div
-              key={product._id}
-              className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-0 dark:border-slate-800"
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={optimizeImageUrl(product.imageUrl, 128)}
-                  alt=""
-                  width="48"
-                  height="48"
-                  loading="lazy"
-                  decoding="async"
-                  className="h-12 w-12 rounded-xl object-cover"
-                />
-                <div>
-                  <p className="font-bold text-slate-950 dark:text-white">
-                    {product.name}
-                  </p>
-                  <p className="max-w-xs truncate text-xs text-slate-500">
-                    {product.description}
-                  </p>
+          {data.data.length === 0 ? (
+            <AdminEmptyState searched={Boolean(search)} resource="products" />
+          ) : (
+            data.data.map((product) => (
+              <div
+                key={product._id}
+                className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-0 dark:border-slate-800"
+              >
+                <div className="flex items-center gap-3">
+                  <img
+                    src={optimizeImageUrl(product.imageUrl, 128)}
+                    alt=""
+                    width="48"
+                    height="48"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-12 w-12 rounded-xl object-cover"
+                  />
+                  <div>
+                    <p className="font-bold text-slate-950 dark:text-white">
+                      {product.name}
+                    </p>
+                    <p className="max-w-xs truncate text-xs text-slate-500">
+                      {product.description}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className="truncate text-sm text-slate-500"
+                  title={product.category}
+                >
+                  {product.category}
+                </span>
+                <span className="text-center font-semibold text-slate-950 dark:text-white">
+                  {formatCurrency(product.price)}
+                </span>
+                <span
+                  className={
+                    product.stock < 5
+                      ? "text-center font-semibold text-rose-500"
+                      : "text-center text-slate-500"
+                  }
+                >
+                  {product.stock}
+                </span>
+                <div className="flex justify-end gap-1">
+                  <button
+                    type="button"
+                    onClick={() => openEdit(product)}
+                    aria-label={`Edit ${product.name}`}
+                    className="brand-accent-hover cursor-pointer rounded-lg p-2 text-slate-500"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setProductToDelete(product)}
+                    aria-label={`Delete ${product.name}`}
+                    className="cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-rose-50 hover:text-rose-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
-              <span
-                className="truncate text-sm text-slate-500"
-                title={product.category}
-              >
-                {product.category}
-              </span>
-              <span className="text-center font-semibold text-slate-950 dark:text-white">
-                {formatCurrency(product.price)}
-              </span>
-              <span
-                className={
-                  product.stock < 5
-                    ? "text-center font-semibold text-rose-500"
-                    : "text-center text-slate-500"
-                }
-              >
-                {product.stock}
-              </span>
-              <div className="flex justify-end gap-1">
-                <button
-                  type="button"
-                  onClick={() => openEdit(product)}
-                  aria-label={`Edit ${product.name}`}
-                  className="brand-accent-hover cursor-pointer rounded-lg p-2 text-slate-500"
-                >
-                  <Pencil className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setProductToDelete(product)}
-                  aria-label={`Delete ${product.name}`}
-                  className="cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
       <AdminPagination

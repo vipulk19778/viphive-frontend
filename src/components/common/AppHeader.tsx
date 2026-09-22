@@ -91,7 +91,7 @@ export function AppHeader() {
         <form
           key={isAdminSearchPage ? "admin-search" : "store-search"}
           onSubmit={submitSearch}
-          className="mx-2 hidden min-w-0 flex-1 md:flex md:max-w-xl"
+          className="mx-2 hidden min-w-0 flex-1 md:flex md:max-w-xl h-12"
         >
           <label className="brand-focus-within flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm transition dark:border-slate-700 dark:bg-slate-900 dark:text-slate-500 dark:shadow-none">
             <Search className="h-4 w-4 shrink-0" />
@@ -105,13 +105,15 @@ export function AppHeader() {
               }
               className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
             />
-            <button
-              type="submit"
-              aria-label="Search"
-              className="brand-primary brand-primary-hover cursor-pointer rounded-lg p-1.5"
-            >
-              <Search className="h-4 w-4" />
-            </button>
+            {!isAdminSearchPage && (
+              <button
+                type="submit"
+                aria-label="Search"
+                className="brand-primary brand-primary-hover cursor-pointer rounded-lg p-1.5"
+              >
+                <Search className="h-4 w-4" />
+              </button>
+            )}
           </label>
         </form>
         <div className="flex items-center gap-1 sm:gap-1.5">
@@ -227,7 +229,7 @@ export function AppHeader() {
           </button>
         </div>
       </div>
-      <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden">
+      <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden h-14">
         <label className="brand-focus-within flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-500">
           <Search className="h-4 w-4 shrink-0" />
           <input
@@ -238,13 +240,15 @@ export function AppHeader() {
             }
             className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
           />
-          <button
-            type="submit"
-            aria-label="Search"
-            className="brand-primary brand-primary-hover cursor-pointer rounded-lg p-1.5"
-          >
-            <Search className="h-4 w-4" />
-          </button>
+          {!isAdminSearchPage && (
+            <button
+              type="submit"
+              aria-label="Search"
+              className="brand-primary brand-primary-hover cursor-pointer rounded-lg p-1.5"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+          )}
         </label>
       </form>
       {/* Mobile navigation menu. */}

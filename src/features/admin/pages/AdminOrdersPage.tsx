@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PackageCheck } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import {
@@ -102,40 +103,51 @@ export function AdminOrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {data.data.map((order) => (
-              <tr
-                key={order._id}
-                className="border-b border-slate-100 last:border-0 dark:border-slate-800"
-              >
-                <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
-                  #{order._id.slice(-8)}
-                </td>
-                <td className="px-5 py-4 text-slate-600 dark:text-slate-300">
-                  {order.address.fullName}
-                </td>
-                <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
-                  {formatCurrency(order.totalAmount)}
-                </td>
-                <td className="px-5 py-4">
-                  <select
-                    value={order.status}
-                    disabled={updateStatus.isPending}
-                    onChange={(event) =>
-                      updateStatus.mutate({
-                        orderId: order._id,
-                        status: event.target.value,
-                      })
-                    }
-                    className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm disabled:cursor-not-allowed dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
+            {data.data.length === 0 ? (
+              <tr>
+                <td colSpan={4}>
+                  <AdminEmptyState
+                    searched={Boolean(search)}
+                    resource="orders"
+                  />
                 </td>
               </tr>
-            ))}
+            ) : (
+              data.data.map((order) => (
+                <tr
+                  key={order._id}
+                  className="border-b border-slate-100 last:border-0 dark:border-slate-800"
+                >
+                  <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
+                    #{order._id.slice(-8)}
+                  </td>
+                  <td className="px-5 py-4 text-slate-600 dark:text-slate-300">
+                    {order.address.fullName}
+                  </td>
+                  <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
+                    {formatCurrency(order.totalAmount)}
+                  </td>
+                  <td className="px-5 py-4">
+                    <select
+                      value={order.status}
+                      disabled={updateStatus.isPending}
+                      onChange={(event) =>
+                        updateStatus.mutate({
+                          orderId: order._id,
+                          status: event.target.value,
+                        })
+                      }
+                      className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm disabled:cursor-not-allowed dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

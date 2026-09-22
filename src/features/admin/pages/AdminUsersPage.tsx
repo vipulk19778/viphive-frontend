@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { useUsers } from "@/features/admin/hooks/use-admin";
@@ -88,27 +89,38 @@ export function AdminUsersPage() {
             </tr>
           </thead>
           <tbody>
-            {data.data.map((user) => (
-              <tr
-                key={user._id}
-                className="border-b border-slate-100 last:border-0 dark:border-slate-800"
-              >
-                <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
-                  {user.name}
-                </td>
-                <td className="px-5 py-4 text-slate-500">{user.email}</td>
-                <td className="px-5 py-4 capitalize text-slate-500">
-                  {user.role ?? "user"}
-                </td>
-                <td className="px-5 py-4">
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${user.verified ? "bg-emerald-100 text-emerald-700" : "brand-accent-soft"}`}
-                  >
-                    {user.verified ? "Verified" : "Unverified"}
-                  </span>
+            {data.data.length === 0 ? (
+              <tr>
+                <td colSpan={4}>
+                  <AdminEmptyState
+                    searched={Boolean(search)}
+                    resource="users"
+                  />
                 </td>
               </tr>
-            ))}
+            ) : (
+              data.data.map((user) => (
+                <tr
+                  key={user._id}
+                  className="border-b border-slate-100 last:border-0 dark:border-slate-800"
+                >
+                  <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
+                    {user.name}
+                  </td>
+                  <td className="px-5 py-4 text-slate-500">{user.email}</td>
+                  <td className="px-5 py-4 capitalize text-slate-500">
+                    {user.role ?? "user"}
+                  </td>
+                  <td className="px-5 py-4">
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-bold ${user.verified ? "bg-emerald-100 text-emerald-700" : "brand-accent-soft"}`}
+                    >
+                      {user.verified ? "Verified" : "Unverified"}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

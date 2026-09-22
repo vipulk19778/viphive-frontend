@@ -14,6 +14,7 @@
 - Consolidated admin search into the shared header search field.
 - Added field-specific admin search placeholders and order-ID search support.
 - Restricted protected routes to verified users and simplified admin Payments search/table fields.
+- Added clear empty and no-match states to admin data tables.
 
 ### Changed
 

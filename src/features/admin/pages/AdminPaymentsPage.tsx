@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CreditCard } from "lucide-react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { usePayments } from "@/features/admin/hooks/use-admin";
@@ -84,22 +85,33 @@ export function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {data.data.map((payment) => (
-              <tr
-                key={payment._id}
-                className="border-b border-slate-100 last:border-0 dark:border-slate-800"
-              >
-                <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
-                  #{payment._id.slice(-8)}
-                </td>
-                <td className="px-5 py-4 text-slate-500">
-                  {payment.paymentId ?? "Not paid"}
-                </td>
-                <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
-                  {formatCurrency(payment.totalAmount)}
+            {data.data.length === 0 ? (
+              <tr>
+                <td colSpan={3}>
+                  <AdminEmptyState
+                    searched={Boolean(search)}
+                    resource="payments"
+                  />
                 </td>
               </tr>
-            ))}
+            ) : (
+              data.data.map((payment) => (
+                <tr
+                  key={payment._id}
+                  className="border-b border-slate-100 last:border-0 dark:border-slate-800"
+                >
+                  <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
+                    #{payment._id.slice(-8)}
+                  </td>
+                  <td className="px-5 py-4 text-slate-500">
+                    {payment.paymentId ?? "Not paid"}
+                  </td>
+                  <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
+                    {formatCurrency(payment.totalAmount)}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
