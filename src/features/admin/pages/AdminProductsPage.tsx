@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SyntheticEvent } from "react";
 import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
 import {
@@ -54,7 +54,7 @@ export function AdminProductsPage() {
     setIsOpen(false);
     setEditing(null);
   };
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       !form.name ||

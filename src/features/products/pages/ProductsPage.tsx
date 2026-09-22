@@ -39,7 +39,7 @@ export function ProductsPage() {
 
   if (isPending) {
     return (
-      <main className="mx-auto max-w-360 px-4 pb-12 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
         <section className="border-b border-slate-200 py-5 dark:border-slate-800 sm:py-6">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
@@ -126,7 +126,7 @@ export function ProductsPage() {
     .slice(0, 8);
 
   return (
-    <main className="mx-auto max-w-360 px-4 pb-12 sm:px-6 lg:px-8">
+    <main className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
       <BestProductsSection products={bestProducts} />
 
       <section className="border-b border-slate-200 py-5 dark:border-slate-800">
