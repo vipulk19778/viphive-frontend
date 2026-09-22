@@ -4,6 +4,7 @@
 - Added a homepage loading skeleton that mirrors the loaded layout to avoid layout shift.
 - Fixed Featured sorting to rank products instead of preserving search/API order.
 - Added server-side search pagination so searches can load beyond the first page only when matching results remain.
+- Debounced product search input updates to reduce API requests while typing.
 
 ### Changed
 

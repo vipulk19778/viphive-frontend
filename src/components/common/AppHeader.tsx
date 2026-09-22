@@ -1,4 +1,4 @@
-import { useState, type SyntheticEvent } from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   LogOut,
@@ -33,8 +33,17 @@ export function AppHeader() {
   );
   const query = useCatalogStore((state) => state.query);
   const setQuery = useCatalogStore((state) => state.setQuery);
+  const [searchInput, setSearchInput] = useState(query);
   const firstName = user?.name?.trim().split(/\s+/)[0] ?? "Account";
   const isAdmin = user?.role === "admin";
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setQuery(searchInput.trim());
+    }, 400);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [searchInput, setQuery]);
 
   // Header actions for logout, menu closing, and product search.
   const handleLogout = () => {
@@ -48,7 +57,8 @@ export function AppHeader() {
   const submitSearch = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsMenuOpen(false);
-    setQuery(query.trim());
+    const nextQuery = searchInput.trim();
+    setQuery(nextQuery);
     void navigate({ to: "/products" });
   };
 
@@ -66,8 +76,8 @@ export function AppHeader() {
           <label className="brand-focus-within flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 shadow-sm transition dark:border-slate-700 dark:bg-slate-900 dark:text-slate-500 dark:shadow-none">
             <Search className="h-4 w-4 shrink-0" />
             <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
               placeholder="Search for products, brands and more"
               className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
             />
@@ -197,8 +207,8 @@ export function AppHeader() {
         <label className="brand-focus-within flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-500">
           <Search className="h-4 w-4 shrink-0" />
           <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
             placeholder="Search products"
             className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
           />
