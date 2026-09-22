@@ -7,6 +7,7 @@ import {
   useProducts,
   useUpdateProduct,
 } from "@/features/products/hooks/use-products";
+import { formatCurrency } from "@/utils/format-currency";
 import type {
   Product,
   ProductInput,
@@ -149,7 +150,7 @@ export function AdminProductsPage() {
                 {product.category}
               </span>
               <span className="text-center font-semibold text-slate-950 dark:text-white">
-                ₹{product.price.toFixed(2)}
+                {formatCurrency(product.price)}
               </span>
               <span
                 className={

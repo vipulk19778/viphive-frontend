@@ -4,10 +4,12 @@ import { useForm } from "react-hook-form";
 
 import { useRegister } from "../hooks/useAuth";
 import { registerSchema, type RegisterFormData } from "../schemas/auth.schema";
+import { useAuthStore } from "@/stores/auth.store";
 
 export function RegisterPage() {
   const navigate = useNavigate();
   const registerMutation = useRegister();
+  const setOtpContext = useAuthStore((state) => state.setOtpContext);
   const {
     register,
     handleSubmit,
@@ -19,9 +21,9 @@ export function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerMutation.mutateAsync(data);
+      setOtpContext(data.email, "REGISTER");
       await navigate({
         to: "/verify-otp",
-        search: { email: data.email, purpose: "REGISTER" },
       });
     } catch {
       /* mutation state renders the error */

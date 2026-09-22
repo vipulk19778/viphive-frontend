@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, CreditCard, Clock3, XCircle } from "lucide-react";
 
 import { useMyOrders } from "@/features/orders/hooks/use-orders";
+import { formatCurrency } from "@/utils/format-currency";
 
 export const Route = createFileRoute("/_authenticated/payments/")({
   component: PaymentsPage,
@@ -87,7 +88,7 @@ function PaymentsPage() {
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-slate-950 dark:text-white">
-                    ₹{order.totalAmount.toFixed(2)}
+                    {formatCurrency(order.totalAmount)}
                   </p>
                   <p className="mt-1 text-xs font-bold capitalize text-slate-500">
                     {order.paymentStatus}

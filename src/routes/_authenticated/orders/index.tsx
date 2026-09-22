@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ClipboardList } from "lucide-react";
 
 import { useMyOrders } from "@/features/orders/hooks/use-orders";
+import { formatCurrency } from "@/utils/format-currency";
 
 export const Route = createFileRoute("/_authenticated/orders/")({
   component: OrdersPage,
@@ -66,7 +67,7 @@ function OrdersPage() {
               {new Date(order.createdAt).toLocaleDateString()}
             </p>
             <p className="mt-2 font-bold text-slate-950 dark:text-white">
-              ₹{order.totalAmount.toFixed(2)}
+              {formatCurrency(order.totalAmount)}
             </p>
           </article>
         ))}

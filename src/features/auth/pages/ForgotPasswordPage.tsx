@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useSendOtp } from "../hooks/useAuth";
+import { useAuthStore } from "@/stores/auth.store";
 
 const schema = z.object({
   email: z.string().trim().email("Please enter a valid email address"),
@@ -14,6 +15,7 @@ type FormData = z.infer<typeof schema>;
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
   const sendOtpMutation = useSendOtp();
+  const setOtpContext = useAuthStore((state) => state.setOtpContext);
   const {
     register,
     handleSubmit,
@@ -26,9 +28,9 @@ export function ForgotPasswordPage() {
         email: data.email,
         purpose: "FORGOT_PASSWORD",
       });
+      setOtpContext(data.email, "FORGOT_PASSWORD");
       await navigate({
         to: "/verify-otp",
-        search: { email: data.email, purpose: "FORGOT_PASSWORD" },
       });
     } catch {
       // Mutation error is rendered below.

@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { KeyRound } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useResetPassword } from "../hooks/useAuth";
+import { useAuthStore } from "@/stores/auth.store";
 
 const resetPasswordSchema = z
   .object({
@@ -22,7 +23,8 @@ type ResetPasswordForm = z.infer<typeof resetPasswordSchema>;
 
 export function ResetPasswordPage() {
   const navigate = useNavigate();
-  const { email, otp } = useSearch({ from: "/_auth/reset-password" });
+  const { otpEmail: email, verifiedOtp: otp } = useAuthStore();
+  const clearOtpContext = useAuthStore((state) => state.clearOtpContext);
   const resetPasswordMutation = useResetPassword();
   const {
     register,
@@ -35,10 +37,11 @@ export function ResetPasswordPage() {
   const onSubmit = async (data: ResetPasswordForm) => {
     try {
       await resetPasswordMutation.mutateAsync({
-        email,
-        otp,
+        email: email ?? "",
+        otp: otp ?? "",
         newPassword: data.newPassword,
       });
+      clearOtpContext();
       await navigate({ to: "/login" });
     } catch {
       // Mutation error is rendered below the password fields.

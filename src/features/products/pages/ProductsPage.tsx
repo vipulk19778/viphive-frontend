@@ -14,6 +14,7 @@ import { useCartStore } from "@/features/cart/store/cart.store";
 import { useProducts } from "@/features/products/hooks/use-products";
 import type { Product } from "@/features/products/types/product.types";
 import { useCatalogStore } from "@/stores/catalog.store";
+import { formatCurrency } from "@/utils/format-currency";
 
 function ProductCartControl({ product }: { product: Product }) {
   const addItem = useCartStore((state) => state.addItem);
@@ -24,12 +25,12 @@ function ProductCartControl({ product }: { product: Product }) {
 
   if (cartItem) {
     return (
-      <div className="brand-accent-panel inline-flex items-center gap-2 rounded-xl p-1">
+      <div className="quantity-control inline-flex items-center gap-2 rounded-xl p-1">
         <button
           type="button"
           onClick={() => updateQuantity(product._id, cartItem.quantity - 1)}
           aria-label={`Decrease ${product.name} quantity`}
-          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-slate-800"
+          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           <Minus className="h-3.5 w-3.5" />
         </button>
@@ -171,7 +172,7 @@ export function ProductsPage() {
                     {product.rating.toFixed(1)} ★
                   </span>
                   <p className="mt-2 font-bold text-slate-950 dark:text-white">
-                    ₹{product.price.toFixed(2)}
+                    {formatCurrency(product.price)}
                   </p>
                 </div>
               </Link>
@@ -282,7 +283,7 @@ export function ProductsPage() {
                   </p>
                   <div className="mt-4 flex items-center justify-between gap-3">
                     <span className="text-lg font-bold text-slate-950 dark:text-white">
-                      ₹{product.price.toFixed(2)}
+                      {formatCurrency(product.price)}
                     </span>
                     <ProductCartControl product={product} />
                   </div>

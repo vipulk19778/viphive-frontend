@@ -67,6 +67,11 @@ export function LoginPage() {
             </span>
           )}
         </label>
+        <p className="text-right text-sm text-slate-500 dark:text-slate-400">
+          <Link to="/forgot-password" className="brand-accent font-bold">
+            Forgot password?
+          </Link>
+        </p>
         {loginMutation.isError && (
           <p className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
             {loginMutation.error instanceof Error
@@ -82,10 +87,6 @@ export function LoginPage() {
           {loginMutation.isPending ? "Signing in..." : "Sign in"}
         </button>
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link to="/forgot-password" className="brand-accent font-bold">
-            Forgot password?
-          </Link>
-          <span className="mx-2">·</span>
           New to VIPHive?{" "}
           <Link
             to="/register"

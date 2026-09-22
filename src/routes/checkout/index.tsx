@@ -19,6 +19,7 @@ import {
 } from "@/features/payments/hooks/use-payments";
 import type { OrderAddress } from "@/features/orders/types/order.types";
 import { useAuthStore } from "@/stores/auth.store";
+import { formatCurrency } from "@/utils/format-currency";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -303,7 +304,7 @@ function CheckoutPage() {
                     </p>
                   </div>
                   <span className="text-sm font-bold text-slate-950 dark:text-white">
-                    ₹{(item.price * item.quantity).toFixed(2)}
+                    {formatCurrency(item.price * item.quantity)}
                   </span>
                 </div>
               ))}
@@ -332,7 +333,7 @@ function CheckoutPage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-500">Total</span>
                 <span className="font-bold text-slate-950 dark:text-white">
-                  ₹{subtotal.toFixed(2)}
+                  {formatCurrency(subtotal)}
                 </span>
               </div>
               <button

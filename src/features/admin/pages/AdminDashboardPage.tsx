@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { useAnalytics } from "../hooks/use-admin";
+import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminDashboardPage() {
   const { data, isPending, isError } = useAnalytics();
@@ -34,7 +35,7 @@ export function AdminDashboardPage() {
     },
     {
       label: "Revenue",
-      value: `₹${data.summary.totalRevenue.toFixed(2)}`,
+      value: formatCurrency(data.summary.totalRevenue),
       icon: IndianRupee,
       to: "/admin/payments",
     },
@@ -115,7 +116,7 @@ export function AdminDashboardPage() {
                   />
                 </div>
                 <span className="w-24 text-right font-semibold text-slate-950 dark:text-white">
-                  ₹{item.revenue.toFixed(0)}
+                  {formatCurrency(item.revenue)}
                 </span>
               </div>
             ))}

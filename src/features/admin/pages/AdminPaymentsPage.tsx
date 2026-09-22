@@ -1,6 +1,7 @@
 import { CreditCard } from "lucide-react";
 
 import { usePayments } from "@/features/admin/hooks/use-admin";
+import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminPaymentsPage() {
   const { data, isPending, isError } = usePayments();
@@ -55,7 +56,7 @@ export function AdminPaymentsPage() {
                   {payment.paymentId ?? "Not paid"}
                 </td>
                 <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
-                  ₹{payment.totalAmount.toFixed(2)}
+                  {formatCurrency(payment.totalAmount)}
                 </td>
                 <td className="px-5 py-4">
                   <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold capitalize text-slate-600 dark:bg-slate-800 dark:text-slate-300">

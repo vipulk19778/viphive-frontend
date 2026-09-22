@@ -1,14 +1,16 @@
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { MailCheck } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { useSendOtp, useVerifyOtp } from "../hooks/useAuth";
+import { useAuthStore } from "@/stores/auth.store";
 
 const OTP_LENGTH = 6;
 
 export function VerifyOtpPage() {
   const navigate = useNavigate();
-  const { email, purpose } = useSearch({ from: "/_auth/verify-otp" });
+  const { otpEmail: email, otpPurpose: purpose } = useAuthStore();
+  const setVerifiedOtp = useAuthStore((state) => state.setVerifiedOtp);
   const verifyOtpMutation = useVerifyOtp();
   const resendOtpMutation = useSendOtp();
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
@@ -63,17 +65,16 @@ export function VerifyOtpPage() {
   };
 
   const submitOtp = async (nextDigits = digits) => {
+    if (!email || !purpose) return;
     try {
       await verifyOtpMutation.mutateAsync({
         email,
         otp: nextDigits.join(""),
         purpose,
       });
+      setVerifiedOtp(nextDigits.join(""));
       await navigate({
         to: purpose === "FORGOT_PASSWORD" ? "/reset-password" : "/",
-        ...(purpose === "FORGOT_PASSWORD" && {
-          search: { email, otp: nextDigits.join("") },
-        }),
       });
     } catch {
       setDigits(Array(OTP_LENGTH).fill(""));
@@ -82,6 +83,7 @@ export function VerifyOtpPage() {
   };
 
   const resendOtp = () => {
+    if (!email || !purpose) return;
     resendOtpMutation.mutate(
       { email, purpose },
       {

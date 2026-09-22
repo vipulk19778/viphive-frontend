@@ -3,6 +3,7 @@ import { ArrowLeft, Check, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 
 import { useProduct } from "@/features/products/hooks/use-products";
 import { useCartStore } from "@/features/cart/store/cart.store";
+import { formatCurrency } from "@/utils/format-currency";
 
 export const Route = createFileRoute("/products/$productId")({
   component: ProductDetailPage,
@@ -62,7 +63,7 @@ function ProductDetailPage() {
             <span>({product.numReviews} reviews)</span>
           </div>
           <p className="mt-6 text-3xl font-bold text-slate-950 dark:text-white">
-            ₹{product.price.toFixed(2)}
+            {formatCurrency(product.price)}
           </p>
           <p className="mt-6 leading-7 text-slate-600 dark:text-slate-300">
             {product.description}
@@ -74,14 +75,14 @@ function ProductDetailPage() {
               : "Currently unavailable"}
           </div>
           {cartItem ? (
-            <div className="brand-accent-panel mt-8 flex w-full items-center justify-center gap-5 rounded-xl px-5 py-3.5">
+            <div className="quantity-control mt-8 flex w-full items-center justify-center gap-5 rounded-xl px-5 py-3.5">
               <button
                 type="button"
                 onClick={() =>
                   updateQuantity(product._id, cartItem.quantity - 1)
                 }
                 aria-label="Decrease quantity"
-                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-white text-slate-700 shadow-sm hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 <Minus className="h-4 w-4" />
               </button>

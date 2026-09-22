@@ -4,6 +4,7 @@ import {
   useAllOrders,
   useUpdateOrderStatus,
 } from "@/features/orders/hooks/use-orders";
+import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminOrdersPage() {
   const { data, isPending, isError } = useAllOrders();
@@ -61,7 +62,7 @@ export function AdminOrdersPage() {
                   {order.address.fullName}
                 </td>
                 <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
-                  ₹{order.totalAmount.toFixed(2)}
+                  {formatCurrency(order.totalAmount)}
                 </td>
                 <td className="px-5 py-4">
                   <select
