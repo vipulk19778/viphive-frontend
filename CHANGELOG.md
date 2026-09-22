@@ -5,6 +5,7 @@
 - Fixed Featured sorting to rank products instead of preserving search/API order.
 - Added server-side search pagination so searches can load beyond the first page only when matching results remain.
 - Debounced product search input updates to reduce API requests while typing.
+- Moved product sorting before pagination so all loaded pages follow one global order.
 
 ### Changed
 

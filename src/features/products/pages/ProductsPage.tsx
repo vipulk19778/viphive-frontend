@@ -9,6 +9,7 @@ import { useCatalogStore } from "@/stores/catalog.store";
 export function ProductsPage() {
   const query = useCatalogStore((state) => state.query);
   const normalizedQuery = query.trim().toLowerCase();
+  const [sort, setSort] = useState("featured");
   const {
     data,
     isPending,
@@ -16,9 +17,8 @@ export function ProductsPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteProducts(12, normalizedQuery);
+  } = useInfiniteProducts(12, normalizedQuery, sort);
   const [category, setCategory] = useState("All");
-  const [sort, setSort] = useState("featured");
   const loadMoreRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;
@@ -113,17 +113,7 @@ export function ProductsPage() {
         `${product.name} ${product.description} ${product.category}`
           .toLowerCase()
           .includes(normalizedQuery),
-    )
-    .sort((first, second) => {
-      if (sort === "price-low") return first.price - second.price;
-      if (sort === "price-high") return second.price - first.price;
-      if (sort === "rating") return second.rating - first.rating;
-      if (second.rating !== first.rating) return second.rating - first.rating;
-      if (second.numReviews !== first.numReviews) {
-        return second.numReviews - first.numReviews;
-      }
-      return first.name.localeCompare(second.name);
-    });
+    );
   const bestProducts = [...products]
     .sort((first, second) => second.rating - first.rating)
     .slice(0, 8);
