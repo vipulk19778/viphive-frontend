@@ -21,9 +21,6 @@ export function AdminPaymentsPage() {
     <main>
       <div className="flex items-start justify-between">
         <div>
-          <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
-            Finance
-          </p>
           <h1 className="font-display mt-2 text-3xl font-bold text-slate-950 dark:text-white">
             Payments
           </h1>

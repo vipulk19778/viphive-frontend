@@ -53,9 +53,6 @@ export function AdminDashboardPage() {
 
   return (
     <main>
-      <p className="brand-accent text-sm font-bold uppercase tracking-[0.18em]">
-        Admin overview
-      </p>
       <div className="mt-2 flex items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-950 dark:text-white">
