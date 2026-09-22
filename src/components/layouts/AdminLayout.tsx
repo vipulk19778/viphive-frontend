@@ -31,10 +31,9 @@ export function AdminLayout() {
               to={to}
               activeOptions={{ exact: true }}
               activeProps={{
-                className:
-                  "bg-slate-950 text-white shadow-sm dark:bg-slate-800 dark:text-white",
+                className: "bg-slate-950 text-white dark:bg-slate-800",
               }}
-              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="flex items-center gap-3 brand-accent-hover rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 transition dark:text-slate-200 dark:hover:bg-slate-800"
             >
               <Icon className="h-4 w-4" />
               {label}
@@ -73,10 +72,9 @@ export function AdminLayout() {
                 activeOptions={{ exact: true }}
                 onClick={() => setIsMobileNavOpen(false)}
                 activeProps={{
-                  className:
-                    "bg-slate-950 text-white dark:bg-slate-800 dark:text-white",
+                  className: "bg-slate-950 text-white dark:bg-slate-800",
                 }}
-                className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="flex items-center gap-3 brand-accent-hover rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 transition dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 <Icon className="h-4 w-4" />
                 {label}

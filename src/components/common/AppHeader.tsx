@@ -182,7 +182,7 @@ export function AppHeader() {
                     {isAdmin && (
                       <Link
                         to="/admin"
-                        activeOptions={{ exact: true }}
+                        // activeOptions={{ exact: true }}
                         activeProps={{
                           className:
                             "bg-slate-950 text-white dark:bg-slate-800",
@@ -282,7 +282,7 @@ export function AppHeader() {
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    activeOptions={{ exact: true }}
+                    // activeOptions={{ exact: true }}
                     onClick={closeMenu}
                     activeProps={{
                       className: "bg-slate-950 text-white dark:bg-slate-800",
