@@ -10,6 +10,7 @@ import { useCatalogStore } from "@/stores/catalog.store";
 export function ProductsPage() {
   const query = useCatalogStore((state) => state.query);
   const normalizedQuery = query.trim().toLowerCase();
+  const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("featured");
   const {
     data,
@@ -18,8 +19,12 @@ export function ProductsPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteProducts(12, normalizedQuery, sort);
-  const [category, setCategory] = useState("All");
+  } = useInfiniteProducts(
+    12,
+    normalizedQuery,
+    sort,
+    category === "All" ? "" : category,
+  );
   const loadMoreRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;
@@ -103,15 +108,13 @@ export function ProductsPage() {
   const products = data.pages.flatMap((page) => page.data);
   const total = data.pages.at(-1)?.meta.total ?? 0;
   const categories = ["All", ...(data.pages[0]?.meta.categories ?? [])];
-  const filteredProducts = products
-    .filter((product) => category === "All" || product.category === category)
-    .filter(
-      (product) =>
-        !normalizedQuery ||
-        `${product.name} ${product.description} ${product.category}`
-          .toLowerCase()
-          .includes(normalizedQuery),
-    );
+  const filteredProducts = products.filter(
+    (product) =>
+      !normalizedQuery ||
+      `${product.name} ${product.description} ${product.category}`
+        .toLowerCase()
+        .includes(normalizedQuery),
+  );
   const bestProducts = [...products]
     .sort((first, second) => second.rating - first.rating)
     .slice(0, 8);

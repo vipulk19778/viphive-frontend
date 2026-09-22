@@ -14,9 +14,16 @@ export async function getProducts(
   limit = 12,
   query = "",
   sort = "featured",
+  category = "",
 ) {
   const response = await apiClient.get<PaginatedProducts>("/products", {
-    params: { page, limit, q: query || undefined, sort },
+    params: {
+      page,
+      limit,
+      q: query || undefined,
+      sort,
+      category: category || undefined,
+    },
   });
   return response.data;
 }
