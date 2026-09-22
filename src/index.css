@@ -326,11 +326,28 @@
   input:-webkit-autofill:focus,
   textarea:-webkit-autofill,
   textarea:-webkit-autofill:hover,
-  textarea:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--foreground);
-    -webkit-box-shadow: 0 0 0 1000px var(--input-surface) inset;
-    box-shadow: 0 0 0 1000px var(--input-surface) inset;
-    transition: background-color 9999s ease-in-out 0s;
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    background-color: var(--input-surface) !important;
+    color: var(--foreground) !important;
+    caret-color: var(--foreground);
+    -webkit-text-fill-color: var(--foreground) !important;
+    -webkit-box-shadow: 0 0 0 100vmax var(--input-surface) inset !important;
+    box-shadow: 0 0 0 100vmax var(--input-surface) inset !important;
+    background-clip: padding-box;
+    transition:
+      background-color 9999s ease-in-out 0s,
+      color 9999s ease-in-out 0s;
+  }
+
+  input:-moz-autofill,
+  textarea:-moz-autofill,
+  select:-moz-autofill {
+    background-color: var(--input-surface) !important;
+    color: var(--foreground) !important;
+    box-shadow: 0 0 0 100vmax var(--input-surface) inset !important;
   }
 
   .quantity-control {
