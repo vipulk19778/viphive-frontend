@@ -1,6 +1,9 @@
 import { useState, type SyntheticEvent } from "react";
 import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
+import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminSearch } from "@/features/admin/components/AdminSearch";
+import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import {
   useCreateProduct,
   useDeleteProduct,
@@ -23,7 +26,11 @@ const emptyForm: ProductInput = {
 };
 
 export function AdminProductsPage() {
-  const { data, isPending, isError } = useProducts(1, 100);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const defaultLimit = useAdminPageSize();
+  const [limit, setLimit] = useState(defaultLimit);
+  const { data, isPending, isError } = useProducts(page, limit, search);
   const createMutation = useCreateProduct();
   const updateMutation = useUpdateProduct();
   const deleteMutation = useDeleteProduct();
@@ -112,6 +119,16 @@ export function AdminProductsPage() {
           <Plus className="h-4 w-4" /> Add product
         </button>
       </header>
+      <div className="mt-6">
+        <AdminSearch
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          placeholder="Search products"
+        />
+      </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="min-w-220">
           <div className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-950/60">
@@ -188,6 +205,16 @@ export function AdminProductsPage() {
           ))}
         </div>
       </div>
+      <AdminPagination
+        page={data.meta.page}
+        limit={limit}
+        totalPages={data.meta.totalPages}
+        onPageChange={setPage}
+        onLimitChange={(value) => {
+          setLimit(value);
+          setPage(1);
+        }}
+      />
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/50 p-4 sm:items-center">
           <form

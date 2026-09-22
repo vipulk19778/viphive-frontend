@@ -26,3 +26,8 @@ export interface PaginatedPayments {
 }
 
 export type AdminUser = User & { verified?: boolean; createdAt?: string };
+
+export interface PaginatedUsers {
+  data: AdminUser[];
+  meta: { page: number; limit: number; total: number; totalPages: number };
+}

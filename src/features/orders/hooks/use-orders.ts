@@ -25,10 +25,10 @@ export function useCreateOrder() {
   });
 }
 
-export function useAllOrders(page = 1, limit = 20) {
+export function useAllOrders(page = 1, limit = 20, query = "") {
   return useQuery({
-    queryKey: ["orders", "all", page, limit],
-    queryFn: () => getAllOrders(page, limit),
+    queryKey: ["orders", "all", page, limit, query],
+    queryFn: () => getAllOrders(page, limit, query),
   });
 }
 

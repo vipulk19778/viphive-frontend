@@ -1,8 +1,8 @@
 import { apiClient } from "@/lib/api/client";
 import type {
-  AdminUser,
   Analytics,
   PaginatedPayments,
+  PaginatedUsers,
 } from "@/features/admin/types/admin.types";
 
 interface ApiResponse<T> {
@@ -16,14 +16,16 @@ export async function getAnalytics(days = 30) {
   return response.data.data;
 }
 
-export async function getUsers() {
-  const response = await apiClient.get<ApiResponse<AdminUser[]>>("/auth/users");
-  return response.data.data;
+export async function getUsers(page = 1, limit = 20, query = "") {
+  const response = await apiClient.get<PaginatedUsers>("/auth/users", {
+    params: { page, limit, q: query || undefined },
+  });
+  return response.data;
 }
 
-export async function getPayments(page = 1, limit = 20) {
+export async function getPayments(page = 1, limit = 20, query = "") {
   const response = await apiClient.get<PaginatedPayments>("/payments", {
-    params: { page, limit },
+    params: { page, limit, q: query || undefined },
   });
   return response.data;
 }

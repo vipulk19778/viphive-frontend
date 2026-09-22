@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { CreditCard } from "lucide-react";
 
+import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminSearch } from "@/features/admin/components/AdminSearch";
+import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { usePayments } from "@/features/admin/hooks/use-admin";
 import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminPaymentsPage() {
-  const { data, isPending, isError } = usePayments();
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const defaultLimit = useAdminPageSize();
+  const [limit, setLimit] = useState(defaultLimit);
+  const { data, isPending, isError } = usePayments(page, limit, search);
   if (isPending)
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500 dark:border-slate-800 dark:bg-slate-900">
@@ -29,6 +37,16 @@ export function AdminPaymentsPage() {
           </p>
         </div>
         <CreditCard className="brand-accent h-7 w-7" />
+      </div>
+      <div className="mt-6">
+        <AdminSearch
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          placeholder="Search payments"
+        />
       </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">
@@ -65,6 +83,16 @@ export function AdminPaymentsPage() {
           </tbody>
         </table>
       </div>
+      <AdminPagination
+        page={data.meta.page}
+        limit={limit}
+        totalPages={data.meta.totalPages}
+        onPageChange={setPage}
+        onLimitChange={(value) => {
+          setLimit(value);
+          setPage(1);
+        }}
+      />
     </main>
   );
 }

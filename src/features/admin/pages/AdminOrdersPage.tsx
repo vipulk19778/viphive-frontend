@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { PackageCheck } from "lucide-react";
 
+import { AdminPagination } from "@/features/admin/components/AdminPagination";
+import { AdminSearch } from "@/features/admin/components/AdminSearch";
+import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import {
   useAllOrders,
   useUpdateOrderStatus,
@@ -7,7 +11,11 @@ import {
 import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminOrdersPage() {
-  const { data, isPending, isError } = useAllOrders();
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const defaultLimit = useAdminPageSize();
+  const [limit, setLimit] = useState(defaultLimit);
+  const { data, isPending, isError } = useAllOrders(page, limit, search);
   const updateStatus = useUpdateOrderStatus();
 
   if (isPending)
@@ -35,6 +43,16 @@ export function AdminOrdersPage() {
           </p>
         </div>
         <PackageCheck className="brand-accent hidden h-7 w-7 sm:block" />
+      </div>
+      <div className="mt-6">
+        <AdminSearch
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          placeholder="Search orders"
+        />
       </div>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full text-left text-sm">
@@ -84,6 +102,16 @@ export function AdminOrdersPage() {
           </tbody>
         </table>
       </div>
+      <AdminPagination
+        page={data.meta.page}
+        limit={limit}
+        totalPages={data.meta.totalPages}
+        onPageChange={setPage}
+        onLimitChange={(value) => {
+          setLimit(value);
+          setPage(1);
+        }}
+      />
     </main>
   );
 }

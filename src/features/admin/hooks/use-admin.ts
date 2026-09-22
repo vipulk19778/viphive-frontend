@@ -13,13 +13,16 @@ export function useAnalytics(days = 30) {
   });
 }
 
-export function useUsers() {
-  return useQuery({ queryKey: ["admin", "users"], queryFn: getUsers });
+export function useUsers(page = 1, limit = 20, query = "") {
+  return useQuery({
+    queryKey: ["admin", "users", page, limit, query],
+    queryFn: () => getUsers(page, limit, query),
+  });
 }
 
-export function usePayments(page = 1, limit = 20) {
+export function usePayments(page = 1, limit = 20, query = "") {
   return useQuery({
-    queryKey: ["admin", "payments", page, limit],
-    queryFn: () => getPayments(page, limit),
+    queryKey: ["admin", "payments", page, limit, query],
+    queryFn: () => getPayments(page, limit, query),
   });
 }

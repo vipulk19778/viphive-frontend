@@ -6,6 +6,8 @@
 - Added server-side search pagination so searches can load beyond the first page only when matching results remain.
 - Debounced product search input updates to reduce API requests while typing.
 - Moved product sorting before pagination so all loaded pages follow one global order.
+- Added button-based pagination and search controls to admin Products, Orders, Payments, and Users sections.
+- Added responsive admin row limits, icon-only pagination buttons, and wrapper-level search focus styling.
 
 ### Changed
 
