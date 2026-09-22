@@ -15,6 +15,8 @@
 - Added field-specific admin search placeholders and order-ID search support.
 - Restricted protected routes to verified users and simplified admin Payments search/table fields.
 - Added clear empty and no-match states to admin data tables.
+- Replaced the category filter scrollbar with a touch-friendly Swiper strip.
+- Added complete product categories to the products API metadata for filtering.
 
 ### Changed
 

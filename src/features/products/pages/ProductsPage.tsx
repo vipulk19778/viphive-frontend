@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Filter, SlidersHorizontal } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { BestProductsSection } from "@/features/products/components/BestProductsSection";
@@ -101,10 +102,7 @@ export function ProductsPage() {
 
   const products = data.pages.flatMap((page) => page.data);
   const total = data.pages.at(-1)?.meta.total ?? 0;
-  const categories = [
-    "All",
-    ...Array.from(new Set(products.map((product) => product.category))),
-  ];
+  const categories = ["All", ...(data.pages[0]?.meta.categories ?? [])];
   const filteredProducts = products
     .filter((product) => category === "All" || product.category === category)
     .filter(
@@ -123,18 +121,23 @@ export function ProductsPage() {
       <BestProductsSection products={bestProducts} />
 
       <section className="border-b border-slate-200 py-5 dark:border-slate-800">
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <Swiper
+          spaceBetween={8}
+          slidesPerView="auto"
+          className="-mx-4 px-4 pb-1 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
+        >
           {categories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setCategory(item)}
-              className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition ${category === item ? "brand-primary brand-primary-hover" : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"}`}
-            >
-              {item}
-            </button>
+            <SwiperSlide key={item} className="w-auto!">
+              <button
+                type="button"
+                onClick={() => setCategory(item)}
+                className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition ${category === item ? "brand-primary brand-primary-hover" : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"}`}
+              >
+                {item}
+              </button>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </section>
 
       <section id="catalog" className="mt-7">

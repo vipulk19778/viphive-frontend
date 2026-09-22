@@ -28,5 +28,6 @@ export interface PaginatedProducts {
     totalPages: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
+    categories: string[];
   };
 }
