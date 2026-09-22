@@ -8,6 +8,7 @@
 - Moved product sorting before pagination so all loaded pages follow one global order.
 - Added button-based pagination and search controls to admin Products, Orders, Payments, and Users sections.
 - Added responsive admin row limits, icon-only pagination buttons, and wrapper-level search focus styling.
+- Replaced the native product delete alert with a shared confirmation modal.
 
 ### Changed
 

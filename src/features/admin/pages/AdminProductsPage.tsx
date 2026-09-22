@@ -4,6 +4,7 @@ import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminSearch } from "@/features/admin/components/AdminSearch";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
+import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import {
   useCreateProduct,
   useDeleteProduct,
@@ -38,6 +39,7 @@ export function AdminProductsPage() {
   const [form, setForm] = useState<ProductInput>(emptyForm);
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   const openCreate = () => {
     setEditing(null);
@@ -191,10 +193,7 @@ export function AdminProductsPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (window.confirm(`Delete ${product.name}?`))
-                      deleteMutation.mutate(product._id);
-                  }}
+                  onClick={() => setProductToDelete(product)}
                   aria-label={`Delete ${product.name}`}
                   className="cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-rose-50 hover:text-rose-600"
                 >
@@ -213,6 +212,22 @@ export function AdminProductsPage() {
         onLimitChange={(value) => {
           setLimit(value);
           setPage(1);
+        }}
+      />
+      <ConfirmationModal
+        open={Boolean(productToDelete)}
+        title="Delete product?"
+        description={`Are you sure you want to delete ${productToDelete?.name ?? "this product"}? This action cannot be undone.`}
+        confirmLabel="Delete"
+        isPending={deleteMutation.isPending}
+        onOpenChange={(open) => {
+          if (!open && !deleteMutation.isPending) setProductToDelete(null);
+        }}
+        onConfirm={() => {
+          if (!productToDelete) return;
+          deleteMutation.mutate(productToDelete._id, {
+            onSuccess: () => setProductToDelete(null),
+          });
         }}
       />
       {isOpen && (
