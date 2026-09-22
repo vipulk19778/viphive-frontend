@@ -8,6 +8,7 @@ import {
   useUpdateProduct,
 } from "@/features/products/hooks/use-products";
 import { formatCurrency } from "@/utils/format-currency";
+import { optimizeImageUrl } from "@/utils/optimize-image-url";
 import type {
   Product,
   ProductInput,
@@ -127,8 +128,12 @@ export function AdminProductsPage() {
             >
               <div className="flex items-center gap-3">
                 <img
-                  src={product.imageUrl}
+                  src={optimizeImageUrl(product.imageUrl, 128)}
                   alt=""
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                  decoding="async"
                   className="h-12 w-12 rounded-xl object-cover"
                 />
                 <div>

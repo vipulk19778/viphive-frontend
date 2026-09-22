@@ -1,22 +1,94 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Filter, SlidersHorizontal } from "lucide-react";
 
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { BestProductsSection } from "@/features/products/components/BestProductsSection";
-import { useProducts } from "@/features/products/hooks/use-products";
+import { useInfiniteProducts } from "@/features/products/hooks/use-products";
 import { useCatalogStore } from "@/stores/catalog.store";
 
 export function ProductsPage() {
-  const { data, isPending, isError } = useProducts(1, 12);
+  const {
+    data,
+    isPending,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteProducts(12);
   const query = useCatalogStore((state) => state.query);
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("featured");
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadMoreElement = loadMoreRef.current;
+    if (!loadMoreElement || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isFetchingNextPage) {
+          void fetchNextPage();
+        }
+      },
+      { rootMargin: "480px 0px" },
+    );
+
+    observer.observe(loadMoreElement);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   if (isPending) {
     return (
-      <main className="mx-auto max-w-7xl px-4 py-12">
-        <div className="h-64 animate-pulse rounded-3xl bg-slate-200 dark:bg-slate-800" />
-        <p className="mt-8 text-center text-slate-500">Loading products...</p>
+      <main className="mx-auto max-w-360 px-4 pb-12 sm:px-6 lg:px-8">
+        <section className="border-b border-slate-200 py-5 dark:border-slate-800 sm:py-6">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="brand-accent text-xs font-bold uppercase tracking-[0.2em]">
+                Top picks
+              </p>
+              <h1 className="font-display mt-1 text-2xl font-bold text-slate-950 dark:text-white sm:text-3xl">
+                Best products for you
+              </h1>
+            </div>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 4 }, (_, index) => (
+              <div
+                key={index}
+                className="h-44 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800 sm:h-48"
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="border-b border-slate-200 py-5 dark:border-slate-800">
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {Array.from({ length: 5 }, (_, index) => (
+              <div
+                key={index}
+                className="h-9 w-24 shrink-0 animate-pulse rounded-full bg-slate-100 dark:bg-slate-900"
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-7">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div className="h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+              <div className="mt-2 h-7 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+            </div>
+            <div className="h-10 w-40 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-900" />
+          </div>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 8 }, (_, index) => (
+              <div
+                key={index}
+                className="h-80 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800"
+              />
+            ))}
+          </div>
+        </section>
       </main>
     );
   }
@@ -27,12 +99,14 @@ export function ProductsPage() {
     );
   }
 
+  const products = data.pages.flatMap((page) => page.data);
+  const total = data.pages.at(-1)?.meta.total ?? 0;
   const categories = [
     "All",
-    ...Array.from(new Set(data.data.map((product) => product.category))),
+    ...Array.from(new Set(products.map((product) => product.category))),
   ];
   const normalizedQuery = query.trim().toLowerCase();
-  const filteredProducts = data.data
+  const filteredProducts = products
     .filter((product) => category === "All" || product.category === category)
     .filter(
       (product) =>
@@ -47,7 +121,7 @@ export function ProductsPage() {
       if (sort === "rating") return second.rating - first.rating;
       return 0;
     });
-  const bestProducts = [...data.data]
+  const bestProducts = [...products]
     .sort((first, second) => second.rating - first.rating)
     .slice(0, 8);
 
@@ -74,13 +148,15 @@ export function ProductsPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              {filteredProducts.length} of {data.meta.total} products
+              {normalizedQuery || category !== "All"
+                ? `${filteredProducts.length} matching products`
+                : `${total} products to explore`}
             </p>
             <h2 className="font-display mt-1 text-2xl font-bold text-slate-950 dark:text-white">
               {normalizedQuery
                 ? `Results for “${query}”`
                 : category === "All"
-                  ? "Recommended for you"
+                  ? "All products"
                   : category}
             </h2>
           </div>
@@ -114,6 +190,18 @@ export function ProductsPage() {
             {filteredProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
+          </div>
+        )}
+        {hasNextPage && (
+          <div
+            ref={loadMoreRef}
+            className="flex min-h-20 items-center justify-center"
+          >
+            {isFetchingNextPage && (
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Loading more products...
+              </p>
+            )}
           </div>
         )}
       </section>

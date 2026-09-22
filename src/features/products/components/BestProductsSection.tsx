@@ -1,8 +1,7 @@
-import { Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-
 import { BestProductCard } from "@/features/products/components/BestProductCard";
 import type { Product } from "@/features/products/types/product.types";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 type BestProductsSectionProps = {
   products: Product[];
@@ -11,7 +10,7 @@ type BestProductsSectionProps = {
 export function BestProductsSection({ products }: BestProductsSectionProps) {
   return (
     <section className="border-b border-slate-200 py-5 dark:border-slate-800 sm:py-6">
-      <div className="mb-4 flex items-end justify-between gap-4">
+      <div className="mb-5 flex items-end justify-between gap-4">
         <div>
           <p className="brand-accent text-xs font-bold uppercase tracking-[0.2em]">
             Top picks
@@ -20,25 +19,23 @@ export function BestProductsSection({ products }: BestProductsSectionProps) {
             Best products for you
           </h1>
         </div>
-        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-          Swipe to explore
+        <span className="hidden text-xs font-semibold text-slate-500 dark:text-slate-400 sm:block">
+          Curated picks
         </span>
       </div>
       <Swiper
-        modules={[Autoplay]}
-        autoplay={{ delay: 4500, disableOnInteraction: false }}
-        spaceBetween={12}
-        slidesPerView={1.15}
+        spaceBetween={16}
+        slidesPerView={1.1}
         breakpoints={{
-          640: { slidesPerView: 2.2 },
-          1024: { slidesPerView: 3.5 },
-          1280: { slidesPerView: 4.5 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+          1280: { slidesPerView: 4 },
         }}
-        className="best-products-swiper"
+        className="-mx-4 px-4 pb-3 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
       >
-        {products.map((product) => (
-          <SwiperSlide key={product._id}>
-            <BestProductCard product={product} />
+        {products.map((product, index) => (
+          <SwiperSlide key={product._id} className="h-auto">
+            <BestProductCard product={product} priority={index < 4} />
           </SwiperSlide>
         ))}
       </Swiper>

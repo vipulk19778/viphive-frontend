@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/Card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useProduct } from "@/features/products/hooks/use-products";
 import { formatCurrency } from "@/utils/format-currency";
+import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 type ProductDetailPageProps = {
   productId: string;
@@ -43,8 +44,12 @@ export function ProductDetailPage({ productId }: ProductDetailPageProps) {
       <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] md:items-center">
         <div className="overflow-hidden rounded-3xl bg-slate-100 dark:bg-slate-900">
           <img
-            src={product.imageUrl}
+            src={optimizeImageUrl(product.imageUrl, 1200)}
             alt={product.name}
+            width="1200"
+            height="1200"
+            fetchPriority="high"
+            decoding="async"
             className="aspect-square w-full object-cover"
           />
         </div>

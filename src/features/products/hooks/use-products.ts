@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   createProduct,
@@ -13,6 +18,16 @@ export function useProducts(page = 1, limit = 12) {
   return useQuery({
     queryKey: ["products", page, limit],
     queryFn: () => getProducts(page, limit),
+  });
+}
+
+export function useInfiniteProducts(limit = 12) {
+  return useInfiniteQuery({
+    queryKey: ["products", "infinite", limit],
+    queryFn: ({ pageParam }) => getProducts(pageParam, limit),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined,
   });
 }
 

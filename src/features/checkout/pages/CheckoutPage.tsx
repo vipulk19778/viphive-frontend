@@ -19,6 +19,7 @@ import {
   useVerifyPayment,
 } from "@/features/payments/hooks/use-payments";
 import { formatCurrency } from "@/utils/format-currency";
+import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -272,8 +273,12 @@ export function CheckoutPage() {
               {items.map((item) => (
                 <div key={item.productId} className="flex items-center gap-3">
                   <img
-                    src={item.image}
+                    src={optimizeImageUrl(item.image, 128)}
                     alt=""
+                    width="48"
+                    height="48"
+                    loading="lazy"
+                    decoding="async"
                     className="h-12 w-12 rounded-lg object-cover"
                   />
                   <div className="min-w-0 flex-1">

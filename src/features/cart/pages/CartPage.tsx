@@ -4,6 +4,7 @@ import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { formatCurrency } from "@/utils/format-currency";
+import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 export function CartPage() {
   const items = useCartStore((state) => state.items);
@@ -64,8 +65,12 @@ export function CartPage() {
             >
               {item.image && (
                 <img
-                  src={item.image}
+                  src={optimizeImageUrl(item.image, 256)}
                   alt={item.name}
+                  width="256"
+                  height="176"
+                  loading="lazy"
+                  decoding="async"
                   className="h-44 w-full shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
                 />
               )}

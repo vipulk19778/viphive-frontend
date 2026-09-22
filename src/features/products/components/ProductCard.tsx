@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/Card";
 import { Chip } from "@/components/ui/Chip";
 import type { Product } from "@/features/products/types/product.types";
 import { formatCurrency } from "@/utils/format-currency";
+import { optimizeImageUrl } from "@/utils/optimize-image-url";
 import { ProductCartControl } from "./ProductCartControl";
 
 type ProductCardProps = {
@@ -23,10 +24,12 @@ export function ProductCard({ product }: ProductCardProps) {
         className="relative block overflow-hidden bg-slate-100 dark:bg-slate-800"
       >
         <img
-          src={product.imageUrl}
+          src={optimizeImageUrl(product.imageUrl, 640)}
           alt={product.name}
           loading="lazy"
           decoding="async"
+          width="640"
+          height="480"
           className="aspect-4/3 w-full object-cover transition duration-500 group-hover:scale-105"
         />
         {product.stock < 5 && product.stock > 0 && (
