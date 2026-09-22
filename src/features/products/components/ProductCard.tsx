@@ -25,6 +25,8 @@ export function ProductCard({ product }: ProductCardProps) {
         <img
           src={product.imageUrl}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           className="aspect-4/3 w-full object-cover transition duration-500 group-hover:scale-105"
         />
         {product.stock < 5 && product.stock > 0 && (

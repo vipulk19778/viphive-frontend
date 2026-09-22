@@ -18,6 +18,8 @@ export function BestProductCard({ product }: BestProductCardProps) {
       <img
         src={product.imageUrl}
         alt={product.name}
+        loading="lazy"
+        decoding="async"
         className="h-full w-2/5 object-cover transition duration-500 group-hover:scale-105"
       />
       <div className="min-w-0 flex-1 p-3">

@@ -7,7 +7,7 @@ import { useProducts } from "@/features/products/hooks/use-products";
 import { useCatalogStore } from "@/stores/catalog.store";
 
 export function ProductsPage() {
-  const { data, isPending, isError } = useProducts(1, 100);
+  const { data, isPending, isError } = useProducts(1, 12);
   const query = useCatalogStore((state) => state.query);
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("featured");
