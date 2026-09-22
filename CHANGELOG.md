@@ -12,6 +12,8 @@
 - Added a 10px backdrop blur when the confirmation modal opens.
 - Improved admin mobile pagination, debounced admin searches, and sortable table headers.
 - Consolidated admin search into the shared header search field.
+- Added field-specific admin search placeholders and order-ID search support.
+- Restricted protected routes to verified users and simplified admin Payments search/table fields.
 
 ### Changed
 

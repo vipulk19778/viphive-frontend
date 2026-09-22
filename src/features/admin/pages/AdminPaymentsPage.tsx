@@ -81,17 +81,6 @@ export function AdminPaymentsPage() {
                   }}
                 />
               </th>
-              <th className="px-5 py-4">
-                <AdminSortableHeader
-                  label="Status"
-                  sortKey="paymentStatus"
-                  activeSort={sort}
-                  onSort={(value) => {
-                    setSort(value);
-                    setPage(1);
-                  }}
-                />
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -108,11 +97,6 @@ export function AdminPaymentsPage() {
                 </td>
                 <td className="px-5 py-4 font-semibold text-slate-950 dark:text-white">
                   {formatCurrency(payment.totalAmount)}
-                </td>
-                <td className="px-5 py-4">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold capitalize text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                    {payment.paymentStatus}
-                  </span>
                 </td>
               </tr>
             ))}

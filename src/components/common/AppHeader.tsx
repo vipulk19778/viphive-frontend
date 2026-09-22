@@ -43,6 +43,16 @@ export function AppHeader() {
   const activeQuery = isAdminSearchPage ? adminQuery : query;
   const setActiveQuery = isAdminSearchPage ? setAdminQuery : setQuery;
   const [searchInput, setSearchInput] = useState(activeQuery);
+  const adminSearchPlaceholder =
+    pathname === "/admin/products"
+      ? "Search name, description, category"
+      : pathname === "/admin/orders"
+        ? "Search order, customer, status"
+        : pathname === "/admin/payments"
+          ? "Search order, payment ID"
+          : pathname === "/admin/users"
+            ? "Search user, email, role, status"
+            : "Search this admin section";
   const firstName = user?.name?.trim().split(/\s+/)[0] ?? "Account";
   const isAdmin = user?.role === "admin";
 
@@ -90,7 +100,7 @@ export function AppHeader() {
               onChange={(event) => setSearchInput(event.target.value)}
               placeholder={
                 isAdminSearchPage
-                  ? "Search this admin section"
+                  ? adminSearchPlaceholder
                   : "Search for products, brands and more"
               }
               className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
@@ -224,9 +234,7 @@ export function AppHeader() {
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
             placeholder={
-              isAdminSearchPage
-                ? "Search this admin section"
-                : "Search products"
+              isAdminSearchPage ? adminSearchPlaceholder : "Search products"
             }
             className="brand-search-input min-w-0 flex-1 bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
           />
