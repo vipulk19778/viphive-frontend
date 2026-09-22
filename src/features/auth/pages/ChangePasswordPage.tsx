@@ -4,6 +4,7 @@ import { KeyRound } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useAuthStore } from "@/stores/auth.store";
 
 import {
@@ -233,11 +234,10 @@ export function ChangePasswordPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
               New password
-              <input
-                type="password"
+              <PasswordInput
                 autoComplete="new-password"
                 {...register("newPassword")}
-                className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="brand-accent-focus w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
               {errors.newPassword && (
                 <span className="mt-1 block text-xs text-rose-500">
@@ -247,11 +247,10 @@ export function ChangePasswordPage() {
             </label>
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
               Confirm password
-              <input
-                type="password"
+              <PasswordInput
                 autoComplete="new-password"
                 {...register("confirmPassword")}
-                className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="brand-accent-focus w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
               {errors.confirmPassword && (
                 <span className="mt-1 block text-xs text-rose-500">

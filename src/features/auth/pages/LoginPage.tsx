@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useLogin } from "../hooks/useAuth";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 
@@ -55,11 +56,10 @@ export function LoginPage() {
         </label>
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
           Password
-          <input
-            type="password"
+          <PasswordInput
             autoComplete="current-password"
             {...register("password")}
-            className="brand-accent-focus mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="brand-accent-focus w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
           {errors.password && (
             <span className="mt-1 block text-xs font-medium text-rose-500">
