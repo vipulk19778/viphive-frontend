@@ -18,34 +18,6 @@ export function AdminPagination({
   return (
     <div className="flex flex-col gap-3 px-1 py-4 text-sm text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center justify-between gap-3 sm:justify-start">
-        <span>
-          Page {page} of {Math.max(totalPages, 1)}
-        </span>
-        <div className="flex gap-2 sm:order-first">
-        <button
-          type="button"
-          disabled={page === 1}
-          onClick={() => onPageChange(page - 1)}
-          aria-label="Previous page"
-          title="Previous page"
-          className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-800"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          disabled={page === totalPages}
-          onClick={() => onPageChange(page + 1)}
-          aria-label="Next page"
-          title="Next page"
-          className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-800"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between gap-3 sm:justify-start">
         <span>Rows</span>
         <select
           value={limit}
@@ -59,6 +31,34 @@ export function AdminPagination({
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 sm:justify-start">
+        <span>
+          Page {page} of {Math.max(totalPages, 1)}
+        </span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            disabled={page === 1}
+            onClick={() => onPageChange(page - 1)}
+            aria-label="Previous page"
+            title="Previous page"
+            className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-800"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            disabled={page === totalPages}
+            onClick={() => onPageChange(page + 1)}
+            aria-label="Next page"
+            title="Next page"
+            className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-800"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
