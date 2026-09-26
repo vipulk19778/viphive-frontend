@@ -5,7 +5,7 @@ import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
-import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
+import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 import { useAdminSearchStore } from "@/stores/admin-search.store";
 import {
   useCreateProduct,

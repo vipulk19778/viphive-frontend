@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 
 import { useAnalytics } from "../hooks/use-admin";
-import { Card } from "@/components/ui/Card";
-import { Chip } from "@/components/ui/Chip";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminDashboardPage() {
@@ -62,9 +62,9 @@ export function AdminDashboardPage() {
             Monitor orders, payments, and revenue across VIPHive.
           </p>
         </div>
-        <Chip variant="success" className="hidden sm:inline-flex">
+        <Badge variant="success" className="hidden sm:inline-flex">
           Last 30 days
-        </Chip>
+        </Badge>
       </div>
       <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map(({ label, value, icon: Icon, to }) => (

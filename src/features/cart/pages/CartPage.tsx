@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
-import { Card } from "@/components/ui/Card";
+import { Card } from "@/components/ui/card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { formatCurrency } from "@/utils/format-currency";
 import { optimizeImageUrl } from "@/utils/optimize-image-url";

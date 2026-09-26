@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
-import { PasswordInput } from "@/components/ui/PasswordInput";
+import { PasswordInput } from "@/components/common/PasswordInput";
 import { useLogin } from "../hooks/useAuth";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 

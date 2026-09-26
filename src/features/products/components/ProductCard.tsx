@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
-import { Card } from "@/components/ui/Card";
-import { Chip } from "@/components/ui/Chip";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import type { Product } from "@/features/products/types/product.types";
 import { formatCurrency } from "@/utils/format-currency";
 import { optimizeImageUrl } from "@/utils/optimize-image-url";
@@ -48,9 +48,9 @@ export function ProductCard({ product }: ProductCardProps) {
           </h3>
         </Link>
         <div className="mt-2 flex items-center gap-2">
-          <Chip variant="success" className="gap-1 rounded px-2 py-0.5">
+          <Badge variant="success" className="gap-1 rounded px-2 py-0.5">
             {product.rating.toFixed(1)} ★
-          </Chip>
+          </Badge>
           <span className="text-xs text-slate-400">
             {product.numReviews} reviews
           </span>

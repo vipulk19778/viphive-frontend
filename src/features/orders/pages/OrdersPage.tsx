@@ -8,8 +8,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { Card } from "@/components/ui/Card";
-import { Chip } from "@/components/ui/Chip";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { useMyOrders } from "@/features/orders/hooks/use-orders";
 import { formatCurrency } from "@/utils/format-currency";
 
@@ -98,14 +98,14 @@ export function OrdersPage() {
                 <p className="font-bold text-slate-950 dark:text-white">
                   Order #{order._id.slice(-8)}
                 </p>
-                <Chip
+                <Badge
                   variant={status.variant}
                   className="gap-1.5 border border-current/15 text-sm font-semibold"
                   title={`Order status: ${status.label}`}
                 >
                   <StatusIcon className="h-3.5 w-3.5" aria-hidden="true" />
                   {status.label}
-                </Chip>
+                </Badge>
               </div>
               <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
                 {order.items.length} item(s) ·{" "}

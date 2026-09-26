@@ -1,6 +1,8 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState, type InputHTMLAttributes } from "react";
 
+import { Input } from "../ui/input";
+
 type PasswordInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
 export function PasswordInput({
@@ -11,7 +13,7 @@ export function PasswordInput({
 
   return (
     <span className="relative mt-2 block">
-      <input
+      <Input
         {...props}
         type={isVisible ? "text" : "password"}
         className={`${className} pr-12`}

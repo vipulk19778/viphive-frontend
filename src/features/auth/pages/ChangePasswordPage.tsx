@@ -4,7 +4,7 @@ import { KeyRound } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { PasswordInput } from "@/components/ui/PasswordInput";
+import { PasswordInput } from "@/components/common/PasswordInput";
 import { useAuthStore } from "@/stores/auth.store";
 
 import {

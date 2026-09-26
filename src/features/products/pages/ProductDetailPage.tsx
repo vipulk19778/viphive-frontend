@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 
-import { Card } from "@/components/ui/Card";
+import { Card } from "@/components/ui/card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useProduct } from "@/features/products/hooks/use-products";
 import { formatCurrency } from "@/utils/format-currency";

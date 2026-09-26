@@ -1,5 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 
+import { cn } from "@/lib/utils";
+
 const buttonVariants = {
   primary: "brand-primary brand-primary-hover",
   secondary:
@@ -29,7 +31,12 @@ export function Button({
   return (
     <button
       type={type}
-      className={`inline-flex cursor-pointer items-center justify-center rounded-xl text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${buttonSizes[size]} ${buttonVariants[variant]} ${className}`}
+      className={cn(
+        "inline-flex cursor-pointer items-center justify-center rounded-xl text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
+        buttonSizes[size],
+        buttonVariants[variant],
+        className,
+      )}
       {...props}
     />
   );

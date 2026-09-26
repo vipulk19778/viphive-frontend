@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+- Replaced Radix UI dependencies with local shadcn-style Button, Card, Badge, Input, and Dialog primitives.
+- Normalized shared primitives to shadcn's standard lowercase files under `src/components/ui`.
+- Added shadcn component configuration and preserved TanStack Router route-level code splitting.
+- Moved shared UI imports to the canonical feature-safe component paths without changing the existing visual styling.
 - Added descriptive metadata, canonical URL, crawler directives, and Open Graph tags for homepage SEO.
 - Added a homepage loading skeleton that mirrors the loaded layout to avoid layout shift.
 - Fixed Featured sorting to rank products instead of preserving search/API order.

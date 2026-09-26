@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { Chip } from "@/components/ui/Chip";
+import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/features/products/types/product.types";
 import { formatCurrency } from "@/utils/format-currency";
 import { optimizeImageUrl } from "@/utils/optimize-image-url";
@@ -37,12 +37,12 @@ export function BestProductCard({
         <h2 className="mt-2 line-clamp-2 text-base font-bold leading-5 text-slate-950 dark:text-white">
           {product.name}
         </h2>
-        <Chip
+        <Badge
           variant="success"
           className="mt-3 rounded px-1.5 py-0.5 text-[11px]"
         >
           {product.rating.toFixed(1)} ★
-        </Chip>
+        </Badge>
         <p className="mt-3 text-lg font-bold text-slate-950 dark:text-white">
           {formatCurrency(product.price)}
         </p>
