@@ -34,10 +34,8 @@ export function useLogin() {
     mutationFn: (data: LoginRequest) => login(data),
 
     onSuccess: (data) => {
-      const token = data.token ?? data.accessToken;
-
-      if (data.user && token) {
-        setAuth(data.user, token);
+      if (data.user && data.accessToken && data.refreshToken) {
+        setAuth(data.user, data.accessToken, data.refreshToken);
       }
     },
   });
@@ -50,10 +48,8 @@ export function useVerifyOtp() {
     mutationFn: (data: VerifyOtpRequest) => verifyOtp(data),
 
     onSuccess: (data) => {
-      const token = data.token ?? data.accessToken;
-
-      if (data.user && token) {
-        setAuth(data.user, token);
+      if (data.user && data.accessToken && data.refreshToken) {
+        setAuth(data.user, data.accessToken, data.refreshToken);
       }
     },
   });

@@ -50,8 +50,8 @@ export interface User {
 
 export interface AuthResponse {
   message?: string;
-  token?: string;
   accessToken?: string;
+  refreshToken?: string;
   user?: User;
 }
 
@@ -60,7 +60,8 @@ export interface AuthApiPayload {
   name: string;
   email: string;
   role?: string | number;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   verified?: boolean;
 }
 

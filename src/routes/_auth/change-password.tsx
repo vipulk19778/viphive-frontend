@@ -5,9 +5,9 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const Route = createFileRoute("/_auth/change-password")({
   beforeLoad: () => {
-    const { user, token } = useAuthStore.getState();
+    const { user, accessToken } = useAuthStore.getState();
 
-    if (!user || !token) throw redirect({ to: "/login" });
+    if (!user || !accessToken) throw redirect({ to: "/login" });
   },
   component: ChangePasswordPage,
 });

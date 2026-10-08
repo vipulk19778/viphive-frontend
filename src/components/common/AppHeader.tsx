@@ -28,8 +28,8 @@ export function AppHeader() {
   });
   const isAdminSearchPage = pathname.startsWith("/admin/");
   const user = useAuthStore((state) => state.user);
-  const token = useAuthStore((state) => state.token);
-  const isAuthenticated = Boolean(user && token);
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const isAuthenticated = Boolean(user && accessToken);
   const logout = useAuthStore((state) => state.logout);
   const mode = useThemeStore((state) => state.mode);
   const toggleMode = useThemeStore((state) => state.toggleMode);

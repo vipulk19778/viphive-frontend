@@ -96,7 +96,8 @@ export async function resetPassword(
 
 function normalizeAuthResponse(payload: AuthApiPayload): AuthResponse {
   return {
-    token: payload.token,
+    accessToken: payload.accessToken,
+    refreshToken: payload.refreshToken,
     user: {
       _id: payload._id,
       name: payload.name,

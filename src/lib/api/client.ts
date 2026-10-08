@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { InternalAxiosRequestConfig } from "axios";
 
 import { useAuthStore } from "@/stores/auth.store";
 
@@ -17,19 +18,66 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
+  const accessToken = useAuthStore.getState().accessToken;
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
 
   return config;
 });
 
+let refreshRequest: Promise<void> | null = null;
+
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: unknown) => {
+  async (error: unknown) => {
     if (axios.isAxiosError(error)) {
+      const originalRequest = error.config as
+        (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined;
+      const refreshToken = useAuthStore.getState().refreshToken;
+      const isRefreshRequest = originalRequest?.url?.endsWith("/auth/refresh");
+
+      if (
+        error.response?.status === 401 &&
+        originalRequest &&
+        !originalRequest._retry &&
+        refreshToken &&
+        !isRefreshRequest
+      ) {
+        originalRequest._retry = true;
+
+        try {
+          refreshRequest ??= axios
+            .post(`${API_URL}/auth/refresh`, { refreshToken })
+            .then((response) => {
+              const tokens = response.data?.data;
+
+              if (!tokens?.accessToken || !tokens?.refreshToken) {
+                throw new Error("Invalid token refresh response.");
+              }
+
+              useAuthStore
+                .getState()
+                .setTokens(tokens.accessToken, tokens.refreshToken);
+            })
+            .finally(() => {
+              refreshRequest = null;
+            });
+
+          await refreshRequest;
+
+          const accessToken = useAuthStore.getState().accessToken;
+          if (accessToken) {
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          }
+
+          return apiClient(originalRequest);
+        } catch {
+          useAuthStore.getState().logout();
+        }
+      }
+
       const responseData = error.response?.data as
         | { message?: string; error?: string; errors?: { message?: string }[] }
         | undefined;

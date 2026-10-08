@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- Added explicit access-token authentication with automatic refresh-token renewal.
 - Replaced Radix UI dependencies with local shadcn-style Button, Card, Badge, Input, and Dialog primitives.
 - Normalized shared primitives to shadcn's standard lowercase files under `src/components/ui`.
 - Added shadcn component configuration and preserved TanStack Router route-level code splitting.
