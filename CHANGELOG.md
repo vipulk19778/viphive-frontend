@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+- Added a production Vercel deployment workflow gated to the main and master branches.
+- Patched the frontend production dependency audit chain through `source-map-js`.
+- Expanded frontend CI to validate development and staging branches, audit production dependencies, and cancel superseded runs.
 - Fixed auth route redirects by validating the current user, access token, and refresh token instead of stale persisted authentication state.
 - Added visible fallback states for missing or failed product images.
 - Added stable vendor chunks for shared React, router, data, forms, icons, and carousel dependencies alongside route-level code splitting.
