@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+- Fixed auth route redirects by validating the current user, access token, and refresh token instead of stale persisted authentication state.
+- Added visible fallback states for missing or failed product images.
+- Added stable vendor chunks for shared React, router, data, forms, icons, and carousel dependencies alongside route-level code splitting.
+- Added progressive image loading with low-resolution blurred placeholders, lazy loading, and smooth full-resolution reveals.
 - Added explicit access-token authentication with automatic refresh-token renewal.
 - Replaced Radix UI dependencies with local shadcn-style Button, Card, Badge, Input, and Dialog primitives.
 - Normalized shared primitives to shadcn's standard lowercase files under `src/components/ui`.

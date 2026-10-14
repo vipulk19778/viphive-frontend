@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 
+import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/features/products/types/product.types";
 import { formatCurrency } from "@/utils/format-currency";
-import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 type BestProductCardProps = {
   product: Product;
@@ -20,15 +20,14 @@ export function BestProductCard({
       params={{ productId: product._id }}
       className="group flex h-44 overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 sm:h-48"
     >
-      <img
-        src={optimizeImageUrl(product.imageUrl, 320)}
+      <ProgressiveImage
+        src={product.imageUrl}
         alt={product.name}
-        loading={priority ? "eager" : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
-        decoding="async"
-        width="160"
-        height="144"
-        className="h-full w-[42%] object-cover transition duration-500 group-hover:scale-105"
+        width={160}
+        height={144}
+        priority={priority}
+        className="h-full w-[42%]"
+        imageClassName="transition duration-500 group-hover:scale-105"
       />
       <div className="min-w-0 flex-1 p-4">
         <p className="brand-accent truncate text-[11px] font-bold uppercase tracking-[0.14em]">

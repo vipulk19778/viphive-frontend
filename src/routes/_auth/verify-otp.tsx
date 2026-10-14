@@ -5,7 +5,11 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const Route = createFileRoute("/_auth/verify-otp")({
   beforeLoad: () => {
-    if (useAuthStore.getState().isAuthenticated) throw redirect({ to: "/" });
+    const { user, accessToken, refreshToken } = useAuthStore.getState();
+
+    if (user && accessToken && refreshToken) {
+      throw redirect({ to: "/" });
+    }
     if (!useAuthStore.getState().otpEmail) throw redirect({ to: "/login" });
   },
   component: VerifyOtpPage,

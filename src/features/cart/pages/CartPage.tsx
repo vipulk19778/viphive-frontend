@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
+import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { Card } from "@/components/ui/card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { formatCurrency } from "@/utils/format-currency";
-import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 export function CartPage() {
   const items = useCartStore((state) => state.items);
@@ -63,17 +63,13 @@ export function CartPage() {
               variant="elevated"
               className="flex w-full min-w-0 max-w-full flex-col overflow-hidden p-4 sm:flex-row sm:gap-4"
             >
-              {item.image && (
-                <img
-                  src={optimizeImageUrl(item.image, 256)}
-                  alt={item.name}
-                  width="256"
-                  height="176"
-                  loading="lazy"
-                  decoding="async"
-                  className="h-44 w-full shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
-                />
-              )}
+              <ProgressiveImage
+                src={item.image}
+                alt={item.name}
+                width={256}
+                height={176}
+                className="h-44 w-full shrink-0 rounded-xl sm:h-28 sm:w-28"
+              />
               <div className="min-w-0 flex-1 pt-4 sm:pt-0">
                 <div>
                   <h2 className="truncate font-bold text-slate-950 dark:text-white">

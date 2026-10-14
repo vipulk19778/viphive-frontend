@@ -5,7 +5,11 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const Route = createFileRoute("/_auth/forgot-password")({
   beforeLoad: () => {
-    if (useAuthStore.getState().isAuthenticated) throw redirect({ to: "/" });
+    const { user, accessToken, refreshToken } = useAuthStore.getState();
+
+    if (user && accessToken && refreshToken) {
+      throw redirect({ to: "/" });
+    }
   },
   component: ForgotPasswordPage,
 });

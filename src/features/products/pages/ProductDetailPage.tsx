@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
+import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { ArrowLeft, Check, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useProduct } from "@/features/products/hooks/use-products";
 import { formatCurrency } from "@/utils/format-currency";
-import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 type ProductDetailPageProps = {
   productId: string;
@@ -43,14 +43,13 @@ export function ProductDetailPage({ productId }: ProductDetailPageProps) {
       </Link>
       <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] md:items-center">
         <div className="overflow-hidden rounded-3xl bg-slate-100 dark:bg-slate-900">
-          <img
-            src={optimizeImageUrl(product.imageUrl, 1200)}
+          <ProgressiveImage
+            src={product.imageUrl}
             alt={product.name}
-            width="1200"
-            height="1200"
-            fetchPriority="high"
-            decoding="async"
-            className="aspect-square w-full object-cover"
+            width={1200}
+            height={1200}
+            priority
+            className="aspect-square w-full"
           />
         </div>
         <Card as="section" className="rounded-3xl p-7 shadow-sm sm:p-9">

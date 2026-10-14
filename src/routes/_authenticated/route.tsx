@@ -5,8 +5,8 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: () => {
-    const { user, accessToken } = useAuthStore.getState();
-    const isAuthenticated = Boolean(user && accessToken);
+    const { user, accessToken, refreshToken } = useAuthStore.getState();
+    const isAuthenticated = Boolean(user && accessToken && refreshToken);
 
     if (!isAuthenticated) {
       throw redirect({

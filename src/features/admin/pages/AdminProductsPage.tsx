@@ -1,6 +1,7 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
 import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
+import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
 import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
@@ -14,7 +15,6 @@ import {
   useUpdateProduct,
 } from "@/features/products/hooks/use-products";
 import { formatCurrency } from "@/utils/format-currency";
-import { optimizeImageUrl } from "@/utils/optimize-image-url";
 import type {
   Product,
   ProductInput,
@@ -179,14 +179,12 @@ export function AdminProductsPage() {
                 className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-0 dark:border-slate-800"
               >
                 <div className="flex items-center gap-3">
-                  <img
-                    src={optimizeImageUrl(product.imageUrl, 128)}
+                  <ProgressiveImage
+                    src={product.imageUrl}
                     alt=""
-                    width="48"
-                    height="48"
-                    loading="lazy"
-                    decoding="async"
-                    className="h-12 w-12 rounded-xl object-cover"
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-xl"
                   />
                   <div>
                     <p className="font-bold text-slate-950 dark:text-white">

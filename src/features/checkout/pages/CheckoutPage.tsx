@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { useCartStore } from "@/features/cart/store/cart.store";
 import { useCreateOrder } from "@/features/orders/hooks/use-orders";
 import type { OrderAddress } from "@/features/orders/types/order.types";
@@ -19,7 +20,6 @@ import {
   useVerifyPayment,
 } from "@/features/payments/hooks/use-payments";
 import { formatCurrency } from "@/utils/format-currency";
-import { optimizeImageUrl } from "@/utils/optimize-image-url";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -272,14 +272,12 @@ export function CheckoutPage() {
             <div className="mt-4 space-y-3">
               {items.map((item) => (
                 <div key={item.productId} className="flex items-center gap-3">
-                  <img
-                    src={optimizeImageUrl(item.image, 128)}
-                    alt=""
-                    width="48"
-                    height="48"
-                    loading="lazy"
-                    decoding="async"
-                    className="h-12 w-12 rounded-lg object-cover"
+                  <ProgressiveImage
+                    src={item.image}
+                    alt={item.name}
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-lg"
                   />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-slate-950 dark:text-white">

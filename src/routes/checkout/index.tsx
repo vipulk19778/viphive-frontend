@@ -5,7 +5,9 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const Route = createFileRoute("/checkout/")({
   beforeLoad: () => {
-    if (!useAuthStore.getState().isAuthenticated) {
+    const { user, accessToken, refreshToken } = useAuthStore.getState();
+
+    if (!user || !accessToken || !refreshToken) {
       throw redirect({
         to: "/login",
         search: { redirectTo: "/checkout" },

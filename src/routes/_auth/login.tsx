@@ -8,7 +8,11 @@ const loginSearchSchema = z.object({ redirectTo: z.string().optional() });
 
 export const Route = createFileRoute("/_auth/login")({
   beforeLoad: () => {
-    if (useAuthStore.getState().isAuthenticated) throw redirect({ to: "/" });
+    const { user, accessToken, refreshToken } = useAuthStore.getState();
+
+    if (user && accessToken && refreshToken) {
+      throw redirect({ to: "/" });
+    }
   },
   component: LoginPage,
   validateSearch: loginSearchSchema,

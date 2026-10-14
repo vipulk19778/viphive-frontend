@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 
+import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { Product } from "@/features/products/types/product.types";
 import { formatCurrency } from "@/utils/format-currency";
-import { optimizeImageUrl } from "@/utils/optimize-image-url";
 import { ProductCartControl } from "./ProductCartControl";
 
 type ProductCardProps = {
@@ -23,14 +23,13 @@ export function ProductCard({ product }: ProductCardProps) {
         params={{ productId: product._id }}
         className="relative block overflow-hidden bg-slate-100 dark:bg-slate-800"
       >
-        <img
-          src={optimizeImageUrl(product.imageUrl, 640)}
+        <ProgressiveImage
+          src={product.imageUrl}
           alt={product.name}
-          loading="lazy"
-          decoding="async"
-          width="640"
-          height="480"
-          className="aspect-4/3 w-full object-cover transition duration-500 group-hover:scale-105"
+          width={640}
+          height={480}
+          className="aspect-4/3 w-full"
+          imageClassName="transition duration-500 group-hover:scale-105"
         />
         {product.stock < 5 && product.stock > 0 && (
           <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold text-rose-600">
