@@ -22,12 +22,14 @@ export interface ProductInput {
 export interface PaginatedProducts {
   data: Product[];
   meta: {
-    page: number;
     limit: number;
-    total: number;
-    totalPages: number;
     hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    categories: string[];
+    nextCursor: string | null;
+    // Only returned for page-based requests and the first cursor request
+    page?: number;
+    hasPreviousPage?: boolean;
+    total?: number;
+    totalPages?: number;
+    categories?: string[];
   };
 }

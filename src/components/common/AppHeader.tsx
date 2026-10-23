@@ -27,6 +27,7 @@ export function AppHeader() {
     select: (state) => state.location.pathname,
   });
   const isAdminSearchPage = pathname.startsWith("/admin/");
+  const isAdminArea = pathname === "/admin" || isAdminSearchPage;
   const user = useAuthStore((state) => state.user);
   const accessToken = useAuthStore((state) => state.accessToken);
   const isAuthenticated = Boolean(user && accessToken);
@@ -84,8 +85,15 @@ export function AppHeader() {
   // Shared header layout and desktop controls.
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-950/90 dark:shadow-none">
-      <div className="mx-auto flex h-18.25 max-w-7xl items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6 lg:px-8">
-        <Link to="/" aria-label="VIPHive home">
+      <div
+        className={`flex h-18.25 items-center justify-between gap-3 sm:gap-6 ${isAdminArea ? "pl-4 pr-4 sm:pr-6 md:pl-7 lg:pr-8" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"}`}
+      >
+        <Link
+          to="/"
+          aria-label="VIPHive home"
+          // The logo image has transparent space left of the "V"; cancel it out
+          className={isAdminArea ? "-ml-2.25 sm:ml-[-11.5px]" : undefined}
+        >
           <ViphiveLogo />
         </Link>
         <form

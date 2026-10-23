@@ -4,12 +4,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { BestProductsSection } from "@/features/products/components/BestProductsSection";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useInfiniteProducts } from "@/features/products/hooks/use-products";
 import { useCatalogStore } from "@/stores/catalog.store";
 
 export function ProductsPage() {
   const query = useCatalogStore((state) => state.query);
   const normalizedQuery = query.trim().toLowerCase();
+  const debouncedQuery = useDebouncedValue(normalizedQuery);
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("featured");
   const {
@@ -21,7 +23,7 @@ export function ProductsPage() {
     isFetchingNextPage,
   } = useInfiniteProducts(
     12,
-    normalizedQuery,
+    debouncedQuery,
     sort,
     category === "All" ? "" : category,
   );
@@ -41,7 +43,7 @@ export function ProductsPage() {
 
     observer.observe(loadMoreElement);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage, normalizedQuery]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, debouncedQuery]);
 
   if (isPending) {
     return (
@@ -106,15 +108,8 @@ export function ProductsPage() {
   }
 
   const products = data.pages.flatMap((page) => page.data);
-  const total = data.pages.at(-1)?.meta.total ?? 0;
+  const total = data.pages[0]?.meta.total ?? 0;
   const categories = ["All", ...(data.pages[0]?.meta.categories ?? [])];
-  const filteredProducts = products.filter(
-    (product) =>
-      !normalizedQuery ||
-      `${product.name} ${product.description} ${product.category}`
-        .toLowerCase()
-        .includes(normalizedQuery),
-  );
   const bestProducts = [...products]
     .sort((first, second) => second.rating - first.rating)
     .slice(0, 8);
@@ -148,7 +143,7 @@ export function ProductsPage() {
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               {normalizedQuery || category !== "All"
-                ? `${filteredProducts.length} matching products`
+                ? `${total} matching products`
                 : `${total} products to explore`}
             </p>
             <h2 className="font-display mt-1 text-2xl font-bold text-slate-950 dark:text-white">
@@ -174,7 +169,7 @@ export function ProductsPage() {
           </label>
         </div>
 
-        {filteredProducts.length === 0 ? (
+        {products.length === 0 ? (
           <div className="mt-8 rounded-2xl border border-dashed border-slate-300 p-12 text-center dark:border-slate-700">
             <Filter className="mx-auto h-8 w-8 text-slate-400" />
             <h3 className="mt-4 font-bold text-slate-950 dark:text-white">
@@ -186,7 +181,7 @@ export function ProductsPage() {
           </div>
         ) : (
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>

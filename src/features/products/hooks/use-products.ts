@@ -1,4 +1,5 @@
 import {
+  keepPreviousData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -35,10 +36,13 @@ export function useInfiniteProducts(
   return useInfiniteQuery({
     queryKey: ["products", "infinite", limit, query, sort, category],
     queryFn: ({ pageParam }) =>
-      getProducts(pageParam, limit, query, sort, category),
-    initialPageParam: 1,
+      getProducts(1, limit, query, sort, category, pageParam),
+    placeholderData: keepPreviousData,
+    initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) =>
-      lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined,
+      lastPage.meta.hasNextPage
+        ? (lastPage.meta.nextCursor ?? undefined)
+        : undefined,
   });
 }
 

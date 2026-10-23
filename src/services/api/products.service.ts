@@ -15,10 +15,12 @@ export async function getProducts(
   query = "",
   sort = "featured",
   category = "",
+  cursor?: string,
 ) {
   const response = await apiClient.get<PaginatedProducts>("/products", {
     params: {
-      page,
+      page: cursor ? undefined : page,
+      cursor,
       limit,
       q: query || undefined,
       sort,

@@ -2,14 +2,52 @@ import { useEffect, useState } from "react";
 
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
-import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
+import { AdminDataTable } from "@/features/admin/components/AdminDataTable";
+import { createAdminColumnHelper } from "@/features/admin/lib/admin-table";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { useUsers } from "@/features/admin/hooks/use-admin";
+import type { AdminUser } from "@/features/admin/types/admin.types";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useAdminSearchStore } from "@/stores/admin-search.store";
+
+const columnHelper = createAdminColumnHelper<AdminUser>();
+
+const columns = columnHelper.columns([
+  columnHelper.accessor("name", {
+    header: "User",
+    cell: (info) => (
+      <span className="font-bold text-slate-950 dark:text-white">
+        {info.getValue()}
+      </span>
+    ),
+  }),
+  columnHelper.accessor("email", {
+    header: "Email",
+    cell: (info) => <span className="text-slate-500">{info.getValue()}</span>,
+  }),
+  columnHelper.accessor("role", {
+    header: "Role",
+    cell: (info) => (
+      <span className="capitalize text-slate-500">
+        {info.getValue() ?? "user"}
+      </span>
+    ),
+  }),
+  columnHelper.accessor("verified", {
+    header: "Status",
+    cell: (info) => (
+      <span
+        className={`rounded-full px-2.5 py-1 text-xs font-bold ${info.getValue() ? "bg-emerald-100 text-emerald-700" : "brand-accent-soft"}`}
+      >
+        {info.getValue() ? "Verified" : "Unverified"}
+      </span>
+    ),
+  }),
+]);
 
 export function AdminUsersPage() {
   const [page, setPage] = useState(1);
-  const search = useAdminSearchStore((state) => state.query);
+  const search = useDebouncedValue(useAdminSearchStore((state) => state.query));
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
@@ -38,92 +76,19 @@ export function AdminUsersPage() {
       <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
         A clear view of the VIPHive community.
       </p>
-      <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60">
-            <tr>
-              <th className="px-5 py-4">
-                <AdminSortableHeader
-                  label="User"
-                  sortKey="name"
-                  activeSort={sort}
-                  onSort={(value) => {
-                    setSort(value);
-                    setPage(1);
-                  }}
-                />
-              </th>
-              <th className="px-5 py-4">
-                <AdminSortableHeader
-                  label="Email"
-                  sortKey="email"
-                  activeSort={sort}
-                  onSort={(value) => {
-                    setSort(value);
-                    setPage(1);
-                  }}
-                />
-              </th>
-              <th className="px-5 py-4">
-                <AdminSortableHeader
-                  label="Role"
-                  sortKey="role"
-                  activeSort={sort}
-                  onSort={(value) => {
-                    setSort(value);
-                    setPage(1);
-                  }}
-                />
-              </th>
-              <th className="px-5 py-4">
-                <AdminSortableHeader
-                  label="Status"
-                  sortKey="verified"
-                  activeSort={sort}
-                  onSort={(value) => {
-                    setSort(value);
-                    setPage(1);
-                  }}
-                />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.data.length === 0 ? (
-              <tr>
-                <td colSpan={4}>
-                  <AdminEmptyState
-                    searched={Boolean(search)}
-                    resource="users"
-                  />
-                </td>
-              </tr>
-            ) : (
-              data.data.map((user) => (
-                <tr
-                  key={user._id}
-                  className="border-b border-slate-100 last:border-0 dark:border-slate-800"
-                >
-                  <td className="px-5 py-4 font-bold text-slate-950 dark:text-white">
-                    {user.name}
-                  </td>
-                  <td className="px-5 py-4 text-slate-500">{user.email}</td>
-                  <td className="px-5 py-4 capitalize text-slate-500">
-                    {user.role ?? "user"}
-                  </td>
-                  <td className="px-5 py-4">
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-bold ${user.verified ? "bg-emerald-100 text-emerald-700" : "brand-accent-soft"}`}
-                    >
-                      {user.verified ? "Verified" : "Unverified"}
-                    </span>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <AdminDataTable
+        data={data.data}
+        columns={columns}
+        sort={sort}
+        onSortChange={(value) => {
+          setSort(value);
+          setPage(1);
+        }}
+        getRowId={(user) => user._id}
+        emptyState={
+          <AdminEmptyState searched={Boolean(search)} resource="users" />
+        }
+      />
       <AdminPagination
         page={data.meta.page}
         limit={limit}

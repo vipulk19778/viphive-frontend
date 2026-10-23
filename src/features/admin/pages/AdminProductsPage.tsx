@@ -1,12 +1,23 @@
-import { useEffect, useState, type SyntheticEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type SyntheticEvent,
+} from "react";
 import { ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
 import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { AdminPagination } from "@/features/admin/components/AdminPagination";
 import { AdminEmptyState } from "@/features/admin/components/AdminEmptyState";
-import { AdminSortableHeader } from "@/features/admin/components/AdminSortableHeader";
+import {
+  AdminDataTable,
+  AdminTableHeaderLabel,
+} from "@/features/admin/components/AdminDataTable";
+import { createAdminColumnHelper } from "@/features/admin/lib/admin-table";
 import { useAdminPageSize } from "@/features/admin/hooks/use-admin-page-size";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useAdminSearchStore } from "@/stores/admin-search.store";
 import {
   useCreateProduct,
@@ -28,9 +39,11 @@ const emptyForm: ProductInput = {
   stock: 0,
 };
 
+const columnHelper = createAdminColumnHelper<Product>();
+
 export function AdminProductsPage() {
   const [page, setPage] = useState(1);
-  const search = useAdminSearchStore((state) => state.query);
+  const search = useDebouncedValue(useAdminSearchStore((state) => state.query));
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("name-asc");
@@ -55,7 +68,7 @@ export function AdminProductsPage() {
     setError("");
     setIsOpen(true);
   };
-  const openEdit = (product: Product) => {
+  const openEdit = useCallback((product: Product) => {
     setEditing(product);
     setForm({
       name: product.name,
@@ -66,7 +79,103 @@ export function AdminProductsPage() {
     });
     setError("");
     setIsOpen(true);
-  };
+  }, []);
+  const columns = useMemo(
+    () =>
+      columnHelper.columns([
+        columnHelper.accessor("name", {
+          header: "Product",
+          cell: (info) => {
+            const product = info.row.original;
+            return (
+              <div className="flex min-w-64 items-center gap-3">
+                <ProgressiveImage
+                  src={product.imageUrl}
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 rounded-xl"
+                />
+                <div>
+                  <p className="font-bold text-slate-950 dark:text-white">
+                    {product.name}
+                  </p>
+                  <p className="max-w-xs truncate text-xs text-slate-500">
+                    {product.description}
+                  </p>
+                </div>
+              </div>
+            );
+          },
+        }),
+        columnHelper.accessor("category", {
+          header: "Category",
+          cell: (info) => (
+            <span
+              className="block max-w-40 truncate text-sm text-slate-500"
+              title={info.getValue()}
+            >
+              {info.getValue()}
+            </span>
+          ),
+        }),
+        columnHelper.accessor("price", {
+          header: "Price",
+          cell: (info) => (
+            <span className="font-semibold text-slate-950 dark:text-white">
+              {formatCurrency(info.getValue())}
+            </span>
+          ),
+        }),
+        columnHelper.accessor("stock", {
+          header: "Stock",
+          cell: (info) => (
+            <span
+              className={
+                info.getValue() < 5
+                  ? "font-semibold text-rose-500"
+                  : "text-slate-500"
+              }
+            >
+              {info.getValue()}
+            </span>
+          ),
+        }),
+        columnHelper.display({
+          id: "actions",
+          header: () => (
+            <AdminTableHeaderLabel className="block text-right">
+              Actions
+            </AdminTableHeaderLabel>
+          ),
+          cell: (info) => {
+            const product = info.row.original;
+            return (
+              <div className="flex justify-end gap-1">
+                <button
+                  type="button"
+                  onClick={() => openEdit(product)}
+                  aria-label={`Edit ${product.name}`}
+                  className="brand-accent-hover cursor-pointer rounded-lg p-2 text-slate-500"
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProductToDelete(product)}
+                  aria-label={`Delete ${product.name}`}
+                  className="cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-rose-50 hover:text-rose-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            );
+          },
+        }),
+      ]),
+    [openEdit],
+  );
+
   const close = () => {
     setIsOpen(false);
     setEditing(null);
@@ -118,7 +227,7 @@ export function AdminProductsPage() {
             Products
           </h1>
           <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-            {data.meta.total} products in your catalog.
+            {data.meta.total ?? 0} products in your catalog.
           </p>
         </div>
         <button
@@ -129,117 +238,23 @@ export function AdminProductsPage() {
           <Plus className="h-4 w-4" /> Add product
         </button>
       </header>
-      <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="min-w-220">
-          <div className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-950/60">
-            <AdminSortableHeader
-              label="Product"
-              sortKey="name"
-              activeSort={sort}
-              onSort={(value) => {
-                setSort(value);
-                setPage(1);
-              }}
-            />
-            <AdminSortableHeader
-              label="Category"
-              sortKey="category"
-              activeSort={sort}
-              onSort={(value) => {
-                setSort(value);
-                setPage(1);
-              }}
-            />
-            <AdminSortableHeader
-              label="Price"
-              sortKey="price"
-              activeSort={sort}
-              onSort={(value) => {
-                setSort(value);
-                setPage(1);
-              }}
-            />
-            <AdminSortableHeader
-              label="Stock"
-              sortKey="stock"
-              activeSort={sort}
-              onSort={(value) => {
-                setSort(value);
-                setPage(1);
-              }}
-            />
-            <span className="text-right">Actions</span>
-          </div>
-          {data.data.length === 0 ? (
-            <AdminEmptyState searched={Boolean(search)} resource="products" />
-          ) : (
-            data.data.map((product) => (
-              <div
-                key={product._id}
-                className="grid grid-cols-[minmax(280px,1fr)_160px_120px_100px_96px] items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-0 dark:border-slate-800"
-              >
-                <div className="flex items-center gap-3">
-                  <ProgressiveImage
-                    src={product.imageUrl}
-                    alt=""
-                    width={48}
-                    height={48}
-                    className="h-12 w-12 rounded-xl"
-                  />
-                  <div>
-                    <p className="font-bold text-slate-950 dark:text-white">
-                      {product.name}
-                    </p>
-                    <p className="max-w-xs truncate text-xs text-slate-500">
-                      {product.description}
-                    </p>
-                  </div>
-                </div>
-                <span
-                  className="truncate text-sm text-slate-500"
-                  title={product.category}
-                >
-                  {product.category}
-                </span>
-                <span className="text-center font-semibold text-slate-950 dark:text-white">
-                  {formatCurrency(product.price)}
-                </span>
-                <span
-                  className={
-                    product.stock < 5
-                      ? "text-center font-semibold text-rose-500"
-                      : "text-center text-slate-500"
-                  }
-                >
-                  {product.stock}
-                </span>
-                <div className="flex justify-end gap-1">
-                  <button
-                    type="button"
-                    onClick={() => openEdit(product)}
-                    aria-label={`Edit ${product.name}`}
-                    className="brand-accent-hover cursor-pointer rounded-lg p-2 text-slate-500"
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setProductToDelete(product)}
-                    aria-label={`Delete ${product.name}`}
-                    className="cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      <AdminDataTable
+        data={data.data}
+        columns={columns}
+        sort={sort}
+        onSortChange={(value) => {
+          setSort(value);
+          setPage(1);
+        }}
+        getRowId={(product) => product._id}
+        emptyState={
+          <AdminEmptyState searched={Boolean(search)} resource="products" />
+        }
+      />
       <AdminPagination
-        page={data.meta.page}
+        page={data.meta.page ?? page}
         limit={limit}
-        totalPages={data.meta.totalPages}
+        totalPages={data.meta.totalPages ?? 1}
         onPageChange={setPage}
         onLimitChange={(value) => {
           setLimit(value);
