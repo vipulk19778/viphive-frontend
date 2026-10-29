@@ -9,6 +9,7 @@ import { useUsers } from "@/features/admin/hooks/use-admin";
 import type { AdminUser } from "@/features/admin/types/admin.types";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useAdminSearchStore } from "@/stores/admin-search.store";
+import { QueryError } from "@/components/common/QueryError";
 
 const columnHelper = createAdminColumnHelper<AdminUser>();
 
@@ -51,7 +52,12 @@ export function AdminUsersPage() {
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
-  const { data, isPending, isError } = useUsers(page, limit, search, sort);
+  const { data, isPending, isError, error, refetch } = useUsers(
+    page,
+    limit,
+    search,
+    sort,
+  );
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setPage(1), 0);
     return () => window.clearTimeout(timeoutId);
@@ -64,9 +70,11 @@ export function AdminUsersPage() {
     );
   if (isError)
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load users.
-      </div>
+      <QueryError
+        error={error}
+        fallback="Unable to load users."
+        onRetry={() => void refetch()}
+      />
     );
   return (
     <main>

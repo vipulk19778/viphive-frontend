@@ -30,6 +30,7 @@ import type {
   Product,
   ProductInput,
 } from "@/features/products/types/product.types";
+import { QueryError } from "@/components/common/QueryError";
 
 const emptyForm: ProductInput = {
   name: "",
@@ -47,7 +48,13 @@ export function AdminProductsPage() {
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("name-asc");
-  const { data, isPending, isError } = useProducts(page, limit, search, sort);
+  const {
+    data,
+    isPending,
+    isError,
+    error: loadError,
+    refetch,
+  } = useProducts(page, limit, search, sort);
   const createMutation = useCreateProduct();
   const updateMutation = useUpdateProduct();
   const deleteMutation = useDeleteProduct();
@@ -214,9 +221,11 @@ export function AdminProductsPage() {
     );
   if (isError)
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load products.
-      </div>
+      <QueryError
+        error={loadError}
+        fallback="Unable to load products."
+        onRetry={() => void refetch()}
+      />
     );
 
   return (

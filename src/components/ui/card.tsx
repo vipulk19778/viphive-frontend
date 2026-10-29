@@ -22,7 +22,9 @@ export function Card({
   className = "",
   ...props
 }: CardProps) {
-  return <Component className={cn(cardVariants[variant], className)} {...props} />;
+  return (
+    <Component className={cn(cardVariants[variant], className)} {...props} />
+  );
 }
 
 export function CardHeader({
@@ -30,7 +32,10 @@ export function CardHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
+    <div
+      className={cn("flex flex-col space-y-1.5 p-6", className)}
+      {...props}
+    />
   );
 }
 

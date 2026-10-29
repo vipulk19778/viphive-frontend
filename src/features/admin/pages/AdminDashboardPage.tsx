@@ -11,17 +11,20 @@ import { useAnalytics } from "../hooks/use-admin";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/utils/format-currency";
+import { QueryError } from "@/components/common/QueryError";
 
 export function AdminDashboardPage() {
-  const { data, isPending, isError } = useAnalytics();
+  const { data, isPending, isError, error, refetch } = useAnalytics();
 
   if (isPending)
     return <Card className="p-8 text-slate-500">Loading analytics...</Card>;
   if (isError)
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load analytics.
-      </div>
+      <QueryError
+        error={error}
+        fallback="Unable to load analytics."
+        onRetry={() => void refetch()}
+      />
     );
 
   const cards = [

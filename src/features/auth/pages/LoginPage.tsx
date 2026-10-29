@@ -1,14 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, useRouter, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
 import { PasswordInput } from "@/components/common/PasswordInput";
 import { useLogin } from "../hooks/useAuth";
+import { SESSION_EXPIRED_MESSAGE } from "@/lib/api/errors";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 
 export function LoginPage() {
-  const navigate = useNavigate();
-  const { redirectTo } = useSearch({ from: "/_auth/login" });
+  const router = useRouter();
+  const { redirectTo, reason } = useSearch({ from: "/_auth/login" });
   const loginMutation = useLogin();
   const {
     register,
@@ -22,7 +23,9 @@ export function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await loginMutation.mutateAsync(data);
-      await navigate({ to: redirectTo ?? "/" });
+      // redirectTo may include a query string, so push it as a raw URL
+      const target = redirectTo?.startsWith("/") ? redirectTo : "/";
+      router.history.push(target);
     } catch {
       /* mutation state renders the error */
     }
@@ -39,6 +42,14 @@ export function LoginPage() {
       <p className="mt-3 max-w-md leading-6 text-slate-500 dark:text-slate-400">
         Your saved pieces, order updates, and next great find are waiting.
       </p>
+      {reason === "expired" && (
+        <p
+          role="alert"
+          className="mt-6 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:bg-amber-400/10 dark:text-amber-300"
+        >
+          {SESSION_EXPIRED_MESSAGE}
+        </p>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
           Email

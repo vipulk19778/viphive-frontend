@@ -11,6 +11,7 @@ import { formatCurrency } from "@/utils/format-currency";
 import type { AdminPayment } from "@/features/admin/types/admin.types";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useAdminSearchStore } from "@/stores/admin-search.store";
+import { QueryError } from "@/components/common/QueryError";
 
 const columnHelper = createAdminColumnHelper<AdminPayment>();
 
@@ -47,7 +48,12 @@ export function AdminPaymentsPage() {
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
-  const { data, isPending, isError } = usePayments(page, limit, search, sort);
+  const { data, isPending, isError, error, refetch } = usePayments(
+    page,
+    limit,
+    search,
+    sort,
+  );
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setPage(1), 0);
     return () => window.clearTimeout(timeoutId);
@@ -60,9 +66,11 @@ export function AdminPaymentsPage() {
     );
   if (isError)
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load payments.
-      </div>
+      <QueryError
+        error={error}
+        fallback="Unable to load payments."
+        onRetry={() => void refetch()}
+      />
     );
   return (
     <main>

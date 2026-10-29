@@ -14,6 +14,7 @@ import { formatCurrency } from "@/utils/format-currency";
 import type { Order } from "@/features/orders/types/order.types";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useAdminSearchStore } from "@/stores/admin-search.store";
+import { QueryError } from "@/components/common/QueryError";
 
 const columnHelper = createAdminColumnHelper<Order>();
 
@@ -23,7 +24,12 @@ export function AdminOrdersPage() {
   const defaultLimit = useAdminPageSize();
   const [limit, setLimit] = useState(defaultLimit);
   const [sort, setSort] = useState("createdAt-desc");
-  const { data, isPending, isError } = useAllOrders(page, limit, search, sort);
+  const { data, isPending, isError, error, refetch } = useAllOrders(
+    page,
+    limit,
+    search,
+    sort,
+  );
   const updateStatus = useUpdateOrderStatus();
   const isUpdatingStatus = updateStatus.isPending;
   const { mutate: changeStatus } = updateStatus;
@@ -95,9 +101,11 @@ export function AdminOrdersPage() {
     );
   if (isError)
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load orders.
-      </div>
+      <QueryError
+        error={error}
+        fallback="Unable to load orders."
+        onRetry={() => void refetch()}
+      />
     );
 
   return (

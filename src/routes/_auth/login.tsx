@@ -4,7 +4,10 @@ import { z } from "zod";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { useAuthStore } from "@/stores/auth.store";
 
-const loginSearchSchema = z.object({ redirectTo: z.string().optional() });
+const loginSearchSchema = z.object({
+  redirectTo: z.string().optional(),
+  reason: z.enum(["expired"]).optional(),
+});
 
 export const Route = createFileRoute("/_auth/login")({
   beforeLoad: () => {

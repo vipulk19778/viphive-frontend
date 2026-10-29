@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useMyOrders } from "@/features/orders/hooks/use-orders";
 import { formatCurrency } from "@/utils/format-currency";
+import { QueryError } from "@/components/common/QueryError";
 
 const orderStatusPresentation: Record<
   string,
@@ -50,15 +51,17 @@ const fallbackOrderStatus = {
 };
 
 export function OrdersPage() {
-  const { data: orders, isPending, isError } = useMyOrders();
+  const { data: orders, isPending, isError, error, refetch } = useMyOrders();
 
   if (isPending)
     return <Card className="p-8 text-slate-500">Loading orders...</Card>;
   if (isError)
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load orders.
-      </div>
+      <QueryError
+        error={error}
+        fallback="Unable to load orders."
+        onRetry={() => void refetch()}
+      />
     );
 
   return (

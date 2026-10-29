@@ -7,6 +7,7 @@ import { BestProductsSection } from "@/features/products/components/BestProducts
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useInfiniteProducts } from "@/features/products/hooks/use-products";
 import { useCatalogStore } from "@/stores/catalog.store";
+import { QueryError } from "@/components/common/QueryError";
 
 export function ProductsPage() {
   const query = useCatalogStore((state) => state.query);
@@ -18,6 +19,8 @@ export function ProductsPage() {
     data,
     isPending,
     isError,
+    error,
+    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -103,7 +106,11 @@ export function ProductsPage() {
 
   if (isError) {
     return (
-      <p className="p-10 text-center text-red-600">Unable to load products.</p>
+      <QueryError
+        error={error}
+        fallback="Unable to load products."
+        onRetry={() => void refetch()}
+      />
     );
   }
 

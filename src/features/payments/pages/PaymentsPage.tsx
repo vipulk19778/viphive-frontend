@@ -2,9 +2,10 @@ import { CheckCircle2, CreditCard, Clock3, XCircle } from "lucide-react";
 
 import { useMyOrders } from "@/features/orders/hooks/use-orders";
 import { formatCurrency } from "@/utils/format-currency";
+import { QueryError } from "@/components/common/QueryError";
 
 export function PaymentsPage() {
-  const { data: orders, isPending, isError } = useMyOrders();
+  const { data: orders, isPending, isError, error, refetch } = useMyOrders();
 
   if (isPending) {
     return (
@@ -16,9 +17,11 @@ export function PaymentsPage() {
 
   if (isError) {
     return (
-      <div className="rounded-2xl bg-rose-50 p-6 text-rose-600 dark:bg-rose-400/10 dark:text-rose-300">
-        Unable to load payment history.
-      </div>
+      <QueryError
+        error={error}
+        fallback="Unable to load payment history."
+        onRetry={() => void refetch()}
+      />
     );
   }
 
