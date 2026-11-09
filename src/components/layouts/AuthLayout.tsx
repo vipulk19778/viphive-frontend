@@ -1,4 +1,4 @@
-import { Link, Outlet } from "@tanstack/react-router";
+import { Link, Outlet } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 
 import { ViphiveLogo } from "@/components/common/ViphiveLogo";

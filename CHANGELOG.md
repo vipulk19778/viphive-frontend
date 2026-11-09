@@ -1,7 +1,8 @@
 ## [Unreleased]
 
+- Replaced TanStack Router with React Router while retaining lazy-loaded route chunks and auth guards.
 - Added a production Vercel deployment workflow gated to the main and master branches.
-- Patched the frontend production dependency audit chain through `source-map-js`.
+- Patched frontend production dependency advisories in the lockfile.
 - Expanded frontend CI to validate development and staging branches, audit production dependencies, and cancel superseded runs.
 - Fixed auth route redirects by validating the current user, access token, and refresh token instead of stale persisted authentication state.
 - Added visible fallback states for missing or failed product images.
@@ -10,7 +11,7 @@
 - Added explicit access-token authentication with automatic refresh-token renewal.
 - Replaced Radix UI dependencies with local shadcn-style Button, Card, Badge, Input, and Dialog primitives.
 - Normalized shared primitives to shadcn's standard lowercase files under `src/components/ui`.
-- Added shadcn component configuration and preserved TanStack Router route-level code splitting.
+- Added shadcn component configuration and preserved route-level code splitting.
 - Moved shared UI imports to the canonical feature-safe component paths without changing the existing visual styling.
 - Added descriptive metadata, canonical URL, crawler directives, and Open Graph tags for homepage SEO.
 - Added a homepage loading skeleton that mirrors the loaded layout to avoid layout shift.

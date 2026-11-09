@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,9 +29,7 @@ export function ForgotPasswordPage() {
         purpose: "FORGOT_PASSWORD",
       });
       setOtpContext(data.email, "FORGOT_PASSWORD");
-      await navigate({
-        to: "/verify-otp",
-      });
+      navigate("/verify-otp");
     } catch {
       // Mutation error is rendered below.
     }

@@ -1,15 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
-  plugins: [
-    tanstackRouter({ target: "react", autoCodeSplitting: true }),
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
 
   resolve: {
     alias: {
@@ -27,7 +22,10 @@ export default defineConfig({
           ) {
             return "react";
           }
-          if (id.includes("node_modules/@tanstack/react-router/")) {
+          if (
+            id.includes("node_modules/react-router/") ||
+            id.includes("node_modules/react-router-dom/")
+          ) {
             return "router";
           }
           if (

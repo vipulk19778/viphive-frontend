@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 
 import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { Badge } from "@/components/ui/badge";
@@ -16,8 +16,7 @@ export function BestProductCard({
 }: BestProductCardProps) {
   return (
     <Link
-      to="/products/$productId"
-      params={{ productId: product._id }}
+      to={`/products/${product._id}`}
       className="group flex h-44 overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 sm:h-48"
     >
       <ProgressiveImage

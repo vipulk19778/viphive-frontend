@@ -1,19 +1,9 @@
-import {
-  Outlet,
-  createRootRoute,
-  useRouterState,
-} from "@tanstack/react-router";
+import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 
 import { AppHeader } from "@/components/common/AppHeader";
 
-export const Route = createRootRoute({
-  component: RootLayout,
-});
-
-function RootLayout() {
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  });
+export function RootLayout() {
+  const { pathname } = useLocation();
   const isAuthPage = [
     "/login",
     "/register",
@@ -30,6 +20,7 @@ function RootLayout() {
       <main>
         <Outlet />
       </main>
+      <ScrollRestoration />
     </div>
   );
 }

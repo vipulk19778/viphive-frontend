@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import { QueryProvider } from "./providers/QueryProvider";
-import { RouterProvider } from "@tanstack/react-router";
+import { RouterProvider } from "react-router-dom";
 
 import { ThemeController } from "../components/common/ThemeController";
 import { router } from "../router";
@@ -23,10 +23,8 @@ function App() {
       const { pathname, search } = router.state.location;
       if (pathname === "/login") return;
 
-      void router.navigate({
-        to: "/login",
-        search: { reason: "expired", redirectTo: `${pathname}${search}` },
-      });
+      const redirectTo = encodeURIComponent(`${pathname}${search}`);
+      void router.navigate(`/login?reason=expired&redirectTo=${redirectTo}`);
     });
 
     // Keep tabs in sync so a token rotated in one tab isn't reused in another

@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { ArrowLeft, Check, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 

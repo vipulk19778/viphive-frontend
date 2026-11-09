@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { KeyRound } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,7 +43,7 @@ export function ResetPasswordPage() {
         newPassword: data.newPassword,
       });
       clearOtpContext();
-      await navigate({ to: "/login" });
+      navigate("/login");
     } catch {
       // Mutation error is rendered below the password fields.
     }

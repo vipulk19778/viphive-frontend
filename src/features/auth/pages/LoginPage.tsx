@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useRouter, useSearch } from "@tanstack/react-router";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { PasswordInput } from "@/components/common/PasswordInput";
@@ -8,8 +8,10 @@ import { SESSION_EXPIRED_MESSAGE } from "@/lib/api/errors";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 
 export function LoginPage() {
-  const router = useRouter();
-  const { redirectTo, reason } = useSearch({ from: "/_auth/login" });
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
+  const reason = searchParams.get("reason");
   const loginMutation = useLogin();
   const {
     register,
@@ -24,8 +26,11 @@ export function LoginPage() {
     try {
       await loginMutation.mutateAsync(data);
       // redirectTo may include a query string, so push it as a raw URL
-      const target = redirectTo?.startsWith("/") ? redirectTo : "/";
-      router.history.push(target);
+      const target =
+        redirectTo?.startsWith("/") && !redirectTo.startsWith("//")
+          ? redirectTo
+          : "/";
+      navigate(target);
     } catch {
       /* mutation state renders the error */
     }

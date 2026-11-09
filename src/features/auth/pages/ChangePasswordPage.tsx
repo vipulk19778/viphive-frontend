@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { KeyRound } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";

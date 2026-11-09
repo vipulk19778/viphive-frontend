@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { PasswordInput } from "@/components/common/PasswordInput";
@@ -23,9 +23,7 @@ export function RegisterPage() {
     try {
       await registerMutation.mutateAsync(data);
       setOtpContext(data.email, "REGISTER");
-      await navigate({
-        to: "/verify-otp",
-      });
+      navigate("/verify-otp");
     } catch {
       /* mutation state renders the error */
     }

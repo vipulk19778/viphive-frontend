@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { MailCheck } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -73,9 +73,7 @@ export function VerifyOtpPage() {
         purpose,
       });
       setVerifiedOtp(nextDigits.join(""));
-      await navigate({
-        to: purpose === "FORGOT_PASSWORD" ? "/reset-password" : "/",
-      });
+      navigate(purpose === "FORGOT_PASSWORD" ? "/reset-password" : "/");
     } catch {
       setDigits(Array(OTP_LENGTH).fill(""));
       inputRefs.current[0]?.focus();

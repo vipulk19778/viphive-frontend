@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 
 import { ProgressiveImage } from "@/components/common/ProgressiveImage";
 import { Badge } from "@/components/ui/badge";
@@ -19,8 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group overflow-hidden hover:-translate-y-1 hover:shadow-xl"
     >
       <Link
-        to="/products/$productId"
-        params={{ productId: product._id }}
+        to={`/products/${product._id}`}
         className="relative block overflow-hidden bg-slate-100 dark:bg-slate-800"
       >
         <ProgressiveImage
@@ -41,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <p className="brand-accent text-xs font-bold uppercase tracking-wider">
           {product.category}
         </p>
-        <Link to="/products/$productId" params={{ productId: product._id }}>
+        <Link to={`/products/${product._id}`}>
           <h3 className="mt-1 truncate text-lg font-bold text-slate-950 dark:text-white">
             {product.name}
           </h3>

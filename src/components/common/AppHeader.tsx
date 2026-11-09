@@ -1,5 +1,5 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LogOut,
   ChevronDown,
@@ -23,9 +23,7 @@ export function AppHeader() {
   // Header state and shared store values.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  });
+  const { pathname } = useLocation();
   const isAdminSearchPage = pathname.startsWith("/admin/");
   const isAdminArea = pathname === "/admin" || isAdminSearchPage;
   const user = useAuthStore((state) => state.user);
@@ -69,7 +67,7 @@ export function AppHeader() {
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
-    navigate({ to: "/" });
+    navigate("/");
   };
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -79,7 +77,7 @@ export function AppHeader() {
     setIsMenuOpen(false);
     const nextQuery = searchInput.trim();
     setActiveQuery(nextQuery);
-    if (!isAdminSearchPage) void navigate({ to: "/products" });
+    if (!isAdminSearchPage) void navigate("/products");
   };
 
   // Shared header layout and desktop controls.
@@ -190,11 +188,6 @@ export function AppHeader() {
                     {isAdmin && (
                       <Link
                         to="/admin"
-                        // activeOptions={{ exact: true }}
-                        activeProps={{
-                          className:
-                            "bg-slate-950 text-white dark:bg-slate-800",
-                        }}
                         onClick={closeMenu}
                         className="brand-accent-hover mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition dark:text-slate-200 dark:hover:bg-slate-800"
                       >
@@ -290,11 +283,7 @@ export function AppHeader() {
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    // activeOptions={{ exact: true }}
                     onClick={closeMenu}
-                    activeProps={{
-                      className: "bg-slate-950 text-white dark:bg-slate-800",
-                    }}
                     className="brand-accent-hover block rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 transition dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     Admin panel

@@ -1,13 +1,9 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { KeyRound, Mail, ShieldCheck, UserRound } from "lucide-react";
 
 import { useAuthStore } from "@/stores/auth.store";
 
-export const Route = createFileRoute("/_authenticated/profile")({
-  component: ProfilePage,
-});
-
-function ProfilePage() {
+export function ProfilePage() {
   const user = useAuthStore((state) => state.user);
 
   return (
