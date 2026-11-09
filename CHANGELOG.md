@@ -1,7 +1,8 @@
 ## [Unreleased]
 
+- Added Vitest image URL tests and gated production deployments on successful CI validation.
 - Replaced TanStack Router with React Router while retaining lazy-loaded route chunks and auth guards.
-- Added a production Vercel deployment workflow gated to the main and master branches.
+- Gated production Vercel deployments on successful CI for main/master pushes and manual dispatches.
 - Patched frontend production dependency advisories in the lockfile.
 - Expanded frontend CI to validate development and staging branches, audit production dependencies, and cancel superseded runs.
 - Fixed auth route redirects by validating the current user, access token, and refresh token instead of stale persisted authentication state.

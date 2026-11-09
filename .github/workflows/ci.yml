@@ -13,6 +13,7 @@ on:
       - master
       - staging
       - development
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -44,8 +45,54 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+      - name: Run unit tests
+        run: npm test
+
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
 
       - name: Build production bundle
         run: npm run build
+
+  deploy:
+    name: Deploy production to Vercel
+    needs: validate
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && contains(fromJSON('["main", "master"]'), github.ref_name)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Vercel configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$VERCEL_TOKEN" ]] || { echo "VERCEL_TOKEN is not configured"; exit 1; }
+          [[ -n "$VERCEL_ORG_ID" ]] || { echo "VERCEL_ORG_ID is not configured"; exit 1; }
+          [[ -n "$VERCEL_PROJECT_ID" ]] || { echo "VERCEL_PROJECT_ID is not configured"; exit 1; }
+
+      - name: Pull Vercel production configuration
+        run: npx vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN" --scope "$VERCEL_ORG_ID"
+
+      - name: Build Vercel deployment artifact
+        run: npx vercel@latest build --prod --token "$VERCEL_TOKEN"
+
+      - name: Deploy to Vercel
+        run: npx vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN" --scope "$VERCEL_ORG_ID"
